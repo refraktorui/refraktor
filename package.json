@@ -1,0 +1,23 @@
+{
+    "name": "refraktor-repo",
+    "version": "1.0.0",
+    "license": "MIT",
+    "workspaces": [
+        "apps/*",
+        "packages/*"
+    ],
+    "scripts": {
+        "dev": "turbo run dev",
+        "build": "turbo run build",
+        "lint": "turbo run lint",
+        "clean": "turbo run clean",
+        "test": "turbo run test",
+        "bump": "bun scripts/bump-version.ts"
+    },
+    "devDependencies": {
+        "@types/bun": "^1.3.5",
+        "turbo": "^2.7.3",
+        "typescript": "^5.9.3"
+    },
+    "packageManager": "bun@1.3.5"
+}
