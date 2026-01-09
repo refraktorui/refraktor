@@ -1,0 +1,26 @@
+{
+    "name": "@refraktor/utils",
+    "version": "0.0.1-alpha.0",
+    "license": "MIT",
+    "main": "./build/index.js",
+    "module": "./build/index.js",
+    "types": "./build/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./build/index.d.ts",
+            "import": "./build/index.js"
+        }
+    },
+    "scripts": {
+        "build": "tsc",
+        "dev": "tsc --watch",
+        "clean": "rm -rf build"
+    },
+    "peerDependencies": {
+        "react": ">=18.0.0"
+    },
+    "devDependencies": {
+        "@types/react": "^19.2.7",
+        "typescript": "^5.9.3"
+    }
+}
