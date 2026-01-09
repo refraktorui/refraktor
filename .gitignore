@@ -1,0 +1,11 @@
+node_modules
+build
+dist
+
+.env
+
+bun.lock
+
+# Turbo
+.turbo
+*.tsbuildinfo
