@@ -9,3 +9,5 @@ bun.lock
 # Turbo
 .turbo
 *.tsbuildinfo
+
+*.tgz
