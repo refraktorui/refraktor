@@ -1,6 +1,20 @@
 @import "tailwindcss";
 
 :root {
+    --refraktor-radius-none: 0;
+    --refraktor-radius-xs: 0.125rem;
+    --refraktor-radius-sm: 0.25rem;
+    --refraktor-radius-md: 0.375rem;
+    --refraktor-radius-lg: 0.5rem;
+    --refraktor-radius-xl: 0.75rem;
+    --refraktor-radius-2xl: 1rem;
+    --refraktor-radius-3xl: 1.5rem;
+    --refraktor-radius-4xl: 2rem;
+    --refraktor-radius-full: 9999px;
+
+    --refraktor-colors-white: #ffffff;
+    --refraktor-colors-black: #000000;
+
     --refraktor-colors-dark-0: #c9c9c9;
     --refraktor-colors-dark-1: #b8b8b8;
     --refraktor-colors-dark-2: #828282;
@@ -23,14 +37,135 @@
     --refraktor-colors-light-8: #3f3f3f;
     --refraktor-colors-light-9: #262626;
 
-    --refraktor-colors-teal-0: #e1fefc;
-    --refraktor-colors-teal-1: #d2f7f4;
-    --refraktor-colors-teal-2: #acebe5;
-    --refraktor-colors-teal-3: #82dfd7;
-    --refraktor-colors-teal-4: #5fd5ca;
-    --refraktor-colors-teal-5: #4fd1c5;
-    --refraktor-colors-teal-6: #37ccbf;
-    --refraktor-colors-teal-7: #23b4a8;
-    --refraktor-colors-teal-8: #0da195;
-    --refraktor-colors-teal-9: #008c81;
+    --refraktor-colors-gray-0: #fafafa;
+    --refraktor-colors-gray-1: #f4f4f5;
+    --refraktor-colors-gray-2: #e4e4e7;
+    --refraktor-colors-gray-3: #d4d4d8;
+    --refraktor-colors-gray-4: #a1a1aa;
+    --refraktor-colors-gray-5: #71717a;
+    --refraktor-colors-gray-6: #52525b;
+    --refraktor-colors-gray-7: #3f3f46;
+    --refraktor-colors-gray-8: #27272a;
+    --refraktor-colors-gray-9: #18181b;
+
+    --refraktor-colors-green-0: #ebfbee;
+    --refraktor-colors-green-1: #d3f9d8;
+    --refraktor-colors-green-2: #b2f2bb;
+    --refraktor-colors-green-3: #8ce99a;
+    --refraktor-colors-green-4: #69db7c;
+    --refraktor-colors-green-5: #51cf66;
+    --refraktor-colors-green-6: #40c057;
+    --refraktor-colors-green-7: #37b24d;
+    --refraktor-colors-green-8: #2f9e44;
+    --refraktor-colors-green-9: #2b8a3e;
+
+    --refraktor-colors-mint-0: #ecfdf5;
+    --refraktor-colors-mint-1: #d1fae5;
+    --refraktor-colors-mint-2: #a7f3d0;
+    --refraktor-colors-mint-3: #6ee7b7;
+    --refraktor-colors-mint-4: #34d399;
+    --refraktor-colors-mint-5: #10b981;
+    --refraktor-colors-mint-6: #059669;
+    --refraktor-colors-mint-7: #047857;
+    --refraktor-colors-mint-8: #065f46;
+    --refraktor-colors-mint-9: #064e3b;
+
+    --refraktor-colors-red-0: #ffeaea;
+    --refraktor-colors-red-1: #ffc5c5;
+    --refraktor-colors-red-2: #ffa0a0;
+    --refraktor-colors-red-3: #ff7a7a;
+    --refraktor-colors-red-4: #ff5555;
+    --refraktor-colors-red-5: #e64545;
+    --refraktor-colors-red-6: #c13838;
+    --refraktor-colors-red-7: #9d2c2c;
+    --refraktor-colors-red-8: #781f1f;
+    --refraktor-colors-red-9: #541414;
+
+    --refraktor-colors-blue-0: #e7f2ff;
+    --refraktor-colors-blue-1: #b8dcff;
+    --refraktor-colors-blue-2: #89c6ff;
+    --refraktor-colors-blue-3: #5ab0ff;
+    --refraktor-colors-blue-4: #2b9aff;
+    --refraktor-colors-blue-5: #1485e6;
+    --refraktor-colors-blue-6: #106ec1;
+    --refraktor-colors-blue-7: #0d589d;
+    --refraktor-colors-blue-8: #094179;
+    --refraktor-colors-blue-9: #062b54;
+
+    --refraktor-colors-cyan-0: #eefbfc;
+    --refraktor-colors-cyan-1: #d6f4f6;
+    --refraktor-colors-cyan-2: #bcecee;
+    --refraktor-colors-cyan-3: #9ee3e6;
+    --refraktor-colors-cyan-4: #7ed9de;
+    --refraktor-colors-cyan-5: #5fcfd6;
+    --refraktor-colors-cyan-6: #46b8bf;
+    --refraktor-colors-cyan-7: #329fa6;
+    --refraktor-colors-cyan-8: #1f7f85;
+    --refraktor-colors-cyan-9: #145f64;
+
+    --refraktor-colors-teal-0: #ecf8f6;
+    --refraktor-colors-teal-1: #d0efe9;
+    --refraktor-colors-teal-2: #b2e5dc;
+    --refraktor-colors-teal-3: #8fdbc9;
+    --refraktor-colors-teal-4: #6fd1b6;
+    --refraktor-colors-teal-5: #52c7a4;
+    --refraktor-colors-teal-6: #3dad8c;
+    --refraktor-colors-teal-7: #2f8f74;
+    --refraktor-colors-teal-8: #226f5b;
+    --refraktor-colors-teal-9: #184f41;
+
+    --refraktor-colors-yellow-0: #fffce5;
+    --refraktor-colors-yellow-1: #fff4b8;
+    --refraktor-colors-yellow-2: #ffeb8a;
+    --refraktor-colors-yellow-3: #ffe25c;
+    --refraktor-colors-yellow-4: #ffd92e;
+    --refraktor-colors-yellow-5: #e6c020;
+    --refraktor-colors-yellow-6: #c1a319;
+    --refraktor-colors-yellow-7: #9d8613;
+    --refraktor-colors-yellow-8: #79690c;
+    --refraktor-colors-yellow-9: #544c06;
+
+    --refraktor-colors-orange-0: #fff7e0;
+    --refraktor-colors-orange-1: #ffd29d;
+    --refraktor-colors-orange-2: #ffbb75;
+    --refraktor-colors-orange-3: #ff9e4d;
+    --refraktor-colors-orange-4: #ff8025;
+    --refraktor-colors-orange-5: #e66a00;
+    --refraktor-colors-orange-6: #c95300;
+    --refraktor-colors-orange-7: #a43c00;
+    --refraktor-colors-orange-8: #7f2b00;
+    --refraktor-colors-orange-9: #5a1c00;
+
+    --refraktor-colors-purple-0: #f4f0ff;
+    --refraktor-colors-purple-1: #dbceff;
+    --refraktor-colors-purple-2: #c2acff;
+    --refraktor-colors-purple-3: #a98aff;
+    --refraktor-colors-purple-4: #9068ff;
+    --refraktor-colors-purple-5: #774fe6;
+    --refraktor-colors-purple-6: #613fc1;
+    --refraktor-colors-purple-7: #4c319d;
+    --refraktor-colors-purple-8: #372479;
+    --refraktor-colors-purple-9: #221654;
+
+    --refraktor-colors-magenta-0: #f7ecf6;
+    --refraktor-colors-magenta-1: #ebd1ea;
+    --refraktor-colors-magenta-2: #deb5de;
+    --refraktor-colors-magenta-3: #d19ad2;
+    --refraktor-colors-magenta-4: #c37fc6;
+    --refraktor-colors-magenta-5: #b065ba;
+    --refraktor-colors-magenta-6: #9652a0;
+    --refraktor-colors-magenta-7: #7b3f85;
+    --refraktor-colors-magenta-8: #602c6a;
+    --refraktor-colors-magenta-9: #45194f;
+
+    --refraktor-colors-pink-0: #fcebf2;
+    --refraktor-colors-pink-1: #f6d2e1;
+    --refraktor-colors-pink-2: #efb8cf;
+    --refraktor-colors-pink-3: #e79ebb;
+    --refraktor-colors-pink-4: #de84a6;
+    --refraktor-colors-pink-5: #d36a90;
+    --refraktor-colors-pink-6: #b85778;
+    --refraktor-colors-pink-7: #9c4662;
+    --refraktor-colors-pink-8: #7d344b;
+    --refraktor-colors-pink-9: #5c2436;
 }
