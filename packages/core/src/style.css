@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+:root {
+    --refraktor-colors-dark-0: #c9c9c9;
+    --refraktor-colors-dark-1: #b8b8b8;
+    --refraktor-colors-dark-2: #828282;
+    --refraktor-colors-dark-3: #696969;
+    --refraktor-colors-dark-4: #424242;
+    --refraktor-colors-dark-5: #3b3b3b;
+    --refraktor-colors-dark-6: #2e2e2e;
+    --refraktor-colors-dark-7: #242424;
+    --refraktor-colors-dark-8: #1f1f1f;
+    --refraktor-colors-dark-9: #141414;
+
+    --refraktor-colors-light-0: #ffffff;
+    --refraktor-colors-light-1: #f9f9f9;
+    --refraktor-colors-light-2: #f2f2f2;
+    --refraktor-colors-light-3: #e5e5e5;
+    --refraktor-colors-light-4: #d1d1d1;
+    --refraktor-colors-light-5: #b2b2b2;
+    --refraktor-colors-light-6: #8c8c8c;
+    --refraktor-colors-light-7: #666666;
+    --refraktor-colors-light-8: #3f3f3f;
+    --refraktor-colors-light-9: #262626;
+
+    --refraktor-colors-teal-0: #e1fefc;
+    --refraktor-colors-teal-1: #d2f7f4;
+    --refraktor-colors-teal-2: #acebe5;
+    --refraktor-colors-teal-3: #82dfd7;
+    --refraktor-colors-teal-4: #5fd5ca;
+    --refraktor-colors-teal-5: #4fd1c5;
+    --refraktor-colors-teal-6: #37ccbf;
+    --refraktor-colors-teal-7: #23b4a8;
+    --refraktor-colors-teal-8: #0da195;
+    --refraktor-colors-teal-9: #008c81;
+}
