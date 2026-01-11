@@ -17,7 +17,7 @@ import { getSize, getVariant } from "./button.styles";
 
 const defaultProps = {
     size: "md",
-    radius: "md",
+    radius: "default",
     variant: "default"
 } satisfies Partial<ButtonProps>;
 
