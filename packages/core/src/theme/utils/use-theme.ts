@@ -14,8 +14,9 @@ export function useTheme() {
     const _getRadius = (radius: RefraktorRadius = "default") =>
         getRadius(radius, themeConfig.defaults);
 
-    const _getPadding = (padding: RefraktorPadding = "none") =>
+    const _getPadding = (padding?: RefraktorPadding) =>
         getPadding(padding, themeConfig.defaults);
+
 
     return {
         theme,

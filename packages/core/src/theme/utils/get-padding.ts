@@ -11,11 +11,13 @@ const paddingMap: Record<RefraktorPadding, string> = {
 };
 
 export function getPadding(
-    padding: RefraktorPadding,
+    padding?: RefraktorPadding,
     defaults?: ThemeDefaults
 ) {
-    const effectivePadding =
-        padding === "none" ? defaults?.padding ?? "md" : padding;
+    const effectivePadding = padding ?? defaults?.padding ?? "md";
+
+    if (effectivePadding === "none") return paddingMap.none;
 
     return paddingMap[effectivePadding] ?? paddingMap.md;
 }
+

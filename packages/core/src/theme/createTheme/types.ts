@@ -2,7 +2,7 @@ import {
     ColorShade,
     PrimaryColor,
     RefraktorRadius,
-    RefraktorSize
+    RefraktorPadding
 } from "../types";
 
 export type ColorScale = readonly [
@@ -26,7 +26,7 @@ export type ThemeDefaults = {
     radius?: RefraktorRadius;
 
     /** Default padding @default `md` */
-    padding?: RefraktorSize;
+    padding?: RefraktorPadding;
 
     /** Primary color. Can be a hex code or a color from the default colors @default `teal` */
     primaryColor?: PrimaryColor | string;
@@ -47,7 +47,6 @@ export type ThemeInput = {
     /** Default settings for the theme */
     defaults?: ThemeDefaults;
 };
-
 
 export type ClassNamesRecord = Record<string, string | undefined>;
 
