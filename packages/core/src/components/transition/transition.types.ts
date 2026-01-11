@@ -39,16 +39,13 @@ export interface TransitionProps
     /** CSS easing function @default `cubic-bezier(0.4, 0, 0.2, 1)` */
     easing?: string;
 
-    /** The transition to use @default `fade` */
-    transition?: Transitions;
+    /** The transition to use - can be a preset name or custom TransitionStyles @default `fade` */
+    transition?: Transitions | TransitionStyles;
 
-    /** Custom transition styles for each state */
-    styles?: TransitionStyles;
-
-    /** CSS properties to transition (when using custom styles) */
+    /** CSS properties to transition (optional, auto-detected when using createTransition) */
     properties?: string[];
 
-    /** Unmount component when exited */
+    /** Unmount component when exited @default `true` */
     unmountOnExit?: boolean;
 
     /** Callback when transition enters */

@@ -1,3 +1,3 @@
 export { default as Transition } from "./transition";
 export type { TransitionProps } from "./transition.types";
-export { default as transitions } from "./transitions";
+export { default as transitions, createTransition } from "./transitions";

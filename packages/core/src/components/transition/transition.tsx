@@ -7,7 +7,9 @@ import {
 import {
     TransitionFactoryPayload,
     TransitionProps,
-    TransitionState
+    Transitions,
+    TransitionState,
+    TransitionStyles
 } from "./transition.types";
 import { CSSProperties, useCallback, useEffect, useRef } from "react";
 import { useState } from "react";
@@ -19,6 +21,7 @@ const defaultProps = {
     easing: "cubic-bezier(0.4, 0, 0.2, 1)",
     transition: "fade",
     properties: ["opacity", "transform", "filter", "max-height"],
+    unmountOnExit: true,
     onEnter: () => {},
     onEntered: () => {},
     onExit: () => {},
@@ -38,7 +41,6 @@ const Transition = polymorphicFactory<TransitionFactoryPayload>(
             delay,
             easing,
             transition,
-            styles,
             properties,
             unmountOnExit,
             onEnter,
@@ -85,55 +87,68 @@ const Transition = polymorphicFactory<TransitionFactoryPayload>(
             }
         }, []);
 
-        const performTransition = useCallback(
-            (targetState: TransitionState, callback?: () => void) => {
-                setState(targetState);
-                callback?.();
-
-                if (targetState === "entering" || targetState === "exiting") {
-                    const finalState =
-                        targetState === "entering" ? "entered" : "exited";
-                    const finalCallback =
-                        targetState === "entering" ? onEntered : onExited;
-
-                    clearTimer();
-                    timeoutRef.current = setTimeout(() => {
-                        setState(finalState);
-                        finalCallback?.();
-
-                        if (finalState === "exited" && unmountOnExit) {
-                            setShouldRender(false);
-                        }
-                    }, duration + delay);
-                }
-            },
-            [duration, delay, onEntered, onExited, unmountOnExit, clearTimer]
-        );
-
         useEffect(() => {
             if (mounted) {
                 setShouldRender(true);
                 requestAnimationFrame(() => {
-                    performTransition("entering", onEnter);
+                    setState("entering");
+                    onEnter?.();
+                    requestAnimationFrame(() => {
+                        setState("entered");
+                        clearTimer();
+                        timeoutRef.current = setTimeout(() => {
+                            onEntered?.();
+                        }, duration + delay);
+                    });
                 });
             } else {
-                performTransition("exiting", onExit);
+                setState("exiting");
+                onExit?.();
+                clearTimer();
+                timeoutRef.current = setTimeout(() => {
+                    setState("exited");
+                    onExited?.();
+                    if (unmountOnExit) {
+                        setShouldRender(false);
+                    }
+                }, duration + delay);
             }
 
             return clearTimer;
-        }, [mounted, performTransition, onEnter, onExit, clearTimer]);
+        }, [
+            mounted,
+            duration,
+            delay,
+            onEnter,
+            onEntered,
+            onExit,
+            onExited,
+            unmountOnExit,
+            clearTimer
+        ]);
 
         if (!shouldRender) {
             return null;
         }
 
-        const transitionStyles = styles ?? transitions[transition];
+        let transitionStyles: TransitionStyles;
+        let detectedProperties: string[] | undefined;
+
+        if (typeof transition === "string") {
+            transitionStyles = transitions[transition as Transitions];
+        } else {
+            transitionStyles = transition;
+            detectedProperties = (transition as any).__properties;
+        }
+
         const currentStyle = transitionStyles[state] ?? {};
 
         const effectiveDuration = prefersReducedMotion.current ? 0 : duration;
         const effectiveDelay = prefersReducedMotion.current ? 0 : delay;
 
-        const transitionCSS = properties
+        const effectiveProperties = detectedProperties ?? properties;
+
+        const transitionCSS = effectiveProperties
             .map(
                 (prop) =>
                     `${prop} ${effectiveDuration}ms ${easing} ${effectiveDelay}ms`
@@ -142,7 +157,7 @@ const Transition = polymorphicFactory<TransitionFactoryPayload>(
 
         const combinedStyle: CSSProperties = {
             transition: transitionCSS,
-            ...(useGPU && { willChange: properties.join(", ") }),
+            ...(useGPU && { willChange: effectiveProperties.join(", ") }),
             ...currentStyle
         };
 
