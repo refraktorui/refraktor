@@ -1,6 +1,11 @@
 import defaultColors from "../defaults/colors";
 import { defaultSettings } from "../defaults/settings";
-import { ColorsConfig, RefraktorTheme, ThemeDefaults, ThemeInput } from "./types";
+import {
+    ColorsConfig,
+    RefraktorTheme,
+    ThemeDefaults,
+    ThemeInput
+} from "./types";
 
 export const defaultTheme: RefraktorTheme = {
     defaults: defaultSettings,
@@ -19,7 +24,6 @@ function mergeColors(
 export function createTheme(settings: ThemeInput): RefraktorTheme {
     const defaults: Required<ThemeDefaults> = {
         radius: settings.defaults?.radius ?? defaultSettings.radius,
-        padding: settings.defaults?.padding ?? defaultSettings.padding,
         primaryColor:
             settings.defaults?.primaryColor ?? defaultSettings.primaryColor,
         primaryShade:
@@ -33,4 +37,3 @@ export function createTheme(settings: ThemeInput): RefraktorTheme {
         colors
     };
 }
-

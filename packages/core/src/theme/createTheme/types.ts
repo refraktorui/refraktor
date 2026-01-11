@@ -1,9 +1,4 @@
-import {
-    ColorShade,
-    PrimaryColor,
-    RefraktorRadius,
-    RefraktorPadding
-} from "../types";
+import { ColorShade, PrimaryColor, RefraktorRadius } from "../types";
 
 export type ColorScale = readonly [
     string,
@@ -25,10 +20,8 @@ export type ThemeDefaults = {
     /** Default border radius @default `md` */
     radius?: RefraktorRadius;
 
-    /** Default padding @default `md` */
-    padding?: RefraktorPadding;
-
     /** Primary color. Can be a hex code or a color from the default colors @default `teal` */
+
     primaryColor?: PrimaryColor | string;
 
     /** Primary color shade @default `5` */

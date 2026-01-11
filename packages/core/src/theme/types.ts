@@ -28,4 +28,3 @@ export type RefraktorRadius =
     | "4xl"
     | "full";
 export type RefraktorSize = "xs" | "sm" | "md" | "lg" | "xl";
-export type RefraktorPadding = "none" | RefraktorSize;

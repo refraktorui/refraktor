@@ -1,7 +1,7 @@
 import { useThemeContext } from "../ThemeProvider";
-import { RefraktorPadding, RefraktorRadius } from "../types";
-import { getPadding } from "./get-padding";
+import { RefraktorRadius } from "../types";
 import { getRadius } from "./get-radius";
+import { cx } from "../../utils";
 
 export function useTheme() {
     const { theme, setTheme, toggleTheme, themeConfig } = useThemeContext();
@@ -14,17 +14,14 @@ export function useTheme() {
     const _getRadius = (radius: RefraktorRadius = "default") =>
         getRadius(radius, themeConfig.defaults);
 
-    const _getPadding = (padding?: RefraktorPadding) =>
-        getPadding(padding, themeConfig.defaults);
-
-
     return {
         theme,
         setTheme,
         toggleTheme,
         getRadius: _getRadius,
-        getPadding: _getPadding,
 
-        colors: themeConfig.colors
+        colors: themeConfig.colors,
+
+        cx
     };
 }
