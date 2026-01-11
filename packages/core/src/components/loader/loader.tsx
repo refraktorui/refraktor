@@ -1,6 +1,7 @@
 import { CSSProperties, useMemo } from "react";
 import { createComponentConfig, cx, factory, useProps } from "../../utils";
 import { LoaderFactoryPayload, LoaderProps } from "./loader.types";
+import { useId } from "@refraktor/utils";
 
 const defaultProps = {
     size: 32,
@@ -13,6 +14,7 @@ const defaultProps = {
 
 const Loader = factory<LoaderFactoryPayload>((_props, ref) => {
     const {
+        id,
         size,
         color,
         speed,
@@ -22,6 +24,7 @@ const Loader = factory<LoaderFactoryPayload>((_props, ref) => {
         className,
         ...props
     } = useProps("Loader", defaultProps, _props);
+    const _id = useId(id);
 
     const radius = Math.max(0, size / 2 - stroke / 2);
     const viewBoxSize = size;
@@ -40,6 +43,7 @@ const Loader = factory<LoaderFactoryPayload>((_props, ref) => {
     return (
         <div
             ref={ref}
+            id={_id}
             className={cx("inline-flex items-center justify-center", className)}
             role="status"
             {...props}
