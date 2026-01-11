@@ -72,6 +72,16 @@ export const generateVariables = (
             themeConfig,
             primaryColor,
             primaryShade
+        ),
+        "--refraktor-primary-hover": getColorShadeFromTheme(
+            themeConfig,
+            primaryColor,
+            primaryShade - 1
+        ),
+        "--refraktor-primary-text": getColorShadeFromTheme(
+            themeConfig,
+            primaryColor,
+            0
         )
     });
 
