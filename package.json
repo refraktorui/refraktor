@@ -26,6 +26,7 @@
         "@vitejs/plugin-react-swc": "^4.2.2",
         "concurrently": "^9.2.1",
         "cpy-cli": "^6.0.0",
+        "jsdom": "^27.4.0",
         "turbo": "^2.7.3",
         "typescript": "^5.9.3",
         "vitest": "^4.0.16"
