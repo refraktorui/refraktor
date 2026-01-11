@@ -7,6 +7,7 @@ import {
     useProps
 } from "../../utils";
 import { useTheme } from "../../theme";
+import { Loader } from "../loader";
 import {
     ButtonClassNames,
     ButtonFactoryPayload,
@@ -30,6 +31,8 @@ const Button = polymorphicFactory<ButtonFactoryPayload>((_props, ref) => {
         radius,
         variant,
         disabled,
+        loading,
+        loaderProps,
         fullWidth,
         leftSection,
         rightSection,
@@ -46,7 +49,7 @@ const Button = polymorphicFactory<ButtonFactoryPayload>((_props, ref) => {
         <Component
             id={_id}
             ref={ref}
-            disabled={Component === "button" ? disabled : undefined}
+            disabled={Component === "button" ? disabled || loading : undefined}
             className={cx(
                 "inline-flex items-center justify-center cursor-pointer transition-all",
                 "[&_svg]:pointer-events-none [&_svg]:shrink-0 outline-none select-none active:scale-[0.98]",
@@ -59,8 +62,8 @@ const Button = polymorphicFactory<ButtonFactoryPayload>((_props, ref) => {
                 className
             )}
             {...props}
-            data-disabled={disabled}
-            aria-disabled={disabled}
+            data-disabled={disabled || loading}
+            aria-disabled={disabled || loading}
         >
             <div
                 className={cx(
@@ -68,14 +71,18 @@ const Button = polymorphicFactory<ButtonFactoryPayload>((_props, ref) => {
                     classes.container
                 )}
             >
-                {leftSection && (
+                {(loading || leftSection) && (
                     <span
                         className={cx(
                             "shrink-0 mr-2 inline-flex",
                             classes.leftSection
                         )}
                     >
-                        {leftSection}
+                        {loading ? (
+                            <Loader size={16} {...loaderProps} />
+                        ) : (
+                            leftSection
+                        )}
                     </span>
                 )}
 

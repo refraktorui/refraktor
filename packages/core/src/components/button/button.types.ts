@@ -5,6 +5,7 @@ import {
     createComponentConfig,
     PolymorphicFactoryPayload
 } from "../../utils";
+import { LoaderProps } from "../loader";
 
 export type ButtonSize =
     | RefraktorSize
@@ -34,6 +35,12 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
     /** Whether the button is disabled @default `false` */
     disabled?: boolean;
+
+    /** Whether the button is loading @default `false` */
+    loading?: boolean;
+
+    /** The props for the loader. Uses the Loader component */
+    loaderProps?: LoaderProps;
 
     /** Whether the button should take the full width of its container @default `false` */
     fullWidth?: boolean;
