@@ -38,7 +38,6 @@ export type ThemeDefaults = {
 export type RefraktorTheme = {
     defaults: Required<ThemeDefaults>;
     colors: Required<ColorsConfig>;
-    components: ComponentsConfig;
 };
 
 export type ThemeInput = {
@@ -47,10 +46,8 @@ export type ThemeInput = {
 
     /** Default settings for the theme */
     defaults?: ThemeDefaults;
-
-    /** Component configurations */
-    components?: ComponentsConfig;
 };
+
 
 export type ClassNamesRecord = Record<string, string | undefined>;
 

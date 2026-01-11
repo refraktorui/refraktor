@@ -1,17 +1,10 @@
 import defaultColors from "../defaults/colors";
 import { defaultSettings } from "../defaults/settings";
-import {
-    ColorsConfig,
-    ComponentsConfig,
-    RefraktorTheme,
-    ThemeDefaults,
-    ThemeInput
-} from "./types";
+import { ColorsConfig, RefraktorTheme, ThemeDefaults, ThemeInput } from "./types";
 
 export const defaultTheme: RefraktorTheme = {
     defaults: defaultSettings,
-    colors: defaultColors,
-    components: {}
+    colors: defaultColors
 };
 
 function mergeColors(
@@ -34,11 +27,10 @@ export function createTheme(settings: ThemeInput): RefraktorTheme {
     };
 
     const colors = mergeColors(defaultColors, settings.colors);
-    const components: ComponentsConfig = settings?.components ?? {};
 
     return {
         defaults,
-        colors,
-        components
+        colors
     };
 }
+
