@@ -169,3 +169,18 @@
     --refraktor-colors-pink-8: #7d344b;
     --refraktor-colors-pink-9: #5c2436;
 }
+
+@keyframes loader-spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.loader-spin {
+    animation: loader-spin var(--refraktor-loader-speed, 1s) linear infinite;
+    transform-origin: center center;
+}
