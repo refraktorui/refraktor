@@ -24,34 +24,34 @@ function getColorShadeFromTheme(
     return "#000000";
 }
 
-const SEMANTIC_COLORS = {
+const getSemanticColors = (themeConfig: RefraktorTheme) => ({
     light: {
-        bg: getShade("light", 2),
-        "bg-hover": getShade("light", 3),
-        "bg-subtle": getShade("light", 1),
-        "bg-elevated": getShade("light", 0),
+        bg: getShade(themeConfig.colors, "light", 2),
+        "bg-hover": getShade(themeConfig.colors, "light", 3),
+        "bg-subtle": getShade(themeConfig.colors, "light", 1),
+        "bg-elevated": getShade(themeConfig.colors, "light", 0),
 
-        text: getShade("black", 0),
-        "text-secondary": getShade("dark", 6),
-        "text-tertiary": getShade("dark", 7),
+        text: getShade(themeConfig.colors, "black", 0),
+        "text-secondary": getShade(themeConfig.colors, "dark", 6),
+        "text-tertiary": getShade(themeConfig.colors, "dark", 7),
 
-        border: getShade("light", 4),
-        "border-hover": getShade("light", 5)
+        border: getShade(themeConfig.colors, "light", 4),
+        "border-hover": getShade(themeConfig.colors, "light", 5)
     },
     dark: {
-        bg: getShade("dark", 6),
-        "bg-hover": getShade("dark", 5),
-        "bg-subtle": getShade("dark", 7),
-        "bg-elevated": getShade("dark", 5),
+        bg: getShade(themeConfig.colors, "dark", 6),
+        "bg-hover": getShade(themeConfig.colors, "dark", 5),
+        "bg-subtle": getShade(themeConfig.colors, "dark", 7),
+        "bg-elevated": getShade(themeConfig.colors, "dark", 5),
 
-        text: getShade("white", 0),
-        "text-secondary": getShade("light", 3),
-        "text-tertiary": getShade("light", 4),
+        text: getShade(themeConfig.colors, "white", 0),
+        "text-secondary": getShade(themeConfig.colors, "dark", 1),
+        "text-tertiary": getShade(themeConfig.colors, "dark", 2),
 
-        border: getShade("dark", 4),
-        "border-hover": getShade("dark", 3)
+        border: getShade(themeConfig.colors, "dark", 4),
+        "border-hover": getShade(themeConfig.colors, "dark", 3)
     }
-};
+});
 
 export const generateVariables = (
     theme: Theme,
@@ -62,10 +62,12 @@ export const generateVariables = (
 
     const { primaryColor, primaryShade } = defaults;
 
-    Object.entries(SEMANTIC_COLORS[theme]).forEach(([key, value]) => {
-        if (value !== undefined)
-            variables[SEMANTIC_TEMPLATE.replace("{{key}}", key)] = value;
-    });
+    Object.entries(getSemanticColors(themeConfig)[theme]).forEach(
+        ([key, value]) => {
+            if (value !== undefined)
+                variables[SEMANTIC_TEMPLATE.replace("{{key}}", key)] = value;
+        }
+    );
 
     Object.assign(variables, {
         "--refraktor-primary": getColorShadeFromTheme(
