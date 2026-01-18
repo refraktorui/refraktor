@@ -67,6 +67,12 @@ export interface TooltipProps extends Omit<
     /** Trigger type for the tooltip @default `hover` */
     trigger?: TooltipTrigger;
 
+    /** Delay in milliseconds before the tooltip opens @default `0` */
+    openDelay?: number;
+
+    /** Delay in milliseconds before the tooltip closes @default `0` */
+    closeDelay?: number;
+
     /** Whether to show the arrow for the tooltip @default `false` */
     showArrow?: boolean;
 

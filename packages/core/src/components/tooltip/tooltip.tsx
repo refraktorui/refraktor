@@ -24,6 +24,8 @@ const defaultProps = {
     },
     middlewares: { flip: true, shift: true, inline: true },
     trigger: "hover",
+    openDelay: 0,
+    closeDelay: 0,
     showArrow: false,
     radius: "default",
     withinPortal: true
@@ -42,6 +44,8 @@ const Tooltip = factory<TooltipFactoryPayload>((_props, ref) => {
         middlewares,
         disabled,
         trigger,
+        openDelay,
+        closeDelay,
         showArrow,
         transitionProps,
         radius,
@@ -71,6 +75,8 @@ const Tooltip = factory<TooltipFactoryPayload>((_props, ref) => {
         middlewares,
         disabled,
         trigger,
+        openDelay,
+        closeDelay,
         showArrow
     });
 

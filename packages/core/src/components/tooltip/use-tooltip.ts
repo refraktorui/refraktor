@@ -32,6 +32,8 @@ interface UseTooltipProps {
     disabled?: boolean;
     trigger?: TooltipTrigger;
     showArrow?: boolean;
+    openDelay?: number;
+    closeDelay?: number;
 }
 
 export interface UseTooltipReturn {
@@ -69,7 +71,9 @@ export function useTooltip(options: UseTooltipProps = {}): UseTooltipReturn {
         middlewares = { flip: true, shift: true, inline: true },
         disabled = false,
         trigger = "hover",
-        showArrow = false
+        showArrow = false,
+        openDelay = 0,
+        closeDelay = 0
     } = options;
 
     const arrowRef = useRef<SVGSVGElement>(null);
@@ -136,7 +140,11 @@ export function useTooltip(options: UseTooltipProps = {}): UseTooltipReturn {
     });
 
     const hover = useHover(floating.context, {
-        enabled: trigger === "hover" && !disabled
+        enabled: trigger === "hover" && !disabled,
+        delay: {
+            open: openDelay,
+            close: closeDelay
+        }
     });
 
     const focus = useFocus(floating.context, {
