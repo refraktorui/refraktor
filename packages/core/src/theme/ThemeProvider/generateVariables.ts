@@ -36,7 +36,11 @@ const getSemanticColors = (themeConfig: RefraktorTheme) => ({
         "text-tertiary": getShade(themeConfig.colors, "dark", 7),
 
         border: getShade(themeConfig.colors, "light", 4),
-        "border-hover": getShade(themeConfig.colors, "light", 5)
+        "border-hover": getShade(themeConfig.colors, "light", 5),
+
+        "scroll-track": "transparent",
+        "scroll-thumb": getShade(themeConfig.colors, "light", 4),
+        "scroll-thumb-hover": getShade(themeConfig.colors, "light", 5)
     },
     dark: {
         bg: getShade(themeConfig.colors, "dark", 6),
@@ -49,7 +53,11 @@ const getSemanticColors = (themeConfig: RefraktorTheme) => ({
         "text-tertiary": getShade(themeConfig.colors, "dark", 2),
 
         border: getShade(themeConfig.colors, "dark", 4),
-        "border-hover": getShade(themeConfig.colors, "dark", 3)
+        "border-hover": getShade(themeConfig.colors, "dark", 3),
+
+        "scroll-track": "transparent",
+        "scroll-thumb": getShade(themeConfig.colors, "dark", 4),
+        "scroll-thumb-hover": getShade(themeConfig.colors, "dark", 3)
     }
 });
 

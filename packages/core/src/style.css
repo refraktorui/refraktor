@@ -184,3 +184,34 @@
     animation: loader-spin var(--refraktor-loader-speed, 1s) linear infinite;
     transform-origin: center center;
 }
+
+/** Scrollbar */
+.refraktor-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: var(--refraktor-scroll-thumb) var(--refraktor-scroll-track);
+    scroll-behavior: smooth;
+}
+
+.refraktor-scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.refraktor-scrollbar::-webkit-scrollbar-track {
+    background: var(--refraktor-scroll-track);
+    border-radius: 10px;
+}
+
+.refraktor-scrollbar::-webkit-scrollbar-thumb {
+    background-color: var(--refraktor-scroll-thumb);
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.refraktor-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: var(--refraktor-scroll-thumb-hover);
+}
