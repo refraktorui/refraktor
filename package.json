@@ -15,6 +15,7 @@
         "bump": "bun scripts/bump-version.ts"
     },
     "dependencies": {
+        "@floating-ui/react": "^0.27.16",
         "tailwindcss": "^4.1.18"
     },
     "devDependencies": {
