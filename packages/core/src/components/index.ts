@@ -3,6 +3,7 @@ export * from "./button";
 export * from "./input";
 export * from "./loader";
 export * from "./popover";
+export * from "./slider";
 export * from "./switch";
 export * from "./textarea";
 export * from "./tooltip";
