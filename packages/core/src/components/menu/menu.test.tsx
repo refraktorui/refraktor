@@ -5,7 +5,7 @@ import Menu from "./menu";
 describe("@refraktor/core/Menu", () => {
     const transitionProps = {
         duration: 0,
-        respectReducedMotion: false
+        immediate: true
     } as const;
 
     it("opens on trigger click and closes on item selection", async () => {

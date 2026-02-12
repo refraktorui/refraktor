@@ -1,3 +1,11 @@
 export { default as Transition } from "./transition";
-export type { TransitionProps } from "./transition.types";
-export { default as transitions, createTransition } from "./transitions";
+export type {
+    TransitionDefinition,
+    TransitionDirection,
+    TransitionMotionPreference,
+    TransitionPreset,
+    TransitionProps,
+    TransitionState,
+    TransitionTimingValue
+} from "./transition.types";
+export { default as transitions, defineTransition } from "./transitions";

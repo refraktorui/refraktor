@@ -2,8 +2,9 @@ import { ComponentPropsWithoutRef, CSSProperties, ReactNode } from "react";
 import { createComponentConfig, PolymorphicFactoryPayload } from "../../utils";
 
 export type TransitionState = "entering" | "entered" | "exiting" | "exited";
+export type TransitionDirection = "enter" | "exit";
 
-export type Transitions =
+export type TransitionPreset =
     | "fade"
     | "scale"
     | "slide-up"
@@ -15,59 +16,75 @@ export type Transitions =
     | "blur"
     | "rotate";
 
-export type TransitionStyles = {
-    entering?: CSSProperties;
-    entered?: CSSProperties;
-    exiting?: CSSProperties;
-    exited?: CSSProperties;
+export type TransitionDefinition = {
+    enterFrom?: CSSProperties;
+    enterTo?: CSSProperties;
+    exitFrom?: CSSProperties;
+    exitTo?: CSSProperties;
+    properties?: string[];
 };
+
+export type TransitionTimingValue<T> =
+    | T
+    | Partial<Record<TransitionDirection, T>>;
+
+export type TransitionMotionPreference = "respect" | "always" | "never";
 
 export interface TransitionProps
     extends Omit<ComponentPropsWithoutRef<"div">, "children"> {
     /** Controls whether the component is mounted */
-    mounted?: boolean;
+    mounted: boolean;
 
     /** Child element or render function */
     children: ReactNode | ((state: TransitionState) => ReactNode);
 
-    /** Transition duration in milliseconds @default `200` */
-    duration?: number;
+    /** Preset name or custom transition definition @default `fade` */
+    transition?: TransitionPreset | TransitionDefinition;
 
-    /** Delay before the transition starts in milliseconds @default `0` */
-    delay?: number;
+    /** Enter/exit duration in milliseconds @default `200` */
+    duration?: TransitionTimingValue<number>;
 
-    /** CSS easing function @default `cubic-bezier(0.4, 0, 0.2, 1)` */
-    easing?: string;
+    /** Enter/exit delay in milliseconds @default `0` */
+    delay?: TransitionTimingValue<number>;
 
-    /** The transition to use - can be a preset name or custom TransitionStyles @default `fade` */
-    transition?: Transitions | TransitionStyles;
+    /** Enter/exit easing function @default `cubic-bezier(0.4, 0, 0.2, 1)` */
+    easing?: TransitionTimingValue<string>;
 
-    /** CSS properties to transition (optional, auto-detected when using createTransition) */
-    properties?: string[];
+    /** Transitioned CSS properties (`auto` uses transition definition metadata) @default `auto` */
+    properties?: "auto" | string[];
 
-    /** Unmount component when exited @default `true` */
-    unmountOnExit?: boolean;
+    /** Keep element mounted after exit @default `false` */
+    keepMounted?: boolean;
 
-    /** Callback when transition enters */
-    onEnter?: () => void;
+    /** Animate on initial mount @default `true` */
+    appear?: boolean;
 
-    /** Callback when entered state is reached */
-    onEntered?: () => void;
+    /** Skip animations and jump to end states @default `false` */
+    immediate?: boolean;
 
-    /** Callback when transition exits */
-    onExit?: () => void;
+    /** Motion preference behavior @default `respect` */
+    reduceMotion?: TransitionMotionPreference;
 
-    /** Callback when exited state is reached */
-    onExited?: () => void;
+    /** Callback when entering starts */
+    onEnterStart?: () => void;
+
+    /** Callback when entering completes */
+    onEnterEnd?: () => void;
+
+    /** Callback when exiting starts */
+    onExitStart?: () => void;
+
+    /** Callback when exiting completes */
+    onExitEnd?: () => void;
+
+    /** Callback when transition state changes */
+    onStateChange?: (state: TransitionState) => void;
 
     /** Used for editing root class name */
     className?: string;
 
     /** Whether to use GPU acceleration for the transition @default `true` */
     useGPU?: boolean;
-
-    /** Whether to respect reduced motion settings @default `true` */
-    respectReducedMotion?: boolean;
 }
 
 export interface TransitionFactoryPayload extends PolymorphicFactoryPayload {

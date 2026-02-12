@@ -1,146 +1,140 @@
 import { CSSProperties } from "react";
-import { Transitions, TransitionStyles } from "./transition.types";
+import {
+    TransitionDefinition,
+    TransitionPreset
+} from "./transition.types";
 
-/**
- * Creates a custom transition with automatic property detection
- * @param from - Initial state styles (exited/entering) - where the element enters FROM
- * @param to - Final state styles (entered) - the resting state
- * @param exitTo - Optional exit state styles (exiting) - where the element exits TO. If not provided, uses `from` (symmetric transition)
- * @returns TransitionStyles object with all states and detected properties
- */
-export function createTransition(
-    from: CSSProperties,
-    to: CSSProperties,
-    exitTo?: CSSProperties
-): TransitionStyles & { __properties?: string[] } {
-    const allKeys = new Set([
-        ...Object.keys(from),
-        ...Object.keys(to),
-        ...(exitTo ? Object.keys(exitTo) : [])
-    ]);
-    const properties: string[] = [];
+const NON_ANIMATABLE_PROPERTIES = new Set([
+    "display",
+    "position",
+    "overflow",
+    "overflow-x",
+    "overflow-y",
+    "pointer-events",
+    "z-index"
+]);
 
-    const toKebabCase = (str: string): string =>
-        str.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
+const toKebabCase = (value: string): string =>
+    value.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
 
-    allKeys.forEach((key) => {
-        const animatableProps = [
-            "opacity",
-            "transform",
-            "filter",
-            "maxHeight",
-            "max-height",
-            "width",
-            "height",
-            "color",
-            "backgroundColor",
-            "background-color",
-            "borderColor",
-            "border-color",
-            "scale",
-            "rotate",
-            "translate"
-        ];
+const collectProperties = (...styles: Array<CSSProperties | undefined>) => {
+    const unique = new Set<string>();
 
-        const kebabKey = toKebabCase(key);
-        if (
-            animatableProps.includes(key) ||
-            animatableProps.includes(kebabKey)
-        ) {
-            properties.push(kebabKey);
+    styles.forEach((style) => {
+        if (!style) {
+            return;
         }
+
+        Object.keys(style).forEach((key) => {
+            const property = toKebabCase(key);
+
+            if (!NON_ANIMATABLE_PROPERTIES.has(property)) {
+                unique.add(property);
+            }
+        });
     });
 
+    return [...unique];
+};
+
+export type DefineTransitionInput = {
+    enterFrom?: CSSProperties;
+    enterTo?: CSSProperties;
+    exitFrom?: CSSProperties;
+    exitTo?: CSSProperties;
+    properties?: "auto" | string[];
+};
+
+export function defineTransition({
+    enterFrom = {},
+    enterTo = {},
+    exitFrom,
+    exitTo,
+    properties = "auto"
+}: DefineTransitionInput): TransitionDefinition {
+    const resolvedExitFrom = exitFrom ?? enterTo;
+    const resolvedExitTo = exitTo ?? enterFrom;
+
     return {
-        exited: exitTo ?? from,
-        entering: from,
-        entered: to,
-        exiting: exitTo ?? from,
-        __properties: properties.length > 0 ? properties : undefined
+        enterFrom,
+        enterTo,
+        exitFrom: resolvedExitFrom,
+        exitTo: resolvedExitTo,
+        properties:
+            properties === "auto"
+                ? collectProperties(
+                      enterFrom,
+                      enterTo,
+                      resolvedExitFrom,
+                      resolvedExitTo
+                  )
+                : properties
     };
 }
 
-const transitions: Record<Transitions, TransitionStyles> = {
-    fade: {
-        exited: { opacity: 0 },
-        entering: { opacity: 0 },
-        entered: { opacity: 1 },
-        exiting: { opacity: 0 }
-    },
-    scale: {
-        exited: { transform: "scale(0.95)" },
-        entering: { transform: "scale(0.95)" },
-        entered: { transform: "scale(1)" },
-        exiting: { transform: "scale(0.95)" }
-    },
-    "slide-up": {
-        exited: { transform: "translateY(10px)" },
-        entering: { transform: "translateY(10px)" },
-        entered: { transform: "translateY(0)" },
-        exiting: { transform: "translateY(10px)" }
-    },
-    "slide-down": {
-        exited: { transform: "translateY(-10px)" },
-        entering: { transform: "translateY(-10px)" },
-        entered: { transform: "translateY(0)" },
-        exiting: { transform: "translateY(-10px)" }
-    },
-    "slide-left": {
-        exited: { transform: "translateX(10px)" },
-        entering: { transform: "translateX(10px)" },
-        entered: { transform: "translateX(0)" },
-        exiting: { transform: "translateX(10px)" }
-    },
-    "slide-right": {
-        exited: { transform: "translateX(-10px)" },
-        entering: { transform: "translateX(-10px)" },
-        entered: { transform: "translateX(0)" },
-        exiting: { transform: "translateX(-10px)" }
-    },
-    zoom: {
-        exited: { transform: "scale(0.8)" },
-        entering: { transform: "scale(0.8)" },
-        entered: { transform: "scale(1)" },
-        exiting: { transform: "scale(0.8)" }
-    },
-    collapse: {
-        exited: {
+const transitions: Record<TransitionPreset, TransitionDefinition> = {
+    fade: defineTransition({
+        enterFrom: { opacity: 0 },
+        enterTo: { opacity: 1 },
+        properties: ["opacity"]
+    }),
+    scale: defineTransition({
+        enterFrom: { opacity: 0, transform: "scale(0.95)" },
+        enterTo: { opacity: 1, transform: "scale(1)" },
+        properties: ["opacity", "transform"]
+    }),
+    "slide-up": defineTransition({
+        enterFrom: { opacity: 0, transform: "translateY(10px)" },
+        enterTo: { opacity: 1, transform: "translateY(0)" },
+        properties: ["opacity", "transform"]
+    }),
+    "slide-down": defineTransition({
+        enterFrom: { opacity: 0, transform: "translateY(-10px)" },
+        enterTo: { opacity: 1, transform: "translateY(0)" },
+        properties: ["opacity", "transform"]
+    }),
+    "slide-left": defineTransition({
+        enterFrom: { opacity: 0, transform: "translateX(10px)" },
+        enterTo: { opacity: 1, transform: "translateX(0)" },
+        properties: ["opacity", "transform"]
+    }),
+    "slide-right": defineTransition({
+        enterFrom: { opacity: 0, transform: "translateX(-10px)" },
+        enterTo: { opacity: 1, transform: "translateX(0)" },
+        properties: ["opacity", "transform"]
+    }),
+    zoom: defineTransition({
+        enterFrom: { opacity: 0, transform: "scale(0.8)" },
+        enterTo: { opacity: 1, transform: "scale(1)" },
+        properties: ["opacity", "transform"]
+    }),
+    collapse: defineTransition({
+        enterFrom: {
+            opacity: 0,
             transform: "scaleY(0)",
             transformOrigin: "top",
             maxHeight: "0px",
             overflow: "hidden"
         },
-        entering: {
-            transform: "scaleY(0)",
-            transformOrigin: "top",
-            maxHeight: "0px",
-            overflow: "hidden"
-        },
-        entered: {
+        enterTo: {
+            opacity: 1,
             transform: "scaleY(1)",
             transformOrigin: "top",
             maxHeight: "1000px",
             overflow: "hidden"
         },
-        exiting: {
-            transform: "scaleY(0)",
-            transformOrigin: "top",
-            maxHeight: "0px",
-            overflow: "hidden"
-        }
-    },
-    blur: {
-        exited: { filter: "blur(8px)" },
-        entering: { filter: "blur(8px)" },
-        entered: { filter: "blur(0px)" },
-        exiting: { filter: "blur(8px)" }
-    },
-    rotate: {
-        exited: { transform: "rotate(-10deg) scale(0.95)" },
-        entering: { transform: "rotate(-10deg) scale(0.95)" },
-        entered: { transform: "rotate(0deg) scale(1)" },
-        exiting: { transform: "rotate(-10deg) scale(0.95)" }
-    }
+        properties: ["opacity", "transform", "max-height"]
+    }),
+    blur: defineTransition({
+        enterFrom: { opacity: 0, filter: "blur(8px)" },
+        enterTo: { opacity: 1, filter: "blur(0px)" },
+        properties: ["opacity", "filter"]
+    }),
+    rotate: defineTransition({
+        enterFrom: { opacity: 0, transform: "rotate(-10deg) scale(0.95)" },
+        enterTo: { opacity: 1, transform: "rotate(0deg) scale(1)" },
+        properties: ["opacity", "transform"]
+    })
 };
 
 export default transitions;
