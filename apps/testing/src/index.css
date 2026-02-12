@@ -14,6 +14,17 @@
     --color-dark-700: #242424;
     --color-dark-800: #1f1f1f;
     --color-dark-900: #141414;
+
+    --color-light-50: #ffffff;
+    --color-light-100: #f9f9f9;
+    --color-light-200: #f2f2f2;
+    --color-light-300: #e5e5e5;
+    --color-light-400: #d1d1d1;
+    --color-light-500: #b2b2b2;
+    --color-light-600: #8c8c8c;
+    --color-light-700: #666666;
+    --color-light-800: #3f3f3f;
+    --color-light-900: #262626;
 }
 
 /*
