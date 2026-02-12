@@ -2,6 +2,7 @@ export type Theme = "dark" | "light";
 
 export type PrimaryColor =
     | "gray"
+    | "cloud"
     | "green"
     | "mint"
     | "red"

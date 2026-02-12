@@ -43,6 +43,19 @@ const defaultColors: ColorsConfig = {
         "#18181b"
     ],
 
+    cloud: [
+        "#ffffff",
+        "#fcfcfd",
+        "#f8fafc",
+        "#eef2f6",
+        "#e2e8f0",
+        "#dbe2ea",
+        "#c2ccd6",
+        "#94a3b8",
+        "#64748b",
+        "#1f2937"
+    ],
+
     green: [
         "#ebfbee",
         "#d3f9d8",

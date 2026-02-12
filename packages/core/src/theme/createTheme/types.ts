@@ -20,12 +20,15 @@ export type ThemeDefaults = {
     /** Default border radius @default `md` */
     radius?: RefraktorRadius;
 
-    /** Primary color. Can be a hex code or a color from the default colors @default `teal` */
+    /** Primary color. Can be a hex code or a color from the default colors @default `cloud` */
 
     primaryColor?: PrimaryColor | string;
 
     /** Primary color shade @default `5` */
     primaryShade?: ColorShade;
+
+    /** Automatically choose readable primary text color @default `true` */
+    autoContrast?: boolean;
 };
 
 export type RefraktorTheme = {

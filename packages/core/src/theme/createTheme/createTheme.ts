@@ -27,7 +27,9 @@ export function createTheme(settings: ThemeInput): RefraktorTheme {
         primaryColor:
             settings.defaults?.primaryColor ?? defaultSettings.primaryColor,
         primaryShade:
-            settings.defaults?.primaryShade ?? defaultSettings.primaryShade
+            settings.defaults?.primaryShade ?? defaultSettings.primaryShade,
+        autoContrast:
+            settings.defaults?.autoContrast ?? defaultSettings.autoContrast
     };
 
     const colors = mergeColors(defaultColors, settings.colors);
