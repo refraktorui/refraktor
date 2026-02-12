@@ -21,6 +21,7 @@ const InputField = factory<InputFieldFactoryPayload>((_props, ref) => {
         leftSection,
         rightSection,
         className,
+        classNames,
         style,
         disabled,
         ...props
@@ -43,12 +44,18 @@ const InputField = factory<InputFieldFactoryPayload>((_props, ref) => {
                 "focus-within:border-[var(--refraktor-primary)]",
                 error && "border-[var(--refraktor-colors-red-6)]",
                 disabled && "opacity-50 cursor-not-allowed",
-                className
+                className,
+                classNames?.root
             )}
             style={style}
         >
             {leftSection && (
-                <div className="flex items-center justify-center text-[var(--refraktor-text-secondary)] shrink-0 select-none">
+                <div
+                    className={cx(
+                        "flex h-full self-stretch items-center justify-center text-[var(--refraktor-text-secondary)] shrink-0 select-none",
+                        classNames?.leftSection
+                    )}
+                >
                     {leftSection}
                 </div>
             )}
@@ -68,7 +75,12 @@ const InputField = factory<InputFieldFactoryPayload>((_props, ref) => {
             />
 
             {rightSection && (
-                <div className="flex items-center justify-center text-[var(--refraktor-text-secondary)] shrink-0 select-none">
+                <div
+                    className={cx(
+                        "flex h-full self-stretch items-center justify-center text-[var(--refraktor-text-secondary)] shrink-0 select-none",
+                        classNames?.rightSection
+                    )}
+                >
                     {rightSection}
                 </div>
             )}
