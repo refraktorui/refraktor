@@ -110,7 +110,7 @@ const Tooltip = factory<TooltipFactoryPayload>((_props, ref) => {
                 role="tooltip"
                 style={floatingStyles}
                 className={cx(
-                    "z-50 px-2 py-1 text-sm bg-[var(--refraktor-bg)] text-[var(--refraktor-text)] shadow-md",
+                    "z-50 px-1.5 py-0.5 text-sm bg-[var(--refraktor-bg)] text-[var(--refraktor-text)] shadow-md",
                     getRadius(radius),
                     classes.content,
                     className
