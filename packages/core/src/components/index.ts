@@ -3,6 +3,7 @@ export * from "./badge";
 export * from "./button";
 export * from "./input";
 export * from "./loader";
+export * from "./menu";
 export * from "./number-input";
 export * from "./popover";
 export * from "./slider";
