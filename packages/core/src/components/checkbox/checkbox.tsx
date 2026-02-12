@@ -131,7 +131,7 @@ const Checkbox = factory<CheckboxFactoryPayload>((_props, ref) => {
                     {(isChecked || isIndeterminate) && (
                         <span
                             className={cx(
-                                "text-[var(--refraktor-colors-white)]",
+                                "text-[var(--refraktor-primary-text)]",
                                 sizeClass.icon,
                                 classes.icon
                             )}

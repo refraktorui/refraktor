@@ -1,15 +1,10 @@
+import { getAutoContrastTextColor } from "@refraktor/utils";
 import { RefraktorTheme } from "../createTheme";
 import { Theme } from "../types";
 import { getShade } from "../utils";
 
 const COLORS_TEMPLATE = "--refraktor-colors-{{color}}-{{index}}";
 const SEMANTIC_TEMPLATE = "--refraktor-{{key}}";
-
-type RGB = {
-    r: number;
-    g: number;
-    b: number;
-};
 
 export type ThemeVariables = {
     [key: string]: string;
@@ -28,76 +23,6 @@ function getColorShadeFromTheme(
         return colorValue[Math.min(Math.max(0, shade), 9)] ?? colorValue[5];
 
     return color;
-}
-
-function parseHexColor(color: string): RGB | null {
-    const value = color.trim().replace(/^#/, "");
-
-    if (![3, 4, 6, 8].includes(value.length)) return null;
-    if (!/^[0-9a-fA-F]+$/.test(value)) return null;
-
-    const normalized =
-        value.length === 3 || value.length === 4
-            ? value
-                  .slice(0, 3)
-                  .split("")
-                  .map((char) => `${char}${char}`)
-                  .join("")
-            : value.slice(0, 6);
-
-    return {
-        r: Number.parseInt(normalized.slice(0, 2), 16),
-        g: Number.parseInt(normalized.slice(2, 4), 16),
-        b: Number.parseInt(normalized.slice(4, 6), 16)
-    };
-}
-
-function toRelativeLuminance(channel: number): number {
-    const sRGB = channel / 255;
-
-    if (sRGB <= 0.03928) return sRGB / 12.92;
-
-    return ((sRGB + 0.055) / 1.055) ** 2.4;
-}
-
-function getLuminance(color: RGB): number {
-    return (
-        0.2126 * toRelativeLuminance(color.r) +
-        0.7152 * toRelativeLuminance(color.g) +
-        0.0722 * toRelativeLuminance(color.b)
-    );
-}
-
-function getContrastRatio(background: RGB, foreground: RGB): number {
-    const backgroundLuminance = getLuminance(background);
-    const foregroundLuminance = getLuminance(foreground);
-
-    const lighter = Math.max(backgroundLuminance, foregroundLuminance);
-    const darker = Math.min(backgroundLuminance, foregroundLuminance);
-
-    return (lighter + 0.05) / (darker + 0.05);
-}
-
-function getAutoContrastTextColor(
-    themeConfig: RefraktorTheme,
-    primaryBackground: string,
-    fallbackColor: string
-): string {
-    const backgroundRGB = parseHexColor(primaryBackground);
-    if (!backgroundRGB) return fallbackColor;
-
-    const darkText = getShade(themeConfig.colors, "black", 0);
-    const lightText = getShade(themeConfig.colors, "white", 0);
-
-    const darkTextRGB = parseHexColor(darkText);
-    const lightTextRGB = parseHexColor(lightText);
-
-    if (!darkTextRGB || !lightTextRGB) return fallbackColor;
-
-    return getContrastRatio(backgroundRGB, darkTextRGB) >=
-        getContrastRatio(backgroundRGB, lightTextRGB)
-        ? darkText
-        : lightText;
 }
 
 const getSemanticColors = (themeConfig: RefraktorTheme) => ({
@@ -156,6 +81,8 @@ export const generateVariables = (
         primaryColor,
         0
     );
+    const darkText = getShade(themeConfig.colors, "black", 0);
+    const lightText = getShade(themeConfig.colors, "white", 0);
 
     Object.entries(getSemanticColors(themeConfig)[theme]).forEach(
         ([key, value]) => {
@@ -173,8 +100,9 @@ export const generateVariables = (
         ),
         "--refraktor-primary-text": autoContrast
             ? getAutoContrastTextColor(
-                  themeConfig,
                   primaryColorValue,
+                  darkText,
+                  lightText,
                   primaryTextFallback
               )
             : primaryTextFallback

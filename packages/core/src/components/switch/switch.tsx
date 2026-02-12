@@ -88,7 +88,7 @@ const Switch = factory<SwitchFactoryPayload>((_props, ref) => {
                 >
                     <span
                         className={cx(
-                            "bg-[var(--refraktor-colors-white)] shadow-sm transition-all pointer-events-none",
+                            "bg-[var(--refraktor-colors-white)] group-data-[checked=true]:bg-[var(--refraktor-primary-text)] shadow-sm transition-all pointer-events-none",
                             sizeClass.thumb,
                             getRadius(radius),
                             classes.thumb
