@@ -7,13 +7,13 @@ const sizes: Record<RefraktorSize, Record<string, string>> = {
         label: "text-[10px]"
     },
     sm: {
-        track: "w-8.5 h-4",
-        thumb: "w-3 h-3 group-data-[checked=true]:translate-x-4.5",
+        track: "w-8 h-4",
+        thumb: "w-3 h-3 group-data-[checked=true]:translate-x-4",
         label: "text-xs"
     },
     md: {
-        track: "w-10 h-[1.125rem]",
-        thumb: "w-3.5 h-3.5 group-data-[checked=true]:translate-x-5.5",
+        track: "w-10 h-5",
+        thumb: "w-4 h-4 group-data-[checked=true]:translate-x-5",
         label: "text-sm"
     },
     lg: {
