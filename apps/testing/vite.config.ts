@@ -7,6 +7,9 @@ import path from "path";
 export default defineConfig({
     plugins: [react(), tailwindcss()],
     base: "./",
+    optimizeDeps: {
+        include: ["@refraktor/core", "react", "react-dom"]
+    },
     build: {
         outDir: "build"
     },
@@ -14,6 +17,7 @@ export default defineConfig({
         port: 3000
     },
     resolve: {
+        dedupe: ["react", "react-dom"],
         alias: {
             "@": path.resolve(__dirname, "./src"),
             "@repo/core": path.resolve(
