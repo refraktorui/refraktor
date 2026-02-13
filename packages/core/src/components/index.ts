@@ -7,6 +7,7 @@ export * from "./loader";
 export * from "./menu";
 export * from "./number-input";
 export * from "./popover";
+export * from "./portal";
 export * from "./radio";
 export * from "./slider";
 export * from "./switch";
