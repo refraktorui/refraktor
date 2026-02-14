@@ -19,21 +19,6 @@ describe("@refraktor/core/Portal", () => {
         expect(root).not.toContainElement(content);
     });
 
-    it("renders inline when withinPortal is false", () => {
-        render(
-            <div data-testid="root">
-                <Portal withinPortal={false}>
-                    <div data-testid="content">Inline content</div>
-                </Portal>
-            </div>
-        );
-
-        const root = screen.getByTestId("root");
-        const content = screen.getByTestId("content");
-
-        expect(root).toContainElement(content);
-    });
-
     it("renders into custom target", () => {
         const target = document.createElement("div");
         target.id = "portal-target";

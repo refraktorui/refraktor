@@ -64,11 +64,7 @@ const ModalContent = factory<ModalContentFactoryPayload>(
             </Transition>
         );
 
-        return (
-            <Portal target={withinPortal ? undefined : "body"}>
-                {content}
-            </Portal>
-        );
+        return withinPortal ? <Portal>{content}</Portal> : content;
     }
 );
 

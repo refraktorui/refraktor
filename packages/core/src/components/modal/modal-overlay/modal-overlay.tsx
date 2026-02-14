@@ -51,7 +51,11 @@ const ModalOverlay = factory<ModalOverlayFactoryPayload>(
             </Transition>
         );
 
-        return <Portal withinPortal={withinPortal}>{overlayContent}</Portal>;
+        return withinPortal ? (
+            <Portal>{overlayContent}</Portal>
+        ) : (
+            overlayContent
+        );
     }
 );
 
