@@ -8,7 +8,8 @@ export default defineConfig({
     plugins: [react(), tailwindcss()],
     base: "./",
     optimizeDeps: {
-        include: ["@refraktor/core", "react", "react-dom"]
+        exclude: ["@refraktor/core", "@refraktor/utils"],
+        include: ["react", "react-dom"]
     },
     build: {
         outDir: "build"
