@@ -4,6 +4,7 @@ export * from "./button";
 export * from "./checkbox";
 export * from "./input";
 export * from "./loader";
+export * from "./modal";
 export * from "./menu";
 export * from "./number-input";
 export * from "./popover";
