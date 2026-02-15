@@ -8,7 +8,7 @@ export default defineConfig({
     plugins: [react(), tailwindcss()],
     base: "./",
     optimizeDeps: {
-        exclude: ["@refraktor/core", "@refraktor/utils"],
+        exclude: ["@refraktor/core", "@refraktor/utils", "@refraktor/dates"],
         include: ["react", "react-dom"]
     },
     build: {
@@ -24,6 +24,10 @@ export default defineConfig({
             "@repo/core": path.resolve(
                 __dirname,
                 "../../packages/core/src/index.ts"
+            ),
+            "@repo/dates": path.resolve(
+                __dirname,
+                "../../packages/dates/src/index.ts"
             ),
             "@repo/utils": path.resolve(
                 __dirname,

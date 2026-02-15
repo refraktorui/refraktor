@@ -15,6 +15,7 @@
         "allowImportingTsExtensions": true,
         "paths": {
             "@repo/core": ["./packages/core/src/index.ts"],
+            "@repo/dates": ["./packages/dates/src/index.ts"],
             "@repo/utils": ["./packages/utils/src/index.ts"]
         }
     },
