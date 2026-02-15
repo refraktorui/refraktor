@@ -8,6 +8,7 @@ export * from "./loader";
 export * from "./modal";
 export * from "./menu";
 export * from "./number-input";
+export * from "./pagination";
 export * from "./popover";
 export * from "./portal";
 export * from "./progress";
