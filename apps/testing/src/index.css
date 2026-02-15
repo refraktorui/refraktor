@@ -2,6 +2,7 @@
 @import "tailwindcss";
 
 @source "../../../packages/core/src";
+@source "../../../packages/dates/src";
 
 @theme {
     --color-dark-50: #c9c9c9;
