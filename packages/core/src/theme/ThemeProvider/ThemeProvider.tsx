@@ -1,10 +1,9 @@
-import { storage } from "@refraktor/utils";
+import { storage, useIsomorphicLayoutEffect } from "@refraktor/utils";
 import { Theme } from "../types";
 import { ThemeProviderProps } from "./types";
 import {
     useCallback,
     useEffect,
-    useLayoutEffect,
     useMemo,
     useRef,
     useState
@@ -64,13 +63,13 @@ export const ThemeProvider = ({
         setCurrentTheme(newTheme);
     }, []);
 
-    useLayoutEffect(() => {
+    useIsomorphicLayoutEffect(() => {
         if (typeof document !== "undefined") {
             rootRef.current = document.documentElement;
         }
     }, []);
 
-    useLayoutEffect(() => {
+    useIsomorphicLayoutEffect(() => {
         const root = rootRef.current;
         if (!root) return;
 
