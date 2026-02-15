@@ -12,7 +12,7 @@ describe("@refraktor/core/Select", () => {
     it("supports built-in data mode", async () => {
         const user = userEvent.setup();
 
-        render(
+        await render(
             <Select
                 placeholder="Pick framework"
                 transitionProps={transitionProps}
@@ -39,7 +39,7 @@ describe("@refraktor/core/Select", () => {
     it("renders searchable input inside dropdown", async () => {
         const user = userEvent.setup();
 
-        render(
+        await render(
             <Select
                 searchable
                 transitionProps={transitionProps}
@@ -72,7 +72,7 @@ describe("@refraktor/core/Select", () => {
     it("supports compound mode with groups", async () => {
         const user = userEvent.setup();
 
-        render(
+        await render(
             <Select.Root transitionProps={transitionProps}>
                 <Select.Trigger />
 
@@ -101,7 +101,7 @@ describe("@refraktor/core/Select", () => {
     it("supports keyboard selection", async () => {
         const user = userEvent.setup();
 
-        render(
+        await render(
             <Select
                 transitionProps={transitionProps}
                 data={[
@@ -144,7 +144,7 @@ describe("@refraktor/core/Select", () => {
             );
         }
 
-        render(<Demo />);
+        await render(<Demo />);
 
         await user.click(screen.getByRole("combobox"));
         await user.click(screen.getByRole("option", { name: "Vue" }));

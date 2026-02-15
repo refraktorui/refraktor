@@ -1,11 +1,11 @@
 import { createRef } from "react";
 import { describe, expect, it } from "vitest";
-import { render, screen } from "../../vitest";
+import { render, screen, waitFor } from "../../vitest";
 import Progress from "./progress";
 
 describe("@refraktor/core/Progress", () => {
-    it("renders with determinate values", () => {
-        render(<Progress value={45} aria-label="Upload progress" />);
+    it("renders with determinate values", async () => {
+        await render(<Progress value={45} aria-label="Upload progress" />);
 
         const track = screen.getByRole("progressbar", {
             name: "Upload progress"
@@ -18,18 +18,18 @@ describe("@refraktor/core/Progress", () => {
         expect(bar).toHaveStyle({ width: "45%" });
     });
 
-    it("forwards ref correctly", () => {
+    it("forwards ref correctly", async () => {
         const ref = createRef<HTMLDivElement>();
 
-        render(<Progress ref={ref} aria-label="Progress" />);
+        await render(<Progress ref={ref} aria-label="Progress" />);
 
         expect(ref.current).toBeInstanceOf(HTMLDivElement);
         expect(ref.current?.tagName).toBe("DIV");
         expect(ref.current).toHaveAttribute("role", "progressbar");
     });
 
-    it("clamps values outside range", () => {
-        const { rerender } = render(
+    it("clamps values outside range", async () => {
+        const { rerender } = await render(
             <Progress value={-20} aria-label="Clamped progress" />
         );
 
@@ -40,14 +40,16 @@ describe("@refraktor/core/Progress", () => {
 
         rerender(<Progress value={180} aria-label="Clamped progress" />);
 
-        track = screen.getByRole("progressbar", { name: "Clamped progress" });
-        bar = track.firstElementChild as HTMLDivElement;
-        expect(track).toHaveAttribute("aria-valuenow", "100");
-        expect(bar).toHaveStyle({ width: "100%" });
+        await waitFor(() => {
+            track = screen.getByRole("progressbar", { name: "Clamped progress" });
+            bar = track.firstElementChild as HTMLDivElement;
+            expect(track).toHaveAttribute("aria-valuenow", "100");
+            expect(bar).toHaveStyle({ width: "100%" });
+        });
     });
 
-    it("supports custom min and max", () => {
-        render(
+    it("supports custom min and max", async () => {
+        await render(
             <Progress
                 value={25}
                 min={20}
@@ -67,8 +69,8 @@ describe("@refraktor/core/Progress", () => {
         expect(bar).toHaveStyle({ width: "25%" });
     });
 
-    it("supports indeterminate mode", () => {
-        render(<Progress indeterminate aria-label="Loading progress" />);
+    it("supports indeterminate mode", async () => {
+        await render(<Progress indeterminate aria-label="Loading progress" />);
 
         const track = screen.getByRole("progressbar", {
             name: "Loading progress"
@@ -82,8 +84,8 @@ describe("@refraktor/core/Progress", () => {
         expect(bar.style.width).toBe("");
     });
 
-    it("supports root and slot class names", () => {
-        const { container } = render(
+    it("supports root and slot class names", async () => {
+        const { container } = await render(
             <Progress
                 aria-label="Styled progress"
                 className="custom-root"

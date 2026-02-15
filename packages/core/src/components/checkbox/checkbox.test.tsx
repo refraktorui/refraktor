@@ -4,18 +4,18 @@ import { render, screen, userEvent } from "../../vitest";
 import Checkbox from "./checkbox";
 
 describe("@refraktor/core/Checkbox", () => {
-    it("renders correctly", () => {
-        render(<Checkbox label="Accept terms" />);
+    it("renders correctly", async () => {
+        await render(<Checkbox label="Accept terms" />);
 
         expect(
             screen.getByRole("checkbox", { name: "Accept terms" })
         ).toBeInTheDocument();
     });
 
-    it("forwards ref correctly", () => {
+    it("forwards ref correctly", async () => {
         const ref = createRef<HTMLInputElement>();
 
-        render(<Checkbox ref={ref} label="Accept terms" />);
+        await render(<Checkbox ref={ref} label="Accept terms" />);
 
         expect(ref.current).toBeInstanceOf(HTMLInputElement);
         expect(ref.current?.tagName).toBe("INPUT");
@@ -26,7 +26,7 @@ describe("@refraktor/core/Checkbox", () => {
         const user = userEvent.setup();
         const onChange = vi.fn();
 
-        render(<Checkbox label="Accept terms" onChange={onChange} />);
+        await render(<Checkbox label="Accept terms" onChange={onChange} />);
 
         const input = screen.getByRole("checkbox", { name: "Accept terms" });
         await user.click(input);
@@ -35,8 +35,8 @@ describe("@refraktor/core/Checkbox", () => {
         expect(onChange).toHaveBeenCalledTimes(1);
     });
 
-    it("supports indeterminate state", () => {
-        render(<Checkbox label="Select all" indeterminate />);
+    it("supports indeterminate state", async () => {
+        await render(<Checkbox label="Select all" indeterminate />);
 
         const input = screen.getByRole("checkbox", { name: "Select all" });
 
@@ -48,7 +48,7 @@ describe("@refraktor/core/Checkbox", () => {
         const user = userEvent.setup();
         const onChange = vi.fn();
 
-        render(
+        await render(
             <Checkbox.Group defaultValue={["react"]} onChange={onChange}>
                 <Checkbox value="react" label="React" />
                 <Checkbox value="vue" label="Vue" />
@@ -68,8 +68,8 @@ describe("@refraktor/core/Checkbox", () => {
         expect(onChange).toHaveBeenLastCalledWith(["vue"]);
     });
 
-    it("propagates disabled state from group", () => {
-        render(
+    it("propagates disabled state from group", async () => {
+        await render(
             <Checkbox.Group disabled>
                 <Checkbox value="react" label="React" />
             </Checkbox.Group>

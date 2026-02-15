@@ -1,6 +1,6 @@
 import { createRef } from "react";
 import { describe, expect, it } from "vitest";
-import { render, screen } from "../../vitest";
+import { render, screen, waitFor } from "../../vitest";
 import ProgressCircle from "./progress-circle";
 
 function getCircleMetrics(bar: SVGCircleElement) {
@@ -10,8 +10,8 @@ function getCircleMetrics(bar: SVGCircleElement) {
 }
 
 describe("@refraktor/core/ProgressCircle", () => {
-    it("renders with determinate values", () => {
-        render(<ProgressCircle value={45} aria-label="Upload progress" />);
+    it("renders with determinate values", async () => {
+        await render(<ProgressCircle value={45} aria-label="Upload progress" />);
 
         const root = screen.getByRole("progressbar", {
             name: "Upload progress"
@@ -25,21 +25,23 @@ describe("@refraktor/core/ProgressCircle", () => {
 
         const { circumference } = getCircleMetrics(bar);
         const expectedOffset = circumference - (45 / 100) * circumference;
-        expect(Number(bar.style.strokeDashoffset)).toBeCloseTo(expectedOffset, 4);
+        expect(
+            Number(bar.getAttribute("stroke-dashoffset"))
+        ).toBeCloseTo(expectedOffset, 4);
     });
 
-    it("forwards ref correctly", () => {
+    it("forwards ref correctly", async () => {
         const ref = createRef<HTMLDivElement>();
 
-        render(<ProgressCircle ref={ref} aria-label="Progress" />);
+        await render(<ProgressCircle ref={ref} aria-label="Progress" />);
 
         expect(ref.current).toBeInstanceOf(HTMLDivElement);
         expect(ref.current?.tagName).toBe("DIV");
         expect(ref.current).toHaveAttribute("role", "progressbar");
     });
 
-    it("clamps values outside range", () => {
-        const { rerender } = render(
+    it("clamps values outside range", async () => {
+        const { rerender } = await render(
             <ProgressCircle value={-20} aria-label="Clamped progress" />
         );
 
@@ -50,22 +52,26 @@ describe("@refraktor/core/ProgressCircle", () => {
         expect(root).toHaveAttribute("aria-valuenow", "0");
 
         let { circumference } = getCircleMetrics(bar);
-        expect(Number(bar.style.strokeDashoffset)).toBeCloseTo(circumference, 4);
+        expect(
+            Number(bar.getAttribute("stroke-dashoffset"))
+        ).toBeCloseTo(circumference, 4);
 
         rerender(<ProgressCircle value={180} aria-label="Clamped progress" />);
 
-        root = screen.getByRole("progressbar", { name: "Clamped progress" });
-        circles = root.querySelectorAll("circle");
-        bar = circles[1] as SVGCircleElement;
-
-        expect(root).toHaveAttribute("aria-valuenow", "100");
-
-        ({ circumference } = getCircleMetrics(bar));
-        expect(Number(bar.style.strokeDashoffset)).toBeCloseTo(0, 4);
+        await waitFor(() => {
+            root = screen.getByRole("progressbar", { name: "Clamped progress" });
+            circles = root.querySelectorAll("circle");
+            bar = circles[1] as SVGCircleElement;
+            expect(root).toHaveAttribute("aria-valuenow", "100");
+            ({ circumference } = getCircleMetrics(bar));
+            expect(
+                Number(bar.getAttribute("stroke-dashoffset"))
+            ).toBeCloseTo(0, 4);
+        });
     });
 
-    it("supports custom min and max", () => {
-        render(
+    it("supports custom min and max", async () => {
+        await render(
             <ProgressCircle
                 value={25}
                 min={20}
@@ -86,11 +92,13 @@ describe("@refraktor/core/ProgressCircle", () => {
 
         const { circumference } = getCircleMetrics(bar);
         const expectedOffset = circumference - (25 / 100) * circumference;
-        expect(Number(bar.style.strokeDashoffset)).toBeCloseTo(expectedOffset, 4);
+        expect(
+            Number(bar.getAttribute("stroke-dashoffset"))
+        ).toBeCloseTo(expectedOffset, 4);
     });
 
-    it("supports indeterminate mode", () => {
-        render(<ProgressCircle indeterminate aria-label="Loading progress" />);
+    it("supports indeterminate mode", async () => {
+        await render(<ProgressCircle indeterminate aria-label="Loading progress" />);
 
         const root = screen.getByRole("progressbar", {
             name: "Loading progress"
@@ -102,11 +110,11 @@ describe("@refraktor/core/ProgressCircle", () => {
         expect(root).not.toHaveAttribute("aria-valuemax");
         expect(root).not.toHaveAttribute("aria-valuenow");
         expect(bar).toHaveClass("loader-spin");
-        expect(bar.style.strokeDasharray).not.toBe("");
+        expect(bar.getAttribute("stroke-dasharray")).not.toBe("");
     });
 
-    it("supports root and slot class names", () => {
-        render(
+    it("supports root and slot class names", async () => {
+        await render(
             <ProgressCircle
                 aria-label="Styled progress"
                 className="custom-root"

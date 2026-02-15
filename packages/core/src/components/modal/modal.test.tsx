@@ -14,7 +14,7 @@ describe("@refraktor/core/Modal", () => {
     it("renders with compound subcomponents and closes with header close button", async () => {
         const user = userEvent.setup();
 
-        render(
+        await render(
             <Modal defaultOpened transitionProps={transitionProps}>
                 <Modal.Overlay />
 
@@ -40,7 +40,7 @@ describe("@refraktor/core/Modal", () => {
         const user = userEvent.setup();
         const onOpenedChange = vi.fn();
 
-        render(
+        await render(
             <Modal
                 opened
                 onOpenedChange={onOpenedChange}
@@ -59,7 +59,7 @@ describe("@refraktor/core/Modal", () => {
     it("closes on Escape key", async () => {
         const user = userEvent.setup();
 
-        render(
+        await render(
             <Modal defaultOpened transitionProps={transitionProps}>
                 <Modal.Content>Keyboard close</Modal.Content>
             </Modal>
@@ -75,7 +75,7 @@ describe("@refraktor/core/Modal", () => {
     });
 
     it("supports standalone subcomponents with ModalRoot", async () => {
-        render(
+        await render(
             <ModalRoot defaultOpened transitionProps={transitionProps}>
                 <ModalOverlay />
                 <ModalContent>Standalone composition</ModalContent>
@@ -88,7 +88,7 @@ describe("@refraktor/core/Modal", () => {
     it("locks and unlocks body scroll when enabled", async () => {
         const user = userEvent.setup();
 
-        render(
+        await render(
             <Modal defaultOpened lockScroll transitionProps={transitionProps}>
                 <Modal.Content>
                     Scroll locked

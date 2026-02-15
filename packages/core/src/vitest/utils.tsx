@@ -1,6 +1,8 @@
 import type { ReactElement, ReactNode } from "react";
+import { expect } from "vitest";
 import {
     render,
+    waitFor,
     type RenderOptions,
     type RenderResult
 } from "@testing-library/react";
@@ -27,11 +29,11 @@ function ProviderWrapper({
     );
 }
 
-function customRender(
+async function customRender(
     ui: ReactElement,
     { theme, themeConfig, ...options }: CustomRenderOptions = {}
-): RenderResult {
-    return render(ui, {
+): Promise<RenderResult> {
+    const result = render(ui, {
         wrapper: ({ children }) => (
             <ProviderWrapper theme={theme} themeConfig={themeConfig}>
                 {children}
@@ -39,6 +41,17 @@ function customRender(
         ),
         ...options
     });
+    // React 19 concurrent rendering: wait for DOM to be ready before returning
+    // (Portal renders to body/target, so we also accept content elsewhere in document)
+    await waitFor(
+        () => {
+            const hasContainerContent = result.container.firstChild != null;
+            const hasPortalContent = document.querySelector("[data-testid]");
+            expect(hasContainerContent || hasPortalContent).toBeTruthy();
+        },
+        { timeout: 3000 }
+    );
+    return result;
 }
 
 export * from "@testing-library/react";

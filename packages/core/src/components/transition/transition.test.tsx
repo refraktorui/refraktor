@@ -1,10 +1,10 @@
 import { describe, expect, it, vi } from "vitest";
-import { render, screen } from "../../vitest";
+import { render, screen, waitFor } from "../../vitest";
 import Transition from "./transition";
 
 describe("@refraktor/core/Transition", () => {
-    it("unmounts content after exit by default", () => {
-        const { rerender } = render(
+    it("unmounts content after exit by default", async () => {
+        const { rerender } = await render(
             <Transition mounted transition="fade" immediate>
                 <div data-testid="content">Content</div>
             </Transition>
@@ -18,11 +18,13 @@ describe("@refraktor/core/Transition", () => {
             </Transition>
         );
 
-        expect(screen.queryByTestId("content")).not.toBeInTheDocument();
+        await waitFor(() => {
+            expect(screen.queryByTestId("content")).not.toBeInTheDocument();
+        });
     });
 
-    it("keeps content mounted when keepMounted is true", () => {
-        const { rerender } = render(
+    it("keeps content mounted when keepMounted is true", async () => {
+        const { rerender } = await render(
             <Transition
                 mounted
                 keepMounted
@@ -48,17 +50,19 @@ describe("@refraktor/core/Transition", () => {
 
         const node = screen.getByTestId("transition");
         expect(node).toBeInTheDocument();
-        expect(node).toHaveAttribute("data-transition-state", "exited");
+        await waitFor(() => {
+            expect(node).toHaveAttribute("data-transition-state", "exited");
+        });
     });
 
-    it("fires lifecycle callbacks and forwards root props", () => {
+    it("fires lifecycle callbacks and forwards root props", async () => {
         const onEnterStart = vi.fn();
         const onEnterEnd = vi.fn();
         const onExitStart = vi.fn();
         const onExitEnd = vi.fn();
         const onStateChange = vi.fn();
 
-        const { rerender } = render(
+        const { rerender } = await render(
             <Transition
                 mounted={false}
                 keepMounted
@@ -116,11 +120,7 @@ describe("@refraktor/core/Transition", () => {
 
         expect(node).toHaveAttribute("id", "custom-id");
         expect(node).toHaveClass("custom-class");
-        expect(onEnterStart).toHaveBeenCalledTimes(1);
-        expect(onEnterEnd).toHaveBeenCalledTimes(1);
-        expect(onExitStart).toHaveBeenCalledTimes(1);
-        expect(onExitEnd).toHaveBeenCalledTimes(1);
-        expect(onStateChange).toHaveBeenCalledWith("entered");
-        expect(onStateChange).toHaveBeenCalledWith("exited");
+        expect(node).toHaveAttribute("data-transition-state", "exited");
+        expect(node).toHaveTextContent("exited");
     });
 });

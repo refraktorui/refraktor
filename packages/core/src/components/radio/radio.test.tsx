@@ -4,18 +4,18 @@ import { render, screen, userEvent } from "../../vitest";
 import Radio from "./radio";
 
 describe("@refraktor/core/Radio", () => {
-    it("renders correctly", () => {
-        render(<Radio label="React" />);
+    it("renders correctly", async () => {
+        await render(<Radio label="React" />);
 
         expect(
             screen.getByRole("radio", { name: "React" })
         ).toBeInTheDocument();
     });
 
-    it("forwards ref correctly", () => {
+    it("forwards ref correctly", async () => {
         const ref = createRef<HTMLInputElement>();
 
-        render(<Radio ref={ref} label="React" />);
+        await render(<Radio ref={ref} label="React" />);
 
         expect(ref.current).toBeInstanceOf(HTMLInputElement);
         expect(ref.current?.tagName).toBe("INPUT");
@@ -26,7 +26,7 @@ describe("@refraktor/core/Radio", () => {
         const user = userEvent.setup();
         const onChange = vi.fn();
 
-        render(<Radio label="React" onChange={onChange} />);
+        await render(<Radio label="React" onChange={onChange} />);
 
         const input = screen.getByRole("radio", { name: "React" });
         await user.click(input);
@@ -39,7 +39,7 @@ describe("@refraktor/core/Radio", () => {
         const user = userEvent.setup();
         const onChange = vi.fn();
 
-        render(
+        await render(
             <Radio.Group defaultValue="react" onChange={onChange}>
                 <Radio value="react" label="React" />
                 <Radio value="vue" label="Vue" />
@@ -63,8 +63,8 @@ describe("@refraktor/core/Radio", () => {
         expect(vueInput).not.toBeChecked();
     });
 
-    it("propagates disabled state from group", () => {
-        render(
+    it("propagates disabled state from group", async () => {
+        await render(
             <Radio.Group disabled>
                 <Radio value="react" label="React" />
             </Radio.Group>

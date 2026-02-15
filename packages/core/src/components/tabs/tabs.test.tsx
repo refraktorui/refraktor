@@ -4,8 +4,8 @@ import { render, screen, userEvent } from "../../vitest";
 import Tabs from "./tabs";
 
 describe("@refraktor/core/Tabs", () => {
-    it("renders default active tab and panel", () => {
-        render(
+    it("renders default active tab and panel", async () => {
+        await render(
             <Tabs defaultValue="account">
                 <Tabs.List>
                     <Tabs.Tab value="account">Account</Tabs.Tab>
@@ -51,7 +51,7 @@ describe("@refraktor/core/Tabs", () => {
             );
         }
 
-        render(<Demo />);
+        await render(<Demo />);
         await user.click(screen.getByRole("tab", { name: "Security" }));
 
         expect(onChange).toHaveBeenCalledWith("security");
@@ -61,7 +61,7 @@ describe("@refraktor/core/Tabs", () => {
     it("supports keyboard navigation with automatic activation", async () => {
         const user = userEvent.setup();
 
-        render(
+        await render(
             <Tabs defaultValue="account">
                 <Tabs.List>
                     <Tabs.Tab value="account">Account</Tabs.Tab>
@@ -88,7 +88,7 @@ describe("@refraktor/core/Tabs", () => {
     it("supports manual activation mode", async () => {
         const user = userEvent.setup();
 
-        render(
+        await render(
             <Tabs defaultValue="account" activationMode="manual">
                 <Tabs.List>
                     <Tabs.Tab value="account">Account</Tabs.Tab>
@@ -118,8 +118,8 @@ describe("@refraktor/core/Tabs", () => {
         expect(screen.getByText("Security panel")).toBeInTheDocument();
     });
 
-    it("keeps inactive panels mounted when keepMounted is true", () => {
-        render(
+    it("keeps inactive panels mounted when keepMounted is true", async () => {
+        await render(
             <Tabs defaultValue="account" keepMounted>
                 <Tabs.List>
                     <Tabs.Tab value="account">Account</Tabs.Tab>
@@ -140,7 +140,7 @@ describe("@refraktor/core/Tabs", () => {
     it("skips disabled tabs during keyboard navigation", async () => {
         const user = userEvent.setup();
 
-        render(
+        await render(
             <Tabs defaultValue="account">
                 <Tabs.List>
                     <Tabs.Tab value="account">Account</Tabs.Tab>

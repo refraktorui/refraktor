@@ -12,7 +12,7 @@ describe("@refraktor/core/Menu", () => {
         const user = userEvent.setup();
         const onSelect = vi.fn();
 
-        render(
+        await render(
             <Menu transitionProps={transitionProps}>
                 <Menu.Trigger>
                     <button type="button">Open menu</button>
@@ -40,7 +40,7 @@ describe("@refraktor/core/Menu", () => {
         const user = userEvent.setup();
         const onSelect = vi.fn();
 
-        render(
+        await render(
             <Menu transitionProps={transitionProps}>
                 <Menu.Trigger>
                     <button type="button">Open menu</button>
@@ -69,7 +69,7 @@ describe("@refraktor/core/Menu", () => {
         const onFirstSelect = vi.fn();
         const onSecondSelect = vi.fn();
 
-        render(
+        await render(
             <Menu transitionProps={transitionProps}>
                 <Menu.Trigger>
                     <button type="button">Open menu</button>
@@ -97,7 +97,7 @@ describe("@refraktor/core/Menu", () => {
         const user = userEvent.setup();
         const onSubSelect = vi.fn();
 
-        render(
+        await render(
             <Menu transitionProps={transitionProps}>
                 <Menu.Trigger>
                     <button type="button">Open menu</button>
