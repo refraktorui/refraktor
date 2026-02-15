@@ -3,6 +3,7 @@ export * from "./avatar";
 export * from "./badge";
 export * from "./button";
 export * from "./checkbox";
+export * from "./color-swatch";
 export * from "./input";
 export * from "./loader";
 export * from "./modal";

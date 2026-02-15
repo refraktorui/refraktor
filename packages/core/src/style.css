@@ -212,6 +212,43 @@
     animation: refraktor-progress-indeterminate 1.2s ease-in-out infinite;
 }
 
+.refraktor-transparency-grid {
+    --refraktor-transparency-grid-size: 10px;
+    --refraktor-transparency-grid-light: var(--refraktor-colors-light-0);
+    --refraktor-transparency-grid-dark: var(--refraktor-colors-light-4);
+
+    background-color: var(--refraktor-transparency-grid-light);
+    background-image:
+        linear-gradient(
+            45deg,
+            var(--refraktor-transparency-grid-dark) 25%,
+            transparent 25%
+        ),
+        linear-gradient(
+            -45deg,
+            var(--refraktor-transparency-grid-dark) 25%,
+            transparent 25%
+        ),
+        linear-gradient(
+            45deg,
+            transparent 75%,
+            var(--refraktor-transparency-grid-dark) 75%
+        ),
+        linear-gradient(
+            -45deg,
+            transparent 75%,
+            var(--refraktor-transparency-grid-dark) 75%
+        );
+    background-size: var(--refraktor-transparency-grid-size)
+        var(--refraktor-transparency-grid-size);
+    background-position:
+        0 0,
+        0 calc(var(--refraktor-transparency-grid-size) / 2),
+        calc(var(--refraktor-transparency-grid-size) / 2)
+            calc(var(--refraktor-transparency-grid-size) / -2),
+        calc(var(--refraktor-transparency-grid-size) / -2) 0;
+}
+
 /** Scrollbar */
 .refraktor-scrollbar {
     scrollbar-width: thin;
