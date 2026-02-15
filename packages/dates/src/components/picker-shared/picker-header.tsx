@@ -122,7 +122,9 @@ const PickerHeader = factory<PickerHeaderFactoryPayload>((_props, ref) => {
                         type="button"
                         onClick={onLabelClick}
                         className={cx(
-                            "inline-flex w-full items-center justify-center text-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--refraktor-primary)]",
+                            "inline-flex w-full cursor-pointer items-center justify-center text-center transition-colors hover:bg-[var(--refraktor-bg-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--refraktor-primary)]",
+                            sizeStyles.labelButton,
+                            radiusStyles,
                             getStyles("labelButton")
                         )}
                     >

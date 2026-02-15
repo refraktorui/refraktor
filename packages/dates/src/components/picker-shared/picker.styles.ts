@@ -3,6 +3,7 @@ import { PickerSize } from "./picker.types";
 export type PickerSizeStyles = {
     control: string;
     label: string;
+    labelButton: string;
     cell: string;
     gridGap: string;
     iconSize: number;
@@ -12,6 +13,7 @@ const pickerSizes: Record<PickerSize, PickerSizeStyles> = {
     xs: {
         control: "size-6 text-xs",
         label: "text-xs",
+        labelButton: "py-0.5 px-1",
         cell: "h-7 px-1 text-xs",
         gridGap: "gap-1",
         iconSize: 12
@@ -19,6 +21,7 @@ const pickerSizes: Record<PickerSize, PickerSizeStyles> = {
     sm: {
         control: "size-7 text-xs",
         label: "text-xs",
+        labelButton: "py-0.5 px-1",
         cell: "h-8 px-1.5 text-xs",
         gridGap: "gap-1",
         iconSize: 14
@@ -26,6 +29,7 @@ const pickerSizes: Record<PickerSize, PickerSizeStyles> = {
     md: {
         control: "size-8 text-sm",
         label: "text-sm",
+        labelButton: "py-1 px-1.5",
         cell: "h-9 px-2 text-sm",
         gridGap: "gap-1.5",
         iconSize: 16
@@ -33,6 +37,7 @@ const pickerSizes: Record<PickerSize, PickerSizeStyles> = {
     lg: {
         control: "size-9 text-base",
         label: "text-base",
+        labelButton: "py-1 px-2",
         cell: "h-10 px-2.5 text-base",
         gridGap: "gap-2",
         iconSize: 18
@@ -40,6 +45,7 @@ const pickerSizes: Record<PickerSize, PickerSizeStyles> = {
     xl: {
         control: "size-10 text-lg",
         label: "text-lg",
+        labelButton: "py-1.5 px-2.5",
         cell: "h-11 px-3 text-lg",
         gridGap: "gap-2",
         iconSize: 20
