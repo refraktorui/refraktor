@@ -9,6 +9,7 @@ export * from "./menu";
 export * from "./number-input";
 export * from "./popover";
 export * from "./portal";
+export * from "./progress";
 export * from "./radio";
 export * from "./select";
 export * from "./slider";

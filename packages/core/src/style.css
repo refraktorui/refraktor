@@ -196,6 +196,22 @@
     transform-origin: center center;
 }
 
+@keyframes refraktor-progress-indeterminate {
+    0% {
+        transform: translateX(-120%);
+    }
+
+    100% {
+        transform: translateX(280%);
+    }
+}
+
+.refraktor-progress-indeterminate {
+    width: 40%;
+    will-change: transform;
+    animation: refraktor-progress-indeterminate 1.2s ease-in-out infinite;
+}
+
 /** Scrollbar */
 .refraktor-scrollbar {
     scrollbar-width: thin;
