@@ -113,7 +113,9 @@ export function getNavigableSelectItems(items: SelectItemRegistration[]) {
 }
 
 export function findFocusedSelectItemIndex(items: SelectItemRegistration[]) {
-    return items.findIndex((item) => item.ref.current === document.activeElement);
+    return items.findIndex(
+        (item) => item.ref.current === document.activeElement
+    );
 }
 
 export function focusSelectItem(item?: SelectItemRegistration) {

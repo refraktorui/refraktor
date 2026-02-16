@@ -13,8 +13,8 @@
         "./style.css": "./build/style.css"
     },
     "scripts": {
-        "build": "tsc && cpy src/style.css build/ --flat",
-        "dev": "concurrently \"tsc --watch\" \"cpy src/style.css build/ --watch --flat\"",
+        "build": "tsc && tailwindcss -i src/style.css -o build/style.css --minify",
+        "dev": "concurrently \"tsc --watch\" \"tailwindcss -i src/style.css -o build/style.css --watch\"",
         "test": "vitest"
     },
     "peerDependencies": {
@@ -23,8 +23,6 @@
         "dayjs": "^1.11.19"
     },
     "devDependencies": {
-        "@refraktor/core": "workspace:*",
-        "@refraktor/utils": "workspace:*",
         "typescript": "^5.9.3"
     },
     "dependencies": {
