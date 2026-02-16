@@ -56,7 +56,7 @@ export const ThemeProvider = ({
     }, [currentTheme, persistenceEnabled, storageKey]);
 
     const toggleTheme = useCallback(() => {
-        setCurrentTheme((prev) => (prev === "light" ? "dark" : "light"));
+        setCurrentTheme((prev: Theme) => (prev === "light" ? "dark" : "light"));
     }, []);
 
     const setTheme = useCallback((newTheme: Theme) => {

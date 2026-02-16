@@ -27,7 +27,7 @@ const SelectTrigger = factory<SelectTriggerFactoryPayload>(
                 className={cx("w-full", select.getStyles("trigger"), className)}
                 data-opened={select.select.opened}
                 {...select.select.getReferenceProps({
-                    onKeyDown: (event) => {
+                    onKeyDown: (event: React.KeyboardEvent) => {
                         onKeyDown?.(event as any);
 
                         if (event.defaultPrevented || select.disabled) {
