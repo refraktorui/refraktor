@@ -1,5 +1,6 @@
 export * from "./dates-provider";
 export * from "./date-picker";
+export * from "./date-input";
 export * from "./month-picker";
 export * from "./month-input";
 export * from "./year-picker";
