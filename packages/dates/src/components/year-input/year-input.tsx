@@ -25,6 +25,7 @@ import {
     useInteractions,
     useRole
 } from "@floating-ui/react";
+import { useDates } from "../dates-provider";
 import { YearPicker } from "../year-picker";
 import {
     YearInputClassNames,
@@ -34,10 +35,12 @@ import {
 
 const DEFAULT_YEARS_PER_PAGE = 9;
 const DEFAULT_COLUMNS = 3;
+const DEFAULT_VALUE_FORMAT = "YYYY";
 
 const defaultProps = {
     yearsPerPage: DEFAULT_YEARS_PER_PAGE,
     columns: DEFAULT_COLUMNS,
+    valueFormat: DEFAULT_VALUE_FORMAT,
     disabled: false,
     size: "md",
     radius: "default",
@@ -64,6 +67,7 @@ const toSafeInteger = (value: number | undefined) => {
 
 const YearInput = factory<YearInputFactoryPayload>((_props, ref) => {
     const { cx, getRadius } = useTheme();
+    const { createDate } = useDates();
     const {
         id,
         value,
@@ -76,6 +80,7 @@ const YearInput = factory<YearInputFactoryPayload>((_props, ref) => {
         maxYear,
         yearsPerPage,
         columns,
+        valueFormat,
         disabled,
         size,
         radius,
@@ -245,6 +250,10 @@ const YearInput = factory<YearInputFactoryPayload>((_props, ref) => {
     );
 
     const selectedYear = toSafeInteger(selectedYearState);
+    const inputValue =
+        selectedYear === undefined
+            ? ""
+            : createDate(new Date(selectedYear, 0, 1)).format(valueFormat);
 
     const mergedReferenceProps = getReferenceProps({
         onFocus,
@@ -308,7 +317,7 @@ const YearInput = factory<YearInputFactoryPayload>((_props, ref) => {
                 ref={setInputRef}
                 id={_id}
                 readOnly
-                value={selectedYear === undefined ? "" : String(selectedYear)}
+                value={inputValue}
                 disabled={disabled}
                 size={size}
                 radius={radius}

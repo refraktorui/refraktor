@@ -8,5 +8,6 @@ export type {
     MonthInputProps,
     MonthInputRadius,
     MonthInputSize,
-    MonthInputValue
+    MonthInputValue,
+    MonthInputValueFormat
 } from "./month-input.types";

@@ -19,6 +19,7 @@ export type YearInputValue = number;
 export type YearInputSize = RefraktorSize;
 export type YearInputRadius = RefraktorRadius;
 export type YearInputOnChange = (value: YearInputValue) => void;
+export type YearInputValueFormat = string;
 
 export type YearInputPositioning = {
     /** The placement of the dropdown relative to the input @default `bottom-start` */
@@ -70,6 +71,9 @@ interface _YearInputProps {
 
     /** Grid columns used by the year list @default `3` */
     columns?: number;
+
+    /** Dayjs format used to render selected year in the input @default `YYYY` */
+    valueFormat?: YearInputValueFormat;
 
     /** Positioning settings for the dropdown. */
     positioning?: YearInputPositioning;

@@ -8,5 +8,6 @@ export type {
     YearInputProps,
     YearInputRadius,
     YearInputSize,
-    YearInputValue
+    YearInputValue,
+    YearInputValueFormat
 } from "./year-input.types";

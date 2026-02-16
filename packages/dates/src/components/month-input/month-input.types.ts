@@ -25,6 +25,7 @@ export type MonthInputValue = Date;
 export type MonthInputSize = RefraktorSize;
 export type MonthInputRadius = RefraktorRadius;
 export type MonthInputOnChange = (value: MonthInputValue) => void;
+export type MonthInputValueFormat = string;
 
 export type MonthInputPositioning = {
     /** The placement of the dropdown relative to the input @default `bottom-start` */
@@ -91,6 +92,9 @@ interface _MonthInputProps {
 
     /** Custom aria-label generator for previous/next controls. */
     getNavigationAriaLabel?: MonthPickerGetNavigationAriaLabel;
+
+    /** Dayjs format used to render selected month in the input @default `MMMM YYYY` */
+    valueFormat?: MonthInputValueFormat;
 
     /** Positioning settings for the dropdown. */
     positioning?: MonthInputPositioning;

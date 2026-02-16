@@ -25,6 +25,7 @@ import {
     useInteractions,
     useRole
 } from "@floating-ui/react";
+import { useDates } from "../dates-provider";
 import { MonthPicker } from "../month-picker";
 import {
     MonthInputClassNames,
@@ -35,16 +36,13 @@ import {
 const DEFAULT_COLUMNS = 3;
 const DEFAULT_YEAR_PICKER_YEARS_PER_PAGE = 9;
 const DEFAULT_YEAR_PICKER_COLUMNS = 3;
-
-const MONTH_INPUT_VALUE_FORMATTER = new Intl.DateTimeFormat(undefined, {
-    month: "long",
-    year: "numeric"
-});
+const DEFAULT_VALUE_FORMAT = "MMMM YYYY";
 
 const defaultProps = {
     columns: DEFAULT_COLUMNS,
     yearPickerYearsPerPage: DEFAULT_YEAR_PICKER_YEARS_PER_PAGE,
     yearPickerColumns: DEFAULT_YEAR_PICKER_COLUMNS,
+    valueFormat: DEFAULT_VALUE_FORMAT,
     disabled: false,
     size: "md",
     radius: "default",
@@ -77,6 +75,7 @@ const normalizeMonthValue = (value: Date | undefined) => {
 
 const MonthInput = factory<MonthInputFactoryPayload>((_props, ref) => {
     const { cx, getRadius } = useTheme();
+    const { createDate } = useDates();
     const {
         id,
         value,
@@ -94,6 +93,7 @@ const MonthInput = factory<MonthInputFactoryPayload>((_props, ref) => {
         getMonthAriaLabel,
         getHeaderLabel,
         getNavigationAriaLabel,
+        valueFormat,
         disabled,
         size,
         radius,
@@ -264,9 +264,7 @@ const MonthInput = factory<MonthInputFactoryPayload>((_props, ref) => {
 
     const selectedMonth = normalizeMonthValue(selectedMonthState);
     const inputValue =
-        selectedMonth === undefined
-            ? ""
-            : MONTH_INPUT_VALUE_FORMATTER.format(selectedMonth);
+        selectedMonth === undefined ? "" : createDate(selectedMonth).format(valueFormat);
 
     const mergedReferenceProps = getReferenceProps({
         onFocus,
