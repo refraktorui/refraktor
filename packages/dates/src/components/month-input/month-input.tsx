@@ -193,7 +193,8 @@ const MonthInput = factory<MonthInputFactoryPayload>((_props, ref) => {
         open: isOpen,
         onOpenChange: handleOpenChange,
         middleware,
-        whileElementsMounted: autoUpdate
+        whileElementsMounted: autoUpdate,
+        strategy: "fixed"
     });
 
     const focus = useFocus(floating.context, {
@@ -278,13 +279,15 @@ const MonthInput = factory<MonthInputFactoryPayload>((_props, ref) => {
             transition="fade"
             duration={150}
             mounted={isOpen}
+            style={{ position: "relative", zIndex: 1000 }}
             {...transitionProps}
         >
             <div
                 ref={floating.refs.setFloating}
                 id={dropdownId}
                 style={{
-                    ...floating.floatingStyles
+                    ...floating.floatingStyles,
+                    zIndex: 1000
                 }}
                 className={cx(
                     "w-72 z-50 border border-[var(--refraktor-border)] bg-[var(--refraktor-bg)] p-2 text-[var(--refraktor-text)] shadow-md",
