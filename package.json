@@ -12,7 +12,8 @@
         "lint": "turbo run lint",
         "clean": "turbo run clean",
         "test": "turbo run test",
-        "bump": "bun scripts/bump-version.ts"
+        "bump": "bun scripts/bump-version.ts",
+        "publish": "bun scripts/publish.ts"
     },
     "dependencies": {
         "@floating-ui/react": "^0.27.16",
