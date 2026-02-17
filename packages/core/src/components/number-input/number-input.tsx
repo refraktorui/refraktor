@@ -69,6 +69,11 @@ const NumberInput = factory<NumberInputFactoryPayload>((_props, ref) => {
     const { cx } = useTheme();
     const {
         id,
+        label,
+        description,
+        error,
+        required,
+        withAsterisk,
         value,
         defaultValue,
         size,
@@ -292,56 +297,79 @@ const NumberInput = factory<NumberInputFactoryPayload>((_props, ref) => {
         );
     }, [controlsPosition, canIncrement, canDecrement, classes, controlSizing]);
 
+    const hasWrapper = label || description || error;
+
+    const field = (
+        <InputField
+            ref={ref}
+            id={_id}
+            type="number"
+            required={required}
+            error={!!error}
+            disabled={disabled}
+            size={size}
+            min={min}
+            max={max}
+            step={step}
+            value={_value}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            onKeyDown={handleKeyDown}
+            onWheel={handleWheel}
+            leftSection={controlsPosition === "left" ? controls : undefined}
+            rightSection={controlsPosition === "right" ? controls : undefined}
+            className={className}
+            classNames={{
+                root: cx(
+                    "px-0 gap-0 items-stretch overflow-hidden",
+                    controlsPosition === "none"
+                        ? "px-2"
+                        : controlsPosition === "left"
+                          ? "pr-2"
+                          : "pl-2",
+                    classes.root
+                ),
+                leftSection: cx(
+                    "h-full self-stretch",
+                    controlsPosition === "left" && controlSizing.leftSpacing,
+                    classes.leftSection
+                ),
+                rightSection: cx(
+                    "h-full self-stretch",
+                    controlsPosition === "right" && controlSizing.rightSpacing,
+                    classes.rightSection
+                ),
+                ...(classes as any)
+            }}
+            aria-describedby={
+                error
+                    ? `${_id}-error`
+                    : description
+                      ? `${_id}-description`
+                      : undefined
+            }
+            aria-disabled={disabled}
+            aria-valuemin={min}
+            aria-valuemax={max}
+            aria-valuenow={Number(_value)}
+            {...props}
+        />
+    );
+
+    if (!hasWrapper) {
+        return field;
+    }
+
     return (
-        <InputWrapper>
-            <InputField
-                ref={ref}
-                type="number"
-                disabled={disabled}
-                size={size}
-                min={min}
-                max={max}
-                step={step}
-                value={_value}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                onKeyDown={handleKeyDown}
-                onWheel={handleWheel}
-                leftSection={controlsPosition === "left" ? controls : undefined}
-                rightSection={
-                    controlsPosition === "right" ? controls : undefined
-                }
-                className={className}
-                classNames={{
-                    root: cx(
-                        "px-0 gap-0 items-stretch overflow-hidden",
-                        controlsPosition === "none"
-                            ? "px-2"
-                            : controlsPosition === "left"
-                              ? "pr-2"
-                              : "pl-2",
-                        classes.root
-                    ),
-                    leftSection: cx(
-                        "h-full self-stretch",
-                        controlsPosition === "left" &&
-                            controlSizing.leftSpacing,
-                        classes.leftSection
-                    ),
-                    rightSection: cx(
-                        "h-full self-stretch",
-                        controlsPosition === "right" &&
-                            controlSizing.rightSpacing,
-                        classes.rightSection
-                    ),
-                    ...(classes as any)
-                }}
-                aria-disabled={disabled}
-                aria-valuemin={min}
-                aria-valuemax={max}
-                aria-valuenow={Number(_value)}
-                {...props}
-            />
+        <InputWrapper
+            label={label}
+            description={description}
+            error={error}
+            required={required}
+            withAsterisk={withAsterisk}
+            inputId={_id}
+        >
+            {field}
         </InputWrapper>
     );
 });

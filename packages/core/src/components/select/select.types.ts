@@ -82,6 +82,21 @@ export interface SelectRootProps
     /** Children containing select subcomponents */
     children: ReactNode;
 
+    /** Label text */
+    label?: ReactNode;
+
+    /** Description text */
+    description?: ReactNode;
+
+    /** Error message */
+    error?: ReactNode;
+
+    /** Whether the field is required */
+    required?: boolean;
+
+    /** Display an asterisk next to the label */
+    withAsterisk?: boolean;
+
     /** Selected value (controlled) */
     value?: string | null;
 

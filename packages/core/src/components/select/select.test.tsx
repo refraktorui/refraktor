@@ -36,6 +36,20 @@ describe("@refraktor/core/Select", () => {
         });
     });
 
+    it("renders defaultValue label in trigger before opening", async () => {
+        await render(
+            <Select
+                defaultValue="apple"
+                data={[
+                    { value: "apple", label: "Apple" },
+                    { value: "orange", label: "Orange" }
+                ]}
+            />
+        );
+
+        expect(screen.getByRole("combobox")).toHaveValue("Apple");
+    });
+
     it("renders searchable input inside dropdown", async () => {
         const user = userEvent.setup();
 
@@ -151,5 +165,26 @@ describe("@refraktor/core/Select", () => {
 
         expect(onChange).toHaveBeenCalledWith("vue");
         expect(screen.getByRole("combobox")).toHaveValue("Vue");
+    });
+
+    it("supports input wrapper props", async () => {
+        await render(
+            <Select
+                label="Framework"
+                description="Pick one option"
+                error="Selection is required"
+                transitionProps={transitionProps}
+                data={[
+                    { value: "react", label: "React" },
+                    { value: "vue", label: "Vue" }
+                ]}
+            />
+        );
+
+        const trigger = screen.getByLabelText("Framework");
+
+        expect(trigger).toHaveAttribute("aria-invalid", "true");
+        expect(screen.getByText("Pick one option")).toBeInTheDocument();
+        expect(screen.getByText("Selection is required")).toBeInTheDocument();
     });
 });

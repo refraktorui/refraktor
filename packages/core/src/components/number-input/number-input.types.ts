@@ -3,7 +3,7 @@ import {
     createComponentConfig,
     FactoryPayload
 } from "../../utils";
-import { InputFieldClassNames, InputFieldProps } from "../input";
+import { InputFieldClassNames, InputProps } from "../input";
 
 export type NumberInputControlsPosition = "left" | "right" | "none";
 
@@ -44,7 +44,7 @@ export interface _NumberInputProps {
 }
 
 export type NumberInputProps = _NumberInputProps &
-    Omit<InputFieldProps, "onChange" | "type" | keyof _NumberInputProps>;
+    Omit<InputProps, "onChange" | "type" | keyof _NumberInputProps>;
 
 export interface NumberInputFactoryPayload extends FactoryPayload {
     props: NumberInputProps;

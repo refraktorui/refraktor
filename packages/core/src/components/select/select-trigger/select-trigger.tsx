@@ -81,6 +81,8 @@ const SelectTrigger = factory<SelectTriggerFactoryPayload>(
                         select.triggerInputRef.current = node;
                     }}
                     readOnly
+                    required={select.required}
+                    error={select.error}
                     disabled={select.disabled}
                     value={hasValue ? selectedLabel : ""}
                     placeholder={hasValue ? undefined : placeholder ?? select.placeholder}

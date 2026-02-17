@@ -95,7 +95,6 @@ const SelectItem = factory<SelectItemFactoryPayload>(
                     "w-full text-left p-1.5 text-sm rounded-none appearance-none border-none bg-transparent",
                     "inline-flex items-center gap-2 outline-none transition-colors",
                     "hover:bg-[var(--refraktor-bg-hover)] focus-visible:bg-[var(--refraktor-bg-hover)]",
-                    "data-[selected=true]:bg-[var(--refraktor-bg-hover)]",
                     "data-[disabled=true]:opacity-50 data-[disabled=true]:pointer-events-none data-[disabled=true]:cursor-not-allowed",
                     getRadius(select.radius),
                     select.getStyles("item"),

@@ -1,9 +1,18 @@
 import { useId, useUncontrolled } from "@refraktor/utils";
-import { useCallback, useEffect, useRef } from "react";
+import {
+    Children,
+    isValidElement,
+    useCallback,
+    useEffect,
+    useMemo,
+    useRef
+} from "react";
+import type { ReactNode } from "react";
 import { useTheme } from "../../../theme";
 import { factory, useClassNames, useProps } from "../../../utils";
 import {
     focusSelectItem,
+    getNodeTextValue,
     getNavigableSelectItems,
     SelectProvider,
     useSelectItemsRegistry
@@ -18,6 +27,7 @@ import type {
     SelectRootProps
 } from "../select.types";
 import { useSelect } from "../use-select";
+import { InputWrapper } from "../../input/input-wrapper";
 
 const defaultProps = {
     positioning: {
@@ -37,11 +47,52 @@ const defaultProps = {
     closeOnEscape: true
 } satisfies Partial<SelectRootProps>;
 
+function collectSelectItemLabels(node: ReactNode, labels: Map<string, string>) {
+    Children.forEach(node, (child) => {
+        if (!isValidElement(child)) {
+            return;
+        }
+
+        const typeDisplayName = (child.type as { displayName?: string })
+            .displayName;
+        const props = child.props as {
+            value?: string;
+            textValue?: string;
+            children?: ReactNode;
+        };
+
+        if (
+            typeDisplayName === "@refraktor/core/Select.Item" &&
+            typeof props.value === "string"
+        ) {
+            labels.set(
+                props.value,
+                getNodeTextValue(props.children, props.textValue) || props.value
+            );
+        }
+
+        if (props.children !== undefined && props.children !== null) {
+            collectSelectItemLabels(props.children, labels);
+        }
+    });
+}
+
+function getSelectItemLabels(node: ReactNode) {
+    const labels = new Map<string, string>();
+    collectSelectItemLabels(node, labels);
+    return labels;
+}
+
 const SelectRoot = factory<SelectRootFactoryPayload>((_props, ref) => {
     const { cx } = useTheme();
     const {
         id,
         children,
+        label,
+        description,
+        error,
+        required,
+        withAsterisk,
         value,
         defaultValue,
         onChange,
@@ -74,6 +125,8 @@ const SelectRoot = factory<SelectRootFactoryPayload>((_props, ref) => {
     const _id = useId(id);
     const listId = `${_id}-listbox`;
     const triggerId = `${_id}-trigger`;
+    const hasWrapper = label || description || error;
+    const inferredLabels = useMemo(() => getSelectItemLabels(children), [children]);
 
     const [selectedValue, setSelectedValue] = useUncontrolled<string | null>({
         value,
@@ -153,8 +206,12 @@ const SelectRoot = factory<SelectRootFactoryPayload>((_props, ref) => {
             return "";
         }
 
-        return labelsRef.current.get(selectedValue) ?? selectedValue;
-    }, [selectedValue]);
+        return (
+            labelsRef.current.get(selectedValue) ??
+            inferredLabels.get(selectedValue) ??
+            selectedValue
+        );
+    }, [selectedValue, inferredLabels]);
 
     const focusFirstItem = useCallback(() => {
         const items = getNavigableSelectItems(getVisibleItems());
@@ -216,6 +273,8 @@ const SelectRoot = factory<SelectRootFactoryPayload>((_props, ref) => {
         searchPlaceholder,
         nothingFound,
         disabled: !!disabled,
+        error: !!error,
+        required: !!required,
         size,
         radius,
         variant,
@@ -238,16 +297,33 @@ const SelectRoot = factory<SelectRootFactoryPayload>((_props, ref) => {
         getStyles
     };
 
+    const content = (
+        <div
+            ref={ref}
+            id={_id}
+            className={cx("relative w-full", classes.root, className)}
+            {...props}
+        >
+            {children}
+        </div>
+    );
+
     return (
         <SelectProvider value={context}>
-            <div
-                ref={ref}
-                id={_id}
-                className={cx("relative w-full", classes.root, className)}
-                {...props}
-            >
-                {children}
-            </div>
+            {hasWrapper ? (
+                <InputWrapper
+                    label={label}
+                    description={description}
+                    error={error}
+                    required={required}
+                    withAsterisk={withAsterisk}
+                    inputId={triggerId}
+                >
+                    {content}
+                </InputWrapper>
+            ) : (
+                content
+            )}
         </SelectProvider>
     );
 });

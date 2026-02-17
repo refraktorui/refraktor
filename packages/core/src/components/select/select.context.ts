@@ -29,6 +29,8 @@ export interface SelectContextValue {
     searchPlaceholder: string;
     nothingFound: ReactNode;
     disabled: boolean;
+    error: boolean;
+    required: boolean;
     size: RefraktorSize;
     radius: RefraktorRadius;
     variant: InputVariant;
