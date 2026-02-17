@@ -275,16 +275,15 @@ const SelectDropdown = factory<SelectDropdownFactoryPayload>(
             </Transition>
         );
 
-        const wrappedContent = select.select.opened ? (
+        const wrappedContent = (
             <FloatingFocusManager
                 context={select.select.context}
                 modal={false}
                 initialFocus={-1}
+                disabled={!select.select.opened}
             >
                 {dropdownContent}
             </FloatingFocusManager>
-        ) : (
-            dropdownContent
         );
 
         return select.withinPortal ? (

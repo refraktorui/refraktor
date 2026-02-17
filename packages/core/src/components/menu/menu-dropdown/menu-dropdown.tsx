@@ -196,16 +196,15 @@ const MenuDropdown = factory<MenuDropdownFactoryPayload>(
             </Transition>
         );
 
-        const wrappedContent = level.menu.opened ? (
+        const wrappedContent = (
             <FloatingFocusManager
                 context={level.menu.context}
                 modal={false}
                 initialFocus={-1}
+                disabled={!level.menu.opened}
             >
                 {dropdownContent}
             </FloatingFocusManager>
-        ) : (
-            dropdownContent
         );
 
         return withinPortal ? (
