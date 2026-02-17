@@ -139,8 +139,8 @@ const NumberInput = factory<NumberInputFactoryPayload>((_props, ref) => {
     };
 
     const stopHold = () => {
-        if (holdTimer.current) clearTimeout(holdTimer.current);
-        if (repeatTimer.current) clearInterval(repeatTimer.current);
+        if (holdTimer.current) clearInterval(holdTimer.current);
+        if (repeatTimer.current) clearTimeout(repeatTimer.current);
         holdTimer.current = null;
         repeatTimer.current = null;
     };
