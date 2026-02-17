@@ -100,7 +100,7 @@ const Switch = factory<SwitchFactoryPayload>((_props, ref) => {
                     <span
                         className={cx(
                             "text-[var(--refraktor-text)]",
-                            labelPosition === "left" ? "mr-3" : "ml-3",
+                            labelPosition === "left" ? "mr-2" : "ml-2",
                             sizeClass.label,
                             classes.label
                         )}
