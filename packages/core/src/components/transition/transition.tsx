@@ -239,26 +239,30 @@ const Transition = polymorphicFactory<TransitionFactoryPayload>(
                 setTransitionState("entering");
 
                 rafRef.current = window.requestAnimationFrame(() => {
-                    if (runIdRef.current !== runId) {
-                        return;
-                    }
-
-                    setTransitionState("entered");
-
-                    const waitTime = enterDuration + enterDelay;
-
-                    if (waitTime <= 0) {
-                        onEnterEnd?.();
-                        return;
-                    }
-
-                    timeoutRef.current = window.setTimeout(() => {
+                    // Second rAF ensures the browser has painted the enterFrom
+                    // styles before we move to entered, so the CSS transition fires.
+                    rafRef.current = window.requestAnimationFrame(() => {
                         if (runIdRef.current !== runId) {
                             return;
                         }
 
-                        onEnterEnd?.();
-                    }, waitTime);
+                        setTransitionState("entered");
+
+                        const waitTime = enterDuration + enterDelay;
+
+                        if (waitTime <= 0) {
+                            onEnterEnd?.();
+                            return;
+                        }
+
+                        timeoutRef.current = window.setTimeout(() => {
+                            if (runIdRef.current !== runId) {
+                                return;
+                            }
+
+                            onEnterEnd?.();
+                        }, waitTime);
+                    });
                 });
 
                 return;
