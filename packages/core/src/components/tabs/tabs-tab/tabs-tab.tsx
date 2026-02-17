@@ -91,10 +91,6 @@ const TabsTab = factory<TabsTabFactoryPayload>(
 
             const nextTab = tabs[nextIndex];
             nextTab.ref.current?.focus();
-
-            if (activationMode === "automatic") {
-                onValueChange(nextTab.value);
-            }
         };
 
         const handleBoundary = (type: "first" | "last") => {
@@ -107,10 +103,6 @@ const TabsTab = factory<TabsTabFactoryPayload>(
             const target = type === "first" ? tabs[0] : tabs[tabs.length - 1];
 
             target.ref.current?.focus();
-
-            if (activationMode === "automatic") {
-                onValueChange(target.value);
-            }
         };
 
         return (
