@@ -98,7 +98,7 @@ const Portal = factory<PortalFactoryPayload>((_props, ref) => {
     return createPortal(<>{children}</>, nodeRef.current);
 });
 
-Portal.displayName = "@velra/core/Portal";
+Portal.displayName = "@refraktor/core/Portal";
 Portal.configure = createComponentConfig<PortalProps>();
 
 export default Portal;
