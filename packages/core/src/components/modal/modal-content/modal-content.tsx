@@ -38,7 +38,7 @@ const ModalContent = factory<ModalContentFactoryPayload>(
                 mounted={modal.opened}
                 {...resolvedTransitionProps}
                 className={cx(
-                    "fixed inset-0 z-50 grid place-items-center p-3 sm:p-6 pointer-events-none",
+                    "fixed inset-0 z-50 grid place-items-center pointer-events-none",
                     transitionClassName
                 )}
             >
@@ -50,9 +50,8 @@ const ModalContent = factory<ModalContentFactoryPayload>(
                     data-opened={modal.opened}
                     style={style}
                     className={cx(
-                        "pointer-events-auto relative z-50 w-full max-w-[36rem]",
-                        "border border-[var(--refraktor-border)] bg-[var(--refraktor-bg-elevated)] px-5 pb-5 pt-4 text-[var(--refraktor-text)] shadow-[0_30px_80px_-40px_rgba(0,0,0,0.75)] sm:px-6 sm:pb-6 sm:pt-5",
-                        "max-h-[calc(100vh-1.5rem)] max-h-[calc(100dvh-1.5rem)] overflow-y-auto refraktor-scrollbar",
+                        "pointer-events-auto relative z-50 w-full max-w-md",
+                        "border border-[var(--refraktor-border)] bg-[var(--refraktor-bg)] p-4 text-[var(--refraktor-text)] shadow-md",
                         getRadius(radius),
                         getStyles("content"),
                         className

@@ -25,11 +25,7 @@ const ModalClose = factory<ModalCloseFactoryPayload>(
                 type={type}
                 aria-label="Close"
                 className={cx(
-                    "absolute right-4 top-4 inline-flex h-9 w-9 items-center justify-center rounded-full cursor-pointer border border-transparent",
-                    "text-base text-[var(--refraktor-text-secondary)] transition-all",
-                    "hover:border-[var(--refraktor-border)] hover:bg-[var(--refraktor-bg-subtle)] hover:text-[var(--refraktor-text)]",
-                    "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--refraktor-primary)]",
-                    "active:scale-95",
+                    "size-6 text-[var(--refraktor-text-secondary)] hover:text-[var(--refraktor-text)] cursor-pointer transition-colors",
                     getStyles("close"),
                     className
                 )}

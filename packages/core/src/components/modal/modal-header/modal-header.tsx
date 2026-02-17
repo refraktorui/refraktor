@@ -14,7 +14,7 @@ const ModalHeader = factory<ModalHeaderFactoryPayload>(
             <div
                 ref={ref}
                 className={cx(
-                    "mb-3 flex items-center justify-between gap-2.5",
+                    "mb-4 flex items-center justify-between",
                     getStyles("header"),
                     className
                 )}
@@ -27,7 +27,9 @@ const ModalHeader = factory<ModalHeaderFactoryPayload>(
                     {text ?? children}
                 </div>
 
-                {withClose && <ModalClose className="static shrink-0 self-center" />}
+                {withClose && (
+                    <ModalClose className="static shrink-0 self-center" />
+                )}
             </div>
         );
     }
