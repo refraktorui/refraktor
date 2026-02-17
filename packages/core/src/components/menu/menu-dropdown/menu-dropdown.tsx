@@ -166,6 +166,7 @@ const MenuDropdown = factory<MenuDropdownFactoryPayload>(
                 transition="fade"
                 duration={150}
                 mounted={level.menu.opened}
+                style={{ position: "relative", zIndex: 1000 }}
                 {...transitionProps}
             >
                 <div
@@ -174,6 +175,7 @@ const MenuDropdown = factory<MenuDropdownFactoryPayload>(
                     tabIndex={-1}
                     style={{
                         ...level.menu.floatingStyles,
+                        zIndex: 1000,
                         scrollbarGutter: "auto",
                         ...style
                     }}

@@ -50,6 +50,7 @@ const Tooltip = factory<TooltipFactoryPayload>((_props, ref) => {
         transitionProps,
         radius,
         withinPortal,
+        style,
         className,
         classNames,
         ...props
@@ -94,6 +95,7 @@ const Tooltip = factory<TooltipFactoryPayload>((_props, ref) => {
             transition="fade"
             duration={200}
             mounted={isOpened}
+            style={{ position: "relative", zIndex: 1000 }}
             {...transitionProps}
         >
             <div
@@ -108,7 +110,11 @@ const Tooltip = factory<TooltipFactoryPayload>((_props, ref) => {
                 }}
                 id={_id}
                 role="tooltip"
-                style={floatingStyles}
+                style={{
+                    ...floatingStyles,
+                    zIndex: 1000,
+                    ...style
+                }}
                 className={cx(
                     "z-50 px-1.5 py-0.5 text-sm bg-[var(--refraktor-bg)] text-[var(--refraktor-text)] shadow-md",
                     getRadius(radius),

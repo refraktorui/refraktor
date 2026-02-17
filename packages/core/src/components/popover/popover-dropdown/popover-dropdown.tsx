@@ -26,6 +26,7 @@ const PopoverDropdown = factory<PopoverDropdownFactoryPayload>(
                 transition="fade"
                 duration={200}
                 mounted={popover.opened}
+                style={{ position: "relative", zIndex: 1000 }}
                 {...transitionProps}
             >
                 <div
@@ -42,6 +43,7 @@ const PopoverDropdown = factory<PopoverDropdownFactoryPayload>(
                     aria-modal="true"
                     style={{
                         ...popover.floatingStyles,
+                        zIndex: 1000,
                         ...style
                     }}
                     className={cx(

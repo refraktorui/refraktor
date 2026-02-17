@@ -128,7 +128,8 @@ export function useMenu(options: UseMenuProps = {}): UseMenuReturn {
         open: isOpen,
         onOpenChange: setIsOpen,
         middleware,
-        whileElementsMounted: autoUpdate
+        whileElementsMounted: autoUpdate,
+        strategy: "fixed"
     });
 
     const click = useClick(floating.context, {

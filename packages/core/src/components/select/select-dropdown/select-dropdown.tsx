@@ -201,6 +201,7 @@ const SelectDropdown = factory<SelectDropdownFactoryPayload>(
                 transition="fade"
                 duration={150}
                 mounted={select.select.opened}
+                style={{ position: "relative", zIndex: 1000 }}
                 {...select.transitionProps}
             >
                 <div
@@ -211,6 +212,7 @@ const SelectDropdown = factory<SelectDropdownFactoryPayload>(
                     tabIndex={-1}
                     style={{
                         ...select.select.floatingStyles,
+                        zIndex: 1000,
                         width: referenceWidth,
                         ...style
                     }}

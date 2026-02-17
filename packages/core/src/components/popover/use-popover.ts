@@ -142,7 +142,8 @@ export function usePopover(options: UsePopoverProps = {}): UsePopoverReturn {
         open: isOpen,
         onOpenChange: setIsOpen,
         middleware: middleware,
-        whileElementsMounted: autoUpdate
+        whileElementsMounted: autoUpdate,
+        strategy: "fixed"
     });
 
     const click = useClick(floating.context, {

@@ -160,6 +160,7 @@ const MenuSubDropdown = factory<MenuSubDropdownFactoryPayload>(
                 transition="fade"
                 duration={150}
                 mounted={submenuLevel.menu.opened}
+                style={{ position: "relative", zIndex: 1000 }}
                 {...transitionProps}
             >
                 <MenuLevelProvider value={submenuLevel}>
@@ -172,6 +173,7 @@ const MenuSubDropdown = factory<MenuSubDropdownFactoryPayload>(
                         tabIndex={-1}
                         style={{
                             ...submenuLevel.menu.floatingStyles,
+                            zIndex: 1000,
                             scrollbarGutter: "auto",
                             ...style
                         }}

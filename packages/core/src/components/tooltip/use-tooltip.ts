@@ -136,7 +136,8 @@ export function useTooltip(options: UseTooltipProps = {}): UseTooltipReturn {
         open: isOpen,
         onOpenChange: setIsOpen,
         middleware: middleware,
-        whileElementsMounted: autoUpdate
+        whileElementsMounted: autoUpdate,
+        strategy: "fixed"
     });
 
     const hover = useHover(floating.context, {

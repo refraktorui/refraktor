@@ -114,7 +114,8 @@ export function useSelect(options: UseSelectProps = {}): UseSelectReturn {
         open: isOpen,
         onOpenChange: setIsOpen,
         middleware,
-        whileElementsMounted: autoUpdate
+        whileElementsMounted: autoUpdate,
+        strategy: "fixed"
     });
 
     const click = useClick(floating.context, {
