@@ -253,7 +253,6 @@
 .refraktor-scrollbar {
     scrollbar-width: thin;
     scrollbar-color: var(--refraktor-scroll-thumb) transparent;
-    scrollbar-gutter: stable both-edges;
 }
 
 .refraktor-scrollbar::-webkit-scrollbar {
