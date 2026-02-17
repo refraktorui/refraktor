@@ -1,6 +1,6 @@
 {
     "name": "@refraktor/dates",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "license": "MIT",
     "publishConfig": {
         "access": "public"
@@ -24,8 +24,8 @@
         "react": ">=18.0.0",
         "react-dom": ">=18.0.0",
         "dayjs": "^1.11.19",
-        "@refraktor/core": "0.0.1",
-        "@refraktor/utils": "0.0.1"
+        "@refraktor/core": "0.0.2",
+        "@refraktor/utils": "0.0.2"
     },
     "devDependencies": {
         "typescript": "^5.9.3"
