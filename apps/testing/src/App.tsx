@@ -1,7 +1,9 @@
-import { Button, cx, useTheme } from "@refraktor/core";
+import { Button, cx, Drawer, useTheme } from "@refraktor/core";
+import { useState } from "react";
 
 function App() {
     const { theme, toggleTheme } = useTheme();
+    const [isOpen, setIsOpen] = useState(false);
 
     return (
         <div className="bg-dark-900 h-screen text-white flex flex-col items-center justify-center gap-4">
@@ -12,6 +14,17 @@ function App() {
                 )}
             >
                 <Button onClick={toggleTheme}>Toggle Theme</Button>
+                <Button onClick={() => setIsOpen(!isOpen)}>
+                    Toggle Drawer
+                </Button>
+
+                <Drawer opened={isOpen} onOpenedChange={setIsOpen}>
+                    <Drawer.Overlay />
+                    <Drawer.Content>
+                        <Drawer.Header>WTF</Drawer.Header>
+                        <p>Drawer content</p>
+                    </Drawer.Content>
+                </Drawer>
             </div>
         </div>
     );

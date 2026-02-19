@@ -4,6 +4,7 @@ export * from "./badge";
 export * from "./button";
 export * from "./checkbox";
 export * from "./color-swatch";
+export * from "./drawer";
 export * from "./input";
 export * from "./loader";
 export * from "./modal";
