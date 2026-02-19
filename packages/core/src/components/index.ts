@@ -1,6 +1,7 @@
 export * from "./accordion";
 export * from "./avatar";
 export * from "./badge";
+export * from "./breadcrumbs";
 export * from "./button";
 export * from "./checkbox";
 export * from "./color-swatch";
