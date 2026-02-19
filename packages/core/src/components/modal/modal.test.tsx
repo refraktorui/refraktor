@@ -85,6 +85,42 @@ describe("@refraktor/core/Modal", () => {
         expect(await screen.findByRole("dialog")).toBeInTheDocument();
     });
 
+    it("applies custom overlay background opacity and blur", async () => {
+        await render(
+            <Modal defaultOpened transitionProps={transitionProps}>
+                <Modal.Overlay
+                    data-testid="overlay"
+                    backgroundOpacity={0.4}
+                    blur={6}
+                />
+                <Modal.Content>Styled overlay</Modal.Content>
+            </Modal>
+        );
+
+        const overlay = await screen.findByTestId("overlay");
+
+        expect(overlay).toHaveStyle({
+            backgroundColor: "rgba(0, 0, 0, 0.4)",
+            backdropFilter: "blur(6px)"
+        });
+    });
+
+    it("does not set backdrop blur for zero blur", async () => {
+        await render(
+            <Modal defaultOpened transitionProps={transitionProps}>
+                <Modal.Overlay data-testid="overlay" blur={0} />
+                <Modal.Content>No blur</Modal.Content>
+            </Modal>
+        );
+
+        const overlay = await screen.findByTestId("overlay");
+
+        expect(overlay).toHaveStyle({
+            backgroundColor: "rgba(0, 0, 0, 0.5)"
+        });
+        expect(overlay.style.backdropFilter).toBe("");
+    });
+
     it("locks and unlocks body scroll when enabled", async () => {
         const user = userEvent.setup();
 

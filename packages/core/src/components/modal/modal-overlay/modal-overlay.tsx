@@ -6,7 +6,18 @@ import { useModalContext } from "../modal.context";
 import { ModalOverlayFactoryPayload } from "../modal.types";
 
 const ModalOverlay = factory<ModalOverlayFactoryPayload>(
-    ({ closeOnClick = true, className, onMouseDown, ...props }, ref) => {
+    (
+        {
+            closeOnClick = true,
+            backgroundOpacity = 0.5,
+            blur = 0,
+            className,
+            onMouseDown,
+            style,
+            ...props
+        },
+        ref
+    ) => {
         const { cx } = useTheme();
         const {
             modal,
@@ -15,6 +26,12 @@ const ModalOverlay = factory<ModalOverlayFactoryPayload>(
             transitionProps,
             getStyles
         } = useModalContext();
+
+        const blurValue = typeof blur === "number" ? `${blur}px` : blur;
+        const backdropFilterValue =
+            blurValue !== "0" && blurValue !== "0px"
+                ? `blur(${blurValue})`
+                : undefined;
 
         const handleMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
             onMouseDown?.(event);
@@ -41,10 +58,15 @@ const ModalOverlay = factory<ModalOverlayFactoryPayload>(
                     ref={ref}
                     aria-hidden="true"
                     className={cx(
-                        "fixed inset-0 z-40 bg-gradient-to-b from-black/60 via-black/45 to-black/65 backdrop-blur-[2px]",
+                        "fixed inset-0 z-40",
                         getStyles("overlay"),
                         className
                     )}
+                    style={{
+                        backgroundColor: `rgba(0, 0, 0, ${backgroundOpacity})`,
+                        backdropFilter: backdropFilterValue,
+                        ...style
+                    }}
                     onMouseDown={handleMouseDown}
                     {...props}
                 />

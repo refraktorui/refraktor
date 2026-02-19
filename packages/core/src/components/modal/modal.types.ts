@@ -64,6 +64,12 @@ export interface ModalOverlayProps extends ComponentPropsWithoutRef<"div"> {
     /** Whether clicking the overlay closes modal @default `true` */
     closeOnClick?: boolean;
 
+    /** Overlay background opacity @default `0.5` */
+    backgroundOpacity?: number;
+
+    /** Backdrop blur amount in px (or any CSS length) @default `0` */
+    blur?: number | string;
+
     /** Used for editing root class name */
     className?: string;
 }
