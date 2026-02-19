@@ -1,6 +1,6 @@
 {
     "name": "@refraktor/core",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "license": "MIT",
     "publishConfig": {
         "access": "public"
@@ -23,7 +23,7 @@
     "peerDependencies": {
         "react": ">=18.0.0",
         "react-dom": ">=18.0.0",
-        "@refraktor/utils": "0.0.2"
+        "@refraktor/utils": "0.0.3"
     },
     "devDependencies": {
         "typescript": "^5.9.3"
