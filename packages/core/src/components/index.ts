@@ -20,6 +20,7 @@ export * from "./select";
 export * from "./segmented-control";
 export * from "./slider";
 export * from "./switch";
+export * from "./table";
 export * from "./tabs";
 export * from "./timeline";
 export * from "./textarea";
