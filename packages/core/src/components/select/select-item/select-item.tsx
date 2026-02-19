@@ -92,7 +92,7 @@ const SelectItem = factory<SelectItemFactoryPayload>(
                 aria-selected={isSelected}
                 aria-disabled={disabled}
                 className={cx(
-                    "w-full text-left p-1.5 text-sm rounded-none appearance-none border-none bg-transparent",
+                    "w-full text-left p-1.5 text-xs rounded-none appearance-none border-none bg-transparent",
                     "inline-flex items-center gap-2 outline-none transition-colors",
                     "hover:bg-[var(--refraktor-bg-hover)] focus-visible:bg-[var(--refraktor-bg-hover)]",
                     "data-[disabled=true]:opacity-50 data-[disabled=true]:pointer-events-none data-[disabled=true]:cursor-not-allowed",
