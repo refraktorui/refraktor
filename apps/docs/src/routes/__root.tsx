@@ -1,5 +1,6 @@
 import Sidebar from "@/components/Layout/Sidebar";
 import Header from "@/components/Layout/Header";
+import Footer from "@/components/Layout/Footer";
 import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { useState } from "react";
 import NotFound from "@/components/NotFound";
@@ -21,9 +22,13 @@ export const Route = createRootRoute({
                         onClose={() => setMobileOpen(false)}
                     />
 
-                    <main className="flex-1 p-4">
-                        <Outlet />
-                    </main>
+                    <div className="flex min-w-0 flex-1 flex-col">
+                        <main className="flex-1 p-4">
+                            <Outlet />
+                        </main>
+
+                        <Footer />
+                    </div>
                 </div>
             </div>
         );

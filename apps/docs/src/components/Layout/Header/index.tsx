@@ -66,7 +66,7 @@ export default function Header({ onMenuClick, mobileOpen }: HeaderProps) {
                     v{coreVersion}
                 </Badge>
 
-                <div className="hidden sm:block w-px h-6 bg-dark-500" />
+                <div className="w-px h-6 bg-dark-500" />
 
                 <Tooltip content="View on GitHub">
                     <Link

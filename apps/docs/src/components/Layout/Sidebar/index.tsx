@@ -23,31 +23,41 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
     const isHome = location.pathname === "/";
 
     const mobileStateClasses = mobileOpen
-        ? "translate-x-0 pointer-events-auto backdrop-blur-sm"
+        ? "translate-x-0 pointer-events-auto"
         : "-translate-x-full pointer-events-none";
 
     if (isHome) return null;
 
     return (
-        <aside
-            className={cx(
-                "w-72 flex-shrink-0 border-r border-dark-600 bg-dark-800 p-4 overflow-y-auto refraktor-scrollbar transition-transform duration-300",
-                "fixed top-12 bottom-0 left-0 z-40",
-                mobileStateClasses,
-                "md:sticky md:top-12 md:h-[calc(100vh-3rem)] md:translate-x-0 md:pointer-events-auto"
-            )}
-        >
-            <div className="flex flex-col gap-2">
-                {sidebarItems.map((item) => (
-                    <SidebarTreeNode
-                        node={item}
-                        depth={0}
-                        pathname={location.pathname}
-                        onLinkClick={onClose}
-                    />
-                ))}
-            </div>
-        </aside>
+        <>
+            <aside
+                className={cx(
+                    "w-72 flex-shrink-0 border-r border-dark-600 bg-dark-800 p-4 overflow-y-auto refraktor-scrollbar transition-transform duration-300 z-1",
+                    "fixed top-12 bottom-0 left-0 z-40",
+                    mobileStateClasses,
+                    "md:sticky md:top-12 md:h-[calc(100vh-3rem)] md:translate-x-0 md:pointer-events-auto"
+                )}
+            >
+                <div className="flex flex-col gap-2">
+                    {sidebarItems.map((item) => (
+                        <SidebarTreeNode
+                            node={item}
+                            depth={0}
+                            pathname={location.pathname}
+                            onLinkClick={onClose}
+                        />
+                    ))}
+                </div>
+            </aside>
+
+            <div
+                className={cx(
+                    mobileOpen &&
+                        "absolute inset-0 bg-dark-900/50 backdrop-blur-sm z-0"
+                )}
+                onClick={onClose}
+            />
+        </>
     );
 }
 
@@ -93,7 +103,7 @@ function SidebarLinkItem({
 }: SidebarLinkItemProps) {
     const isActive = isNodeActive(node, pathname);
     const offsetStyle: CSSProperties | undefined = depth
-        ? { marginLeft: depth * 12 + 8 }
+        ? { marginLeft: depth * 8 + 8 }
         : undefined;
 
     return (
@@ -108,8 +118,8 @@ function SidebarLinkItem({
             <Link
                 to={node.href}
                 className={cx(
-                    "flex w-full items-center justify-between rounded-lg px-2 py-1.5 text-left text-sm text-dark-100 transition-colors duration-150 hover:bg-dark-600 hover:text-white",
-                    isActive && "bg-dark-600 text-white"
+                    "flex w-full items-center justify-between rounded-lg px-2 py-1.5 text-left text-sm text-dark-100 transition-colors duration-150 hover:bg-dark-600/70 hover:text-white",
+                    isActive && "bg-dark-600/70 text-white"
                 )}
                 onClick={() => {
                     onClick?.();
@@ -157,7 +167,7 @@ function SidebarGroupItem({
     }, [hasActiveChild]);
 
     const offsetStyle: CSSProperties | undefined = depth
-        ? { marginLeft: depth * 12 + 8 }
+        ? { marginLeft: depth * 8 + 8 }
         : undefined;
 
     return (
@@ -173,8 +183,8 @@ function SidebarGroupItem({
             <button
                 type="button"
                 className={cx(
-                    "flex w-full items-center justify-between rounded-lg px-2 py-1.5 text-left text-sm font-medium text-dark-100 transition-colors duration-150 hover:bg-dark-600 hover:text-white cursor-pointer",
-                    open && "bg-dark-600 text-white"
+                    "flex w-full items-center justify-between rounded-lg px-2 py-1.5 text-left text-sm font-medium text-dark-100 transition-colors duration-150 hover:bg-dark-600/70 hover:text-white cursor-pointer",
+                    open && "bg-dark-600/70 text-white"
                 )}
                 onClick={() => setOpen((prev) => !prev)}
                 aria-expanded={open}
