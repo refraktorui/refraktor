@@ -208,6 +208,7 @@ const SegmentedControl = factory<SegmentedControlFactoryPayload>(
                                 "relative inline-flex items-center justify-center whitespace-nowrap select-none outline-none transition-colors",
                                 "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--refraktor-primary)]",
                                 "data-[disabled=true]:opacity-50 data-[disabled=true]:pointer-events-none data-[disabled=true]:cursor-not-allowed",
+                                item.icon && "gap-1.5",
                                 fullWidth && "flex-1",
                                 sizeStyles.control,
                                 sizeStyles.label,
@@ -222,6 +223,15 @@ const SegmentedControl = factory<SegmentedControlFactoryPayload>(
                                 handleKeyDown(event, index, isControlDisabled)
                             }
                         >
+                            {item.icon && (
+                                <span
+                                    aria-hidden="true"
+                                    className="inline-flex shrink-0 leading-none"
+                                >
+                                    {item.icon}
+                                </span>
+                            )}
+
                             <span className={cx("leading-none", classes.label)}>
                                 {item.label}
                             </span>
