@@ -66,6 +66,7 @@ function DocumentationTabs({ children, defaultTab }: DocumentationTabsProps) {
                     root: "w-fit",
                     control: "cursor-pointer"
                 }}
+                size="lg"
             />
 
             <div className="flex flex-col gap-12">{activeContent}</div>

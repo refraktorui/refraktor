@@ -28,7 +28,7 @@ function DocumentationSection({
                 </Link>
 
                 {description && (
-                    <p className="text-dark-200 text-sm leading-relaxed max-w-2xl">
+                    <p className="text-dark-200 text-sm leading-relaxed max-w-5xl">
                         {description}
                     </p>
                 )}

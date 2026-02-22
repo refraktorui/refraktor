@@ -1,10 +1,81 @@
-import Documentation from "@/components/Documentation";
+import Documentation, { createPlayground } from "@/components/Documentation";
 import { Button } from "@refraktor/core";
 import { createFileRoute } from "@tanstack/react-router";
+import { IconArrowRight } from "@tabler/icons-react";
 
 export const Route = createFileRoute("/core/test/")({
     component: RouteComponent
 });
+
+const ButtonPlayground = createPlayground({
+    variant: {
+        type: "segmented",
+        label: "Variant",
+        description: "The visual style of the button.",
+        options: [
+            { value: "filled", label: "Filled" },
+            { value: "outline", label: "Outline" },
+            { value: "ghost", label: "Ghost" }
+        ],
+        default: "filled"
+    },
+    size: {
+        type: "select",
+        label: "Size",
+        description: "Controls the padding and font size.",
+        options: ["xs", "sm", "md", "lg", "xl"] as const,
+        default: "md"
+    },
+    disabled: {
+        type: "switch",
+        label: "Disabled",
+        description: "Disables the button and reduces its opacity.",
+        default: false
+    },
+    loading: {
+        type: "switch",
+        label: "Loading",
+        description: "Shows a spinner and disables interaction.",
+        default: false
+    },
+    fullWidth: {
+        type: "switch",
+        label: "Full Width",
+        description: "Stretches the button to fill its container.",
+        default: false
+    }
+});
+
+const demoCode = `import { Button } from "@refraktor/core";
+
+export function Demo() {
+    return (
+        <Button
+            variant="filled"
+            size="md"
+        >
+            Button
+        </Button>
+    );
+}`;
+
+const demoCodeSecondary = `import { Button } from "@refraktor/core";
+
+export function DemoAlt() {
+    return (
+        <div className="flex items-center gap-2">
+            <Button variant="outline" size="sm">
+                Back
+            </Button>
+            <Button variant="filled" size="sm" loading>
+                Saving...
+            </Button>
+            <Button variant="ghost" size="sm" disabled>
+                Disabled
+            </Button>
+        </div>
+    );
+}`;
 
 function RouteComponent() {
     return (
@@ -18,6 +89,63 @@ function RouteComponent() {
 
             <Documentation.Tabs defaultTab="docs">
                 <Documentation.Tab id="docs">
+                    <Documentation.Section
+                        id="playground"
+                        title="Playground"
+                        description="Interact with the controls below to explore the component's props live."
+                    >
+                        <ButtonPlayground.Wrapper>
+                            <ButtonPlayground.Preview>
+                                {({
+                                    variant,
+                                    size,
+                                    disabled,
+                                    loading,
+                                    fullWidth
+                                }) => (
+                                    <Button
+                                        variant={
+                                            variant as
+                                                | "filled"
+                                                | "outline"
+                                                | "ghost"
+                                        }
+                                        size={
+                                            size as
+                                                | "xs"
+                                                | "sm"
+                                                | "md"
+                                                | "lg"
+                                                | "xl"
+                                        }
+                                        disabled={disabled}
+                                        loading={loading}
+                                        fullWidth={fullWidth}
+                                    >
+                                        Button
+                                    </Button>
+                                )}
+                            </ButtonPlayground.Preview>
+
+                            <ButtonPlayground.Controls />
+
+                            <ButtonPlayground.Code
+                                files={[
+                                    {
+                                        name: "Demo.tsx",
+                                        language: "tsx",
+                                        code: demoCode
+                                    },
+                                    {
+                                        name: "DemoAlt.tsx",
+                                        language: "tsx",
+                                        code: demoCodeSecondary
+                                    }
+                                ]}
+                            />
+                        </ButtonPlayground.Wrapper>
+                    </Documentation.Section>
+
                     <Documentation.Section
                         id="usage"
                         title="Usage"
@@ -35,6 +163,26 @@ function RouteComponent() {
                             </Button>
                         </div>
                     </Documentation.Section>
+
+                </Documentation.Tab>
+
+                <Documentation.Tab id="classes">
+                    <Documentation.Section
+                        id="classnames"
+                        title="Classnames"
+                        description="Hover over a slot name to highlight the corresponding part of the component. On touch devices, tap to toggle."
+                    >
+                        <Documentation.ClassesInspector
+                            Component={Button}
+                            slots={["root", "container", "leftSection", "rightSection"]}
+                            componentProps={{
+                                variant: "filled",
+                                leftSection: <IconArrowRight size={16} />,
+                                rightSection: <IconArrowRight size={16} />,
+                                children: "Button"
+                            }}
+                        />
+                    </Documentation.Section>
                 </Documentation.Tab>
 
                 <Documentation.Tab id="props">
@@ -49,6 +197,7 @@ function RouteComponent() {
                                 type='"default" | "filled" | "outline" | "ghost"'
                                 default='"default"'
                                 description="The visual style of the button."
+                                required
                             />
                             <Documentation.Props.Content
                                 name="size"

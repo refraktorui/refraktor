@@ -2,42 +2,31 @@ import type { ReactNode } from "react";
 
 interface PropsWrapperProps {
     children: ReactNode;
-    caption?: string;
 }
 
-function PropsWrapper({ children, caption }: PropsWrapperProps) {
+function PropsWrapper({ children }: PropsWrapperProps) {
     return (
-        <div className="flex flex-col gap-2">
-            {caption && (
-                <p className="text-xs text-dark-300 uppercase tracking-widest font-medium px-1">
-                    {caption}
-                </p>
-            )}
-
-            <div className="rounded-md border border-dark-600 overflow-hidden">
-                <div className="overflow-x-auto">
-                    <table className="w-full text-sm border-collapse">
-                        <thead>
-                            <tr className="border-b border-dark-600 bg-dark-800/80">
-                                <th className="text-left px-4 py-2.5 text-xs font-semibold text-dark-300 uppercase tracking-wider whitespace-nowrap">
-                                    Prop
-                                </th>
-                                <th className="text-left px-4 py-2.5 text-xs font-semibold text-dark-300 uppercase tracking-wider whitespace-nowrap">
-                                    Type
-                                </th>
-                                <th className="text-left px-4 py-2.5 text-xs font-semibold text-dark-300 uppercase tracking-wider whitespace-nowrap">
-                                    Default
-                                </th>
-                                <th className="text-left px-4 py-2.5 text-xs font-semibold text-dark-300 uppercase tracking-wider">
-                                    Description
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-dark-700/60">
-                            {children}
-                        </tbody>
-                    </table>
-                </div>
+        <div className="overflow-hidden rounded-md border border-dark-600 bg-dark-800">
+            <div className="overflow-x-auto">
+                <table className="w-full border-collapse text-sm">
+                    <thead>
+                        <tr className="border-b border-dark-600 text-xs text-dark-200 font-semibold uppercase">
+                            <th className="w-48 whitespace-nowrap px-4 py-3 text-left">
+                                Prop
+                            </th>
+                            <th className="w-68 whitespace-nowrap px-4 py-3 text-left">
+                                Type
+                            </th>
+                            <th className="w-32 whitespace-nowrap px-4 py-3 text-left">
+                                Default
+                            </th>
+                            <th className="px-4 py-3 text-left">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody className="divide-y divide-dark-600">
+                        {children}
+                    </tbody>
+                </table>
             </div>
         </div>
     );
