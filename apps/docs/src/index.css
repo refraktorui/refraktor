@@ -28,6 +28,10 @@
     --color-primary-900: var(--refraktor-colors-cloud-9);
 }
 
+:root {
+    background-color: var(--color-dark-900);
+}
+
 body {
     margin: 0;
     font-family: "Inter", sans-serif;
