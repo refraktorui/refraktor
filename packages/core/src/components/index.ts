@@ -7,6 +7,7 @@ export * from "./checkbox";
 export * from "./color-swatch";
 export * from "./drawer";
 export * from "./file-input";
+export * from "./for";
 export * from "./input";
 export * from "./loader";
 export * from "./modal";
