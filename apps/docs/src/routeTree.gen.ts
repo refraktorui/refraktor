@@ -10,43 +10,43 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as CoreTestIndexRouteImport } from './routes/core/test/index'
+import { Route as CoreAvatarIndexRouteImport } from './routes/core/avatar/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CoreTestIndexRoute = CoreTestIndexRouteImport.update({
-  id: '/core/test/',
-  path: '/core/test/',
+const CoreAvatarIndexRoute = CoreAvatarIndexRouteImport.update({
+  id: '/core/avatar/',
+  path: '/core/avatar/',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/core/test/': typeof CoreTestIndexRoute
+  '/core/avatar/': typeof CoreAvatarIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/core/test': typeof CoreTestIndexRoute
+  '/core/avatar': typeof CoreAvatarIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/core/test/': typeof CoreTestIndexRoute
+  '/core/avatar/': typeof CoreAvatarIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/core/test/'
+  fullPaths: '/' | '/core/avatar/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/core/test'
-  id: '__root__' | '/' | '/core/test/'
+  to: '/' | '/core/avatar'
+  id: '__root__' | '/' | '/core/avatar/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  CoreTestIndexRoute: typeof CoreTestIndexRoute
+  CoreAvatarIndexRoute: typeof CoreAvatarIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -58,11 +58,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/core/test/': {
-      id: '/core/test/'
-      path: '/core/test'
-      fullPath: '/core/test/'
-      preLoaderRoute: typeof CoreTestIndexRouteImport
+    '/core/avatar/': {
+      id: '/core/avatar/'
+      path: '/core/avatar'
+      fullPath: '/core/avatar/'
+      preLoaderRoute: typeof CoreAvatarIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -70,7 +70,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  CoreTestIndexRoute: CoreTestIndexRoute,
+  CoreAvatarIndexRoute: CoreAvatarIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

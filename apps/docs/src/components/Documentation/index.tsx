@@ -11,6 +11,7 @@ import PlaygroundControls from "./PlaygroundControls";
 import PlaygroundControl from "./PlaygroundControl";
 import PlaygroundCode from "./PlaygroundCode";
 import { ClassesInspector } from "./ClassesInspector";
+import DocumentationShowcase from "./DocumentationShowcase";
 
 export { createPlayground } from "./createPlayground";
 export type { ClassesInspectorProps, SlotName } from "./ClassesInspector";
@@ -45,5 +46,6 @@ Documentation.Tab = DocumentationTab;
 Documentation.Props = Props;
 Documentation.Playground = Playground;
 Documentation.ClassesInspector = ClassesInspector;
+Documentation.Showcase = DocumentationShowcase;
 
 export default Documentation;

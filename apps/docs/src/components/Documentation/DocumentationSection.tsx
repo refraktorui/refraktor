@@ -18,13 +18,11 @@ function DocumentationSection({
     return (
         <section id={id} className="flex flex-col gap-4 scroll-mt-20">
             <div className="flex flex-col gap-2">
-                <Link to={`#${id}`}>
-                    <div className="flex group items-center gap-2">
-                        <IconHash className="size-4 transition-all text-dark-100 group-hover:text-white" />
-                        <h2 className="text-xl font-semibold text-white">
-                            {title}
-                        </h2>
-                    </div>
+                <Link to={`#${id}`} className="group relative block w-fit">
+                    <IconHash className="pointer-events-none absolute -left-7 top-1/2 size-4.5 -translate-y-1/2 text-dark-100 opacity-0 transition-opacity group-hover:opacity-100" />
+                    <h2 className="text-xl font-semibold text-white">
+                        {title}
+                    </h2>
                 </Link>
 
                 {description && (

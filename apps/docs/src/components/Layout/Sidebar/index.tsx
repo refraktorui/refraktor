@@ -41,6 +41,7 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
                 <div className="flex flex-col gap-2">
                     {sidebarItems.map((item) => (
                         <SidebarTreeNode
+                            key={item.title}
                             node={item}
                             depth={0}
                             pathname={location.pathname}

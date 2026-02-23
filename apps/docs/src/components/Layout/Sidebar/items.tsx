@@ -19,6 +19,11 @@ const sidebarItems: SidebarNode[] = [
                 items: [
                     {
                         kind: "link",
+                        title: "Avatar",
+                        href: "/core/avatar"
+                    },
+                    {
+                        kind: "link",
                         title: "Something random",
                         href: "/core/layout/something-random"
                     },

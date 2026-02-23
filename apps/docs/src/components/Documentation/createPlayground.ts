@@ -4,6 +4,7 @@ import {
     createElement,
     isValidElement,
     useContext,
+    useEffect,
     useState,
     type ReactNode
 } from "react";
@@ -64,7 +65,10 @@ function SelectInput({
             }
         },
         data: normalizeControlOptions(options),
-        className: "w-full"
+        className: "w-full",
+        classNames: {
+            dropdown: "overflow-y-auto refraktor-scrollbar max-h-64"
+        }
     });
 }
 
@@ -188,8 +192,27 @@ function renderControlInput(
 
 // ─── Factory ─────────────────────────────────────────────────────────────────
 
-export function createPlayground<C extends Config>(config: C) {
+type CodeGenerator<Props> = (
+    props: Props,
+    defaults: Record<string, unknown>
+) => string | Promise<string>;
+
+export function createPlayground<C extends Config>(
+    config: C,
+    options?: {
+        code?: CodeGenerator<InferProps<C>>;
+    }
+) {
     type Props = InferProps<C>;
+
+    const defaults = Object.fromEntries(
+        Object.entries(config).map(([k, v]) => [k, v.default])
+    ) as Record<string, unknown>;
+
+    const codeGenerator = options?.code
+        ? (props: Record<string, unknown>, defs: Record<string, unknown>) =>
+              options.code!(props as Props, defs)
+        : undefined;
 
     const Ctx = createContext<PlaygroundContextValue | null>(null);
 
@@ -203,9 +226,6 @@ export function createPlayground<C extends Config>(config: C) {
     }
 
     function Wrapper({ children }: { children: ReactNode }) {
-        const defaults = Object.fromEntries(
-            Object.entries(config).map(([k, v]) => [k, v.default])
-        );
         const [state, setState] = useState<Record<string, unknown>>(defaults);
 
         function setProps(key: string, value: unknown) {
@@ -221,25 +241,30 @@ export function createPlayground<C extends Config>(config: C) {
 
         return createElement(
             Ctx.Provider,
-            { value: { props: state, setProps, config } },
+            {
+                value: {
+                    props: state,
+                    setProps,
+                    config,
+                    defaults,
+                    codeGenerator
+                }
+            },
             createElement(
                 "div",
                 {
                     className:
                         "rounded-xl border border-dark-600 overflow-hidden bg-dark-800 [&>*+*]:border-t [&>*+*]:border-dark-600"
                 },
-                // Preview + Controls: side-by-side on desktop, stacked on mobile
                 createElement(
                     "div",
                     { className: "flex flex-col lg:flex-row" },
-                    // Preview stretches to fill available space
                     previewEl &&
                         createElement(
                             "div",
                             { className: "flex-1" },
                             previewEl
                         ),
-                    // Controls: fixed width on desktop with a dividing border
                     controlsEl &&
                         createElement(
                             "div",
@@ -250,7 +275,6 @@ export function createPlayground<C extends Config>(config: C) {
                             controlsEl
                         )
                 ),
-                // Code and any other children go full-width below
                 ...otherEls
             )
         );
@@ -274,10 +298,38 @@ export function createPlayground<C extends Config>(config: C) {
         return createElement(PlaygroundControls, null, ...rows);
     }
 
+    function Code() {
+        const { props, codeGenerator: gen, defaults: defs } = useCtx();
+        const [resolvedCode, setResolvedCode] = useState<string>(() => {
+            if (!gen) return "";
+            const result = gen(props, defs);
+            return result instanceof Promise ? "" : result;
+        });
+
+        useEffect(() => {
+            if (!gen) return;
+            const result = gen(props, defs);
+            if (result instanceof Promise) {
+                result.then(setResolvedCode);
+            } else {
+                setResolvedCode(result);
+            }
+        }, [props, gen, defs]);
+
+        if (!gen || !resolvedCode) return null;
+
+        return createElement(PlaygroundCode, {
+            code: resolvedCode,
+            language: "tsx",
+            filename: "Demo.tsx"
+        });
+    }
+
     return {
         Wrapper,
         Preview,
         Controls,
-        Code: PlaygroundCode
+        Code,
+        StaticCode: PlaygroundCode
     };
 }

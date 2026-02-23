@@ -24,7 +24,7 @@ function DocumentationTitle({
 
     return (
         <div className="flex flex-col gap-3 pb-8 border-b border-dark-600">
-            <h1 className="text-4xl font-bold text-white tracking-tight">
+            <h1 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
                 {name}
             </h1>
 

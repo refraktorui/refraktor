@@ -3,26 +3,23 @@ import { createContext, useContext } from "react";
 export type ControlOption = string | { label: string; value: string };
 
 export type ControlDef =
-    | { type: "switch"; label: string; description?: string; default: boolean }
+    | { type: "switch"; label: string; default: boolean }
     | {
           type: "select";
           label: string;
-          description?: string;
           options: readonly ControlOption[];
           default: string;
       }
     | {
           type: "segmented";
           label: string;
-          description?: string;
           options: readonly ControlOption[];
           default: string;
       }
-    | { type: "text"; label: string; description?: string; default: string }
+    | { type: "text"; label: string; default: string }
     | {
           type: "number";
           label: string;
-          description?: string;
           min?: number;
           max?: number;
           step?: number;
@@ -51,6 +48,11 @@ export interface PlaygroundContextValue {
     props: Record<string, unknown>;
     setProps: (key: string, value: unknown) => void;
     config: Config;
+    defaults: Record<string, unknown>;
+    codeGenerator?: (
+        props: Record<string, unknown>,
+        defaults: Record<string, unknown>
+    ) => string | Promise<string>;
 }
 
 export const PlaygroundContext =
