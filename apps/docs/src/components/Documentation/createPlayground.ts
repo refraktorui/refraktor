@@ -81,7 +81,10 @@ function SegmentedInput({
         fullWidth: true,
         value,
         onChange,
-        data: normalizeControlOptions(options)
+        data: normalizeControlOptions(options),
+        classNames: {
+            control: "rounded-sm"
+        }
     });
 }
 

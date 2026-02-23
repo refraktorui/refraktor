@@ -64,7 +64,7 @@ function DocumentationTabs({ children, defaultTab }: DocumentationTabsProps) {
                 onChange={(value) => setActiveTab(value)}
                 classNames={{
                     root: "w-fit",
-                    control: "cursor-pointer"
+                    control: "rounded-sm"
                 }}
                 size="lg"
             />
