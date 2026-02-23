@@ -1,4 +1,8 @@
-import { IconLayoutGrid, IconRocket } from "@tabler/icons-react";
+import {
+    IconRocket,
+    IconLayoutList,
+    IconLayoutGrid
+} from "@tabler/icons-react";
 import type { SidebarNode } from "@/typings";
 
 const sidebarItems: SidebarNode[] = [
@@ -14,7 +18,34 @@ const sidebarItems: SidebarNode[] = [
         items: [
             {
                 kind: "group",
-                title: "Layout",
+                title: "Feedback",
+                icon: <IconLayoutList size={16} />,
+                items: [
+                    {
+                        kind: "link",
+                        title: "Accordion",
+                        href: "/core/accordion"
+                    },
+                    {
+                        kind: "link",
+                        title: "Button",
+                        href: "/core/button"
+                    },
+                    {
+                        kind: "link",
+                        title: "Checkbox",
+                        href: "/core/checkbox"
+                    },
+                    {
+                        kind: "link",
+                        title: "Drawer",
+                        href: "/core/drawer"
+                    }
+                ]
+            },
+            {
+                kind: "group",
+                title: "Data Display",
                 icon: <IconLayoutGrid size={16} />,
                 items: [
                     {
@@ -24,13 +55,24 @@ const sidebarItems: SidebarNode[] = [
                     },
                     {
                         kind: "link",
-                        title: "Something random",
-                        href: "/core/layout/something-random"
+                        title: "Badge",
+                        href: "/core/badge"
                     },
                     {
                         kind: "link",
-                        title: "Something else",
-                        href: "/core/layout/something-else"
+                        title: "ColorSwatch",
+                        href: "/core/color-swatch"
+                    }
+                ]
+            },
+            {
+                kind: "group",
+                title: "Navigation",
+                items: [
+                    {
+                        kind: "link",
+                        title: "Breadcrumbs",
+                        href: "/core/breadcrumbs"
                     }
                 ]
             }

@@ -10,11 +10,48 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CoreDrawerIndexRouteImport } from './routes/core/drawer/index'
+import { Route as CoreColorSwatchIndexRouteImport } from './routes/core/color-swatch/index'
+import { Route as CoreCheckboxIndexRouteImport } from './routes/core/checkbox/index'
+import { Route as CoreButtonIndexRouteImport } from './routes/core/button/index'
+import { Route as CoreBreadcrumbsIndexRouteImport } from './routes/core/breadcrumbs/index'
+import { Route as CoreBadgeIndexRouteImport } from './routes/core/badge/index'
 import { Route as CoreAvatarIndexRouteImport } from './routes/core/avatar/index'
+import { Route as CoreAccordionIndexRouteImport } from './routes/core/accordion/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoreDrawerIndexRoute = CoreDrawerIndexRouteImport.update({
+  id: '/core/drawer/',
+  path: '/core/drawer/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoreColorSwatchIndexRoute = CoreColorSwatchIndexRouteImport.update({
+  id: '/core/color-swatch/',
+  path: '/core/color-swatch/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoreCheckboxIndexRoute = CoreCheckboxIndexRouteImport.update({
+  id: '/core/checkbox/',
+  path: '/core/checkbox/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoreButtonIndexRoute = CoreButtonIndexRouteImport.update({
+  id: '/core/button/',
+  path: '/core/button/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoreBreadcrumbsIndexRoute = CoreBreadcrumbsIndexRouteImport.update({
+  id: '/core/breadcrumbs/',
+  path: '/core/breadcrumbs/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoreBadgeIndexRoute = CoreBadgeIndexRouteImport.update({
+  id: '/core/badge/',
+  path: '/core/badge/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CoreAvatarIndexRoute = CoreAvatarIndexRouteImport.update({
@@ -22,31 +59,92 @@ const CoreAvatarIndexRoute = CoreAvatarIndexRouteImport.update({
   path: '/core/avatar/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CoreAccordionIndexRoute = CoreAccordionIndexRouteImport.update({
+  id: '/core/accordion/',
+  path: '/core/accordion/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/core/accordion/': typeof CoreAccordionIndexRoute
   '/core/avatar/': typeof CoreAvatarIndexRoute
+  '/core/badge/': typeof CoreBadgeIndexRoute
+  '/core/breadcrumbs/': typeof CoreBreadcrumbsIndexRoute
+  '/core/button/': typeof CoreButtonIndexRoute
+  '/core/checkbox/': typeof CoreCheckboxIndexRoute
+  '/core/color-swatch/': typeof CoreColorSwatchIndexRoute
+  '/core/drawer/': typeof CoreDrawerIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/core/accordion': typeof CoreAccordionIndexRoute
   '/core/avatar': typeof CoreAvatarIndexRoute
+  '/core/badge': typeof CoreBadgeIndexRoute
+  '/core/breadcrumbs': typeof CoreBreadcrumbsIndexRoute
+  '/core/button': typeof CoreButtonIndexRoute
+  '/core/checkbox': typeof CoreCheckboxIndexRoute
+  '/core/color-swatch': typeof CoreColorSwatchIndexRoute
+  '/core/drawer': typeof CoreDrawerIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/core/accordion/': typeof CoreAccordionIndexRoute
   '/core/avatar/': typeof CoreAvatarIndexRoute
+  '/core/badge/': typeof CoreBadgeIndexRoute
+  '/core/breadcrumbs/': typeof CoreBreadcrumbsIndexRoute
+  '/core/button/': typeof CoreButtonIndexRoute
+  '/core/checkbox/': typeof CoreCheckboxIndexRoute
+  '/core/color-swatch/': typeof CoreColorSwatchIndexRoute
+  '/core/drawer/': typeof CoreDrawerIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/core/avatar/'
+  fullPaths:
+    | '/'
+    | '/core/accordion/'
+    | '/core/avatar/'
+    | '/core/badge/'
+    | '/core/breadcrumbs/'
+    | '/core/button/'
+    | '/core/checkbox/'
+    | '/core/color-swatch/'
+    | '/core/drawer/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/core/avatar'
-  id: '__root__' | '/' | '/core/avatar/'
+  to:
+    | '/'
+    | '/core/accordion'
+    | '/core/avatar'
+    | '/core/badge'
+    | '/core/breadcrumbs'
+    | '/core/button'
+    | '/core/checkbox'
+    | '/core/color-swatch'
+    | '/core/drawer'
+  id:
+    | '__root__'
+    | '/'
+    | '/core/accordion/'
+    | '/core/avatar/'
+    | '/core/badge/'
+    | '/core/breadcrumbs/'
+    | '/core/button/'
+    | '/core/checkbox/'
+    | '/core/color-swatch/'
+    | '/core/drawer/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CoreAccordionIndexRoute: typeof CoreAccordionIndexRoute
   CoreAvatarIndexRoute: typeof CoreAvatarIndexRoute
+  CoreBadgeIndexRoute: typeof CoreBadgeIndexRoute
+  CoreBreadcrumbsIndexRoute: typeof CoreBreadcrumbsIndexRoute
+  CoreButtonIndexRoute: typeof CoreButtonIndexRoute
+  CoreCheckboxIndexRoute: typeof CoreCheckboxIndexRoute
+  CoreColorSwatchIndexRoute: typeof CoreColorSwatchIndexRoute
+  CoreDrawerIndexRoute: typeof CoreDrawerIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -58,6 +156,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/core/drawer/': {
+      id: '/core/drawer/'
+      path: '/core/drawer'
+      fullPath: '/core/drawer/'
+      preLoaderRoute: typeof CoreDrawerIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/core/color-swatch/': {
+      id: '/core/color-swatch/'
+      path: '/core/color-swatch'
+      fullPath: '/core/color-swatch/'
+      preLoaderRoute: typeof CoreColorSwatchIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/core/checkbox/': {
+      id: '/core/checkbox/'
+      path: '/core/checkbox'
+      fullPath: '/core/checkbox/'
+      preLoaderRoute: typeof CoreCheckboxIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/core/button/': {
+      id: '/core/button/'
+      path: '/core/button'
+      fullPath: '/core/button/'
+      preLoaderRoute: typeof CoreButtonIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/core/breadcrumbs/': {
+      id: '/core/breadcrumbs/'
+      path: '/core/breadcrumbs'
+      fullPath: '/core/breadcrumbs/'
+      preLoaderRoute: typeof CoreBreadcrumbsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/core/badge/': {
+      id: '/core/badge/'
+      path: '/core/badge'
+      fullPath: '/core/badge/'
+      preLoaderRoute: typeof CoreBadgeIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/core/avatar/': {
       id: '/core/avatar/'
       path: '/core/avatar'
@@ -65,12 +205,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CoreAvatarIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/core/accordion/': {
+      id: '/core/accordion/'
+      path: '/core/accordion'
+      fullPath: '/core/accordion/'
+      preLoaderRoute: typeof CoreAccordionIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CoreAccordionIndexRoute: CoreAccordionIndexRoute,
   CoreAvatarIndexRoute: CoreAvatarIndexRoute,
+  CoreBadgeIndexRoute: CoreBadgeIndexRoute,
+  CoreBreadcrumbsIndexRoute: CoreBreadcrumbsIndexRoute,
+  CoreButtonIndexRoute: CoreButtonIndexRoute,
+  CoreCheckboxIndexRoute: CoreCheckboxIndexRoute,
+  CoreColorSwatchIndexRoute: CoreColorSwatchIndexRoute,
+  CoreDrawerIndexRoute: CoreDrawerIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
