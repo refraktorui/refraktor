@@ -10,6 +10,7 @@ import { DrawerRoot } from "./drawer-root";
 import { DrawerOverlay } from "./drawer-overlay";
 import { DrawerContent } from "./drawer-content";
 import { DrawerHeader } from "./drawer-header";
+import { DrawerBody } from "./drawer-body";
 import { DrawerClose } from "./drawer-close";
 
 export type DrawerPosition = "left" | "right" | "top" | "bottom";
@@ -19,12 +20,13 @@ export type DrawerClassNames = {
     overlay?: string;
     content?: string;
     header?: string;
+    body?: string;
     close?: string;
 };
 
-export interface DrawerProps extends ComponentPropsWithoutRef<"div"> {
+export interface DrawerRootProps extends ComponentPropsWithoutRef<"div"> {
     /** Children containing drawer subcomponents */
-    children: ReactNode;
+    children?: ReactNode;
 
     /** State of the drawer (controlled) */
     opened?: boolean;
@@ -56,6 +58,12 @@ export interface DrawerProps extends ComponentPropsWithoutRef<"div"> {
     /** Drawer size scale (width for left/right, height for top/bottom) @default `md` */
     size?: RefraktorSize;
 
+    /** Whether to trap focus within the drawer @default `true` */
+    trapFocus?: boolean;
+
+    /** Whether to return focus to trigger after close @default `true` */
+    returnFocus?: boolean;
+
     /** Transition props for overlay/content, uses Transition internally */
     transitionProps?: Omit<TransitionProps, "children" | "mounted">;
 
@@ -66,7 +74,19 @@ export interface DrawerProps extends ComponentPropsWithoutRef<"div"> {
     classNames?: DrawerClassNames;
 }
 
-export type DrawerRootProps = DrawerProps;
+export interface DrawerProps extends Omit<DrawerRootProps, "title"> {
+    /** Title text rendered in the header */
+    title?: ReactNode;
+
+    /** Whether to render the overlay @default `true` */
+    withOverlay?: boolean;
+
+    /** Whether to show the close button in the header @default `true` */
+    withCloseButton?: boolean;
+
+    /** Props passed to the Overlay subcomponent */
+    overlayProps?: DrawerOverlayProps;
+}
 
 export interface DrawerOverlayProps extends ComponentPropsWithoutRef<"div"> {
     /** Whether clicking the overlay closes drawer @default `true` */
@@ -104,6 +124,14 @@ export interface DrawerHeaderProps extends ComponentPropsWithoutRef<"div"> {
     className?: string;
 }
 
+export interface DrawerBodyProps extends ComponentPropsWithoutRef<"div"> {
+    /** Body content */
+    children?: ReactNode;
+
+    /** Used for editing root class name */
+    className?: string;
+}
+
 export interface DrawerCloseProps extends Omit<
     ComponentPropsWithoutRef<"button">,
     "onClick"
@@ -128,6 +156,7 @@ export interface DrawerFactoryPayload extends FactoryPayload {
         Overlay: typeof DrawerOverlay;
         Content: typeof DrawerContent;
         Header: typeof DrawerHeader;
+        Body: typeof DrawerBody;
         Close: typeof DrawerClose;
     };
 }
@@ -149,6 +178,11 @@ export interface DrawerContentFactoryPayload extends FactoryPayload {
 
 export interface DrawerHeaderFactoryPayload extends FactoryPayload {
     props: DrawerHeaderProps;
+    ref: HTMLDivElement;
+}
+
+export interface DrawerBodyFactoryPayload extends FactoryPayload {
+    props: DrawerBodyProps;
     ref: HTMLDivElement;
 }
 
