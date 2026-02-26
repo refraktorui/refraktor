@@ -1,9 +1,20 @@
 import Sidebar from "@/components/Layout/Sidebar";
 import Header from "@/components/Layout/Header";
 import Footer from "@/components/Layout/Footer";
-import { createRootRoute, Outlet, useRouterState } from "@tanstack/react-router";
+import {
+    createRootRoute,
+    Outlet,
+    useRouterState
+} from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import NotFound from "@/components/NotFound";
+
+function formatTitle(slug: string): string {
+    return slug
+        .split("-")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+}
 
 function TitleManager() {
     const pathname = useRouterState({ select: (s) => s.location.pathname });
@@ -12,7 +23,7 @@ function TitleManager() {
         const segments = pathname.split("/").filter(Boolean);
         const last = segments[segments.length - 1];
         document.title = last
-            ? `${last.charAt(0).toUpperCase() + last.slice(1)} | Refraktor`
+            ? `${formatTitle(last)} | Refraktor`
             : "Refraktor";
     }, [pathname]);
 
