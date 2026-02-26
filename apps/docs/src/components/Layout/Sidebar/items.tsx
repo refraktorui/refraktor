@@ -48,6 +48,11 @@ const sidebarItems: SidebarNode[] = [
                     },
                     {
                         kind: "link",
+                        title: "Chip",
+                        href: "/core/chip"
+                    },
+                    {
+                        kind: "link",
                         title: "FileInput",
                         href: "/core/file-input"
                     },

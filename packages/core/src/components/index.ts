@@ -4,6 +4,7 @@ export * from "./badge";
 export * from "./breadcrumbs";
 export * from "./button";
 export * from "./checkbox";
+export * from "./chip";
 export * from "./color-swatch";
 export * from "./drawer";
 export * from "./file-input";

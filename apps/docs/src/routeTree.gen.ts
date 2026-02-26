@@ -36,6 +36,7 @@ import { Route as CoreForIndexRouteImport } from './routes/core/for/index'
 import { Route as CoreFileInputIndexRouteImport } from './routes/core/file-input/index'
 import { Route as CoreDrawerIndexRouteImport } from './routes/core/drawer/index'
 import { Route as CoreColorSwatchIndexRouteImport } from './routes/core/color-swatch/index'
+import { Route as CoreChipIndexRouteImport } from './routes/core/chip/index'
 import { Route as CoreCheckboxIndexRouteImport } from './routes/core/checkbox/index'
 import { Route as CoreButtonIndexRouteImport } from './routes/core/button/index'
 import { Route as CoreBreadcrumbsIndexRouteImport } from './routes/core/breadcrumbs/index'
@@ -179,6 +180,11 @@ const CoreColorSwatchIndexRoute = CoreColorSwatchIndexRouteImport.update({
   path: '/core/color-swatch/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CoreChipIndexRoute = CoreChipIndexRouteImport.update({
+  id: '/core/chip/',
+  path: '/core/chip/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CoreCheckboxIndexRoute = CoreCheckboxIndexRouteImport.update({
   id: '/core/checkbox/',
   path: '/core/checkbox/',
@@ -220,6 +226,7 @@ export interface FileRoutesByFullPath {
   '/core/breadcrumbs/': typeof CoreBreadcrumbsIndexRoute
   '/core/button/': typeof CoreButtonIndexRoute
   '/core/checkbox/': typeof CoreCheckboxIndexRoute
+  '/core/chip/': typeof CoreChipIndexRoute
   '/core/color-swatch/': typeof CoreColorSwatchIndexRoute
   '/core/drawer/': typeof CoreDrawerIndexRoute
   '/core/file-input/': typeof CoreFileInputIndexRoute
@@ -255,6 +262,7 @@ export interface FileRoutesByTo {
   '/core/breadcrumbs': typeof CoreBreadcrumbsIndexRoute
   '/core/button': typeof CoreButtonIndexRoute
   '/core/checkbox': typeof CoreCheckboxIndexRoute
+  '/core/chip': typeof CoreChipIndexRoute
   '/core/color-swatch': typeof CoreColorSwatchIndexRoute
   '/core/drawer': typeof CoreDrawerIndexRoute
   '/core/file-input': typeof CoreFileInputIndexRoute
@@ -291,6 +299,7 @@ export interface FileRoutesById {
   '/core/breadcrumbs/': typeof CoreBreadcrumbsIndexRoute
   '/core/button/': typeof CoreButtonIndexRoute
   '/core/checkbox/': typeof CoreCheckboxIndexRoute
+  '/core/chip/': typeof CoreChipIndexRoute
   '/core/color-swatch/': typeof CoreColorSwatchIndexRoute
   '/core/drawer/': typeof CoreDrawerIndexRoute
   '/core/file-input/': typeof CoreFileInputIndexRoute
@@ -328,6 +337,7 @@ export interface FileRouteTypes {
     | '/core/breadcrumbs/'
     | '/core/button/'
     | '/core/checkbox/'
+    | '/core/chip/'
     | '/core/color-swatch/'
     | '/core/drawer/'
     | '/core/file-input/'
@@ -363,6 +373,7 @@ export interface FileRouteTypes {
     | '/core/breadcrumbs'
     | '/core/button'
     | '/core/checkbox'
+    | '/core/chip'
     | '/core/color-swatch'
     | '/core/drawer'
     | '/core/file-input'
@@ -398,6 +409,7 @@ export interface FileRouteTypes {
     | '/core/breadcrumbs/'
     | '/core/button/'
     | '/core/checkbox/'
+    | '/core/chip/'
     | '/core/color-swatch/'
     | '/core/drawer/'
     | '/core/file-input/'
@@ -434,6 +446,7 @@ export interface RootRouteChildren {
   CoreBreadcrumbsIndexRoute: typeof CoreBreadcrumbsIndexRoute
   CoreButtonIndexRoute: typeof CoreButtonIndexRoute
   CoreCheckboxIndexRoute: typeof CoreCheckboxIndexRoute
+  CoreChipIndexRoute: typeof CoreChipIndexRoute
   CoreColorSwatchIndexRoute: typeof CoreColorSwatchIndexRoute
   CoreDrawerIndexRoute: typeof CoreDrawerIndexRoute
   CoreFileInputIndexRoute: typeof CoreFileInputIndexRoute
@@ -651,6 +664,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CoreColorSwatchIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/core/chip/': {
+      id: '/core/chip/'
+      path: '/core/chip'
+      fullPath: '/core/chip/'
+      preLoaderRoute: typeof CoreChipIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/core/checkbox/': {
       id: '/core/checkbox/'
       path: '/core/checkbox'
@@ -706,6 +726,7 @@ const rootRouteChildren: RootRouteChildren = {
   CoreBreadcrumbsIndexRoute: CoreBreadcrumbsIndexRoute,
   CoreButtonIndexRoute: CoreButtonIndexRoute,
   CoreCheckboxIndexRoute: CoreCheckboxIndexRoute,
+  CoreChipIndexRoute: CoreChipIndexRoute,
   CoreColorSwatchIndexRoute: CoreColorSwatchIndexRoute,
   CoreDrawerIndexRoute: CoreDrawerIndexRoute,
   CoreFileInputIndexRoute: CoreFileInputIndexRoute,
