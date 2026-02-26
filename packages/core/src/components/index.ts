@@ -15,6 +15,7 @@ export * from "./modal";
 export * from "./menu";
 export * from "./number-input";
 export * from "./password-input";
+export * from "./pin-input";
 export * from "./pagination";
 export * from "./popover";
 export * from "./portal";

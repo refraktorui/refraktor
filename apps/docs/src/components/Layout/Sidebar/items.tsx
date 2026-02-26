@@ -73,6 +73,11 @@ const sidebarItems: SidebarNode[] = [
                     },
                     {
                         kind: "link",
+                        title: "PinInput",
+                        href: "/core/pin-input"
+                    },
+                    {
+                        kind: "link",
                         title: "Radio",
                         href: "/core/radio"
                     },

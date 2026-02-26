@@ -25,6 +25,7 @@ import { Route as CoreRadioIndexRouteImport } from './routes/core/radio/index'
 import { Route as CoreProgressIndexRouteImport } from './routes/core/progress/index'
 import { Route as CoreProgressCircleIndexRouteImport } from './routes/core/progress-circle/index'
 import { Route as CorePopoverIndexRouteImport } from './routes/core/popover/index'
+import { Route as CorePinInputIndexRouteImport } from './routes/core/pin-input/index'
 import { Route as CorePasswordInputIndexRouteImport } from './routes/core/password-input/index'
 import { Route as CorePaginationIndexRouteImport } from './routes/core/pagination/index'
 import { Route as CoreNumberInputIndexRouteImport } from './routes/core/number-input/index'
@@ -123,6 +124,11 @@ const CoreProgressCircleIndexRoute = CoreProgressCircleIndexRouteImport.update({
 const CorePopoverIndexRoute = CorePopoverIndexRouteImport.update({
   id: '/core/popover/',
   path: '/core/popover/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CorePinInputIndexRoute = CorePinInputIndexRouteImport.update({
+  id: '/core/pin-input/',
+  path: '/core/pin-input/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CorePasswordInputIndexRoute = CorePasswordInputIndexRouteImport.update({
@@ -238,6 +244,7 @@ export interface FileRoutesByFullPath {
   '/core/number-input/': typeof CoreNumberInputIndexRoute
   '/core/pagination/': typeof CorePaginationIndexRoute
   '/core/password-input/': typeof CorePasswordInputIndexRoute
+  '/core/pin-input/': typeof CorePinInputIndexRoute
   '/core/popover/': typeof CorePopoverIndexRoute
   '/core/progress-circle/': typeof CoreProgressCircleIndexRoute
   '/core/progress/': typeof CoreProgressIndexRoute
@@ -274,6 +281,7 @@ export interface FileRoutesByTo {
   '/core/number-input': typeof CoreNumberInputIndexRoute
   '/core/pagination': typeof CorePaginationIndexRoute
   '/core/password-input': typeof CorePasswordInputIndexRoute
+  '/core/pin-input': typeof CorePinInputIndexRoute
   '/core/popover': typeof CorePopoverIndexRoute
   '/core/progress-circle': typeof CoreProgressCircleIndexRoute
   '/core/progress': typeof CoreProgressIndexRoute
@@ -311,6 +319,7 @@ export interface FileRoutesById {
   '/core/number-input/': typeof CoreNumberInputIndexRoute
   '/core/pagination/': typeof CorePaginationIndexRoute
   '/core/password-input/': typeof CorePasswordInputIndexRoute
+  '/core/pin-input/': typeof CorePinInputIndexRoute
   '/core/popover/': typeof CorePopoverIndexRoute
   '/core/progress-circle/': typeof CoreProgressCircleIndexRoute
   '/core/progress/': typeof CoreProgressIndexRoute
@@ -349,6 +358,7 @@ export interface FileRouteTypes {
     | '/core/number-input/'
     | '/core/pagination/'
     | '/core/password-input/'
+    | '/core/pin-input/'
     | '/core/popover/'
     | '/core/progress-circle/'
     | '/core/progress/'
@@ -385,6 +395,7 @@ export interface FileRouteTypes {
     | '/core/number-input'
     | '/core/pagination'
     | '/core/password-input'
+    | '/core/pin-input'
     | '/core/popover'
     | '/core/progress-circle'
     | '/core/progress'
@@ -421,6 +432,7 @@ export interface FileRouteTypes {
     | '/core/number-input/'
     | '/core/pagination/'
     | '/core/password-input/'
+    | '/core/pin-input/'
     | '/core/popover/'
     | '/core/progress-circle/'
     | '/core/progress/'
@@ -458,6 +470,7 @@ export interface RootRouteChildren {
   CoreNumberInputIndexRoute: typeof CoreNumberInputIndexRoute
   CorePaginationIndexRoute: typeof CorePaginationIndexRoute
   CorePasswordInputIndexRoute: typeof CorePasswordInputIndexRoute
+  CorePinInputIndexRoute: typeof CorePinInputIndexRoute
   CorePopoverIndexRoute: typeof CorePopoverIndexRoute
   CoreProgressCircleIndexRoute: typeof CoreProgressCircleIndexRoute
   CoreProgressIndexRoute: typeof CoreProgressIndexRoute
@@ -585,6 +598,13 @@ declare module '@tanstack/react-router' {
       path: '/core/popover'
       fullPath: '/core/popover/'
       preLoaderRoute: typeof CorePopoverIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/core/pin-input/': {
+      id: '/core/pin-input/'
+      path: '/core/pin-input'
+      fullPath: '/core/pin-input/'
+      preLoaderRoute: typeof CorePinInputIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/core/password-input/': {
@@ -738,6 +758,7 @@ const rootRouteChildren: RootRouteChildren = {
   CoreNumberInputIndexRoute: CoreNumberInputIndexRoute,
   CorePaginationIndexRoute: CorePaginationIndexRoute,
   CorePasswordInputIndexRoute: CorePasswordInputIndexRoute,
+  CorePinInputIndexRoute: CorePinInputIndexRoute,
   CorePopoverIndexRoute: CorePopoverIndexRoute,
   CoreProgressCircleIndexRoute: CoreProgressCircleIndexRoute,
   CoreProgressIndexRoute: CoreProgressIndexRoute,
