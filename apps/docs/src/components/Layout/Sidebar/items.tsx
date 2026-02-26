@@ -11,10 +11,21 @@ import type { SidebarNode } from "@/typings";
 
 const sidebarItems: SidebarNode[] = [
     {
-        kind: "link",
+        kind: "group",
         title: "Get Started",
-        href: "/get-started",
-        icon: <IconRocket size={16} />
+        icon: <IconRocket size={16} />,
+        items: [
+            {
+                kind: "link",
+                title: "Installation",
+                href: "/get-started"
+            },
+            {
+                kind: "link",
+                title: "Theming",
+                href: "/theming"
+            }
+        ]
     },
     {
         kind: "group",

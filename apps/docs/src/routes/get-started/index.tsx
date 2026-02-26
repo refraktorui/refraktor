@@ -4,9 +4,11 @@ import { createFileRoute } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import {
     IconChecklist,
-    IconPackage,
-    IconPlayerPlay,
-    IconSparkles
+    IconCircleNumber1,
+    IconCircleNumber2,
+    IconCircleNumber3,
+    IconClock,
+    IconPackage
 } from "@tabler/icons-react";
 
 export const Route = createFileRoute("/get-started/")({
@@ -16,27 +18,23 @@ export const Route = createFileRoute("/get-started/")({
 function RouteComponent() {
     return (
         <Documentation>
-            <div className="flex flex-col gap-4 pb-8 border-b border-dark-600">
-                <div className="inline-flex w-fit items-center gap-2 rounded-full border border-dark-600 bg-dark-800/70 px-3 py-1 text-xs font-medium text-dark-200">
-                    <IconSparkles size={14} className="text-primary-400" />
-                    Install Refraktor in your own project
+            <div className="flex flex-col gap-5 pb-8 border-b border-dark-700">
+                <div className="flex items-center gap-3">
+                    <span className="flex items-center gap-1.5 text-xs text-dark-200">
+                        <IconClock size={12} />
+                        ~2 min setup
+                    </span>
                 </div>
 
                 <h1 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
-                    Get Started
+                    Set up Refraktor in your project
                 </h1>
 
                 <p className="text-dark-200 text-base leading-relaxed max-w-3xl">
-                    These setup steps are for external apps, not this monorepo.
-                    They are based on the current package metadata: core depends
-                    on React + utils, and dates additionally depends on dayjs.
+                    Install the packages, wrap your app with the provider, and
+                    start building. These steps are for external apps — not this
+                    monorepo.
                 </p>
-
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    <QuickFact text="React 18+" />
-                    <QuickFact text="TypeScript-friendly" />
-                    <QuickFact text="Works with Vite/Next" />
-                </div>
             </div>
 
             <Documentation.Section
@@ -49,19 +47,16 @@ function RouteComponent() {
                         name="@refraktor/core"
                         icon={<IconPackage size={16} />}
                         summary="UI components, ThemeProvider, transitions, and theme helpers."
-                        requirements="react, react-dom, @refraktor/utils"
                     />
                     <PackageCard
                         name="@refraktor/dates"
                         icon={<IconPackage size={16} />}
                         summary="Date and time inputs/pickers that integrate with dayjs."
-                        requirements="dayjs, @refraktor/core, @refraktor/utils"
                     />
                     <PackageCard
                         name="@refraktor/utils"
                         icon={<IconPackage size={16} />}
                         summary="Shared hooks and utility helpers used by Refraktor packages."
-                        requirements="react"
                     />
                 </div>
             </Documentation.Section>
@@ -72,13 +67,19 @@ function RouteComponent() {
                 description="Pick a package manager tab and run the command set that matches your use case."
             >
                 <SetupStep
+                    step={1}
                     title="Core setup (recommended)"
                     description="Use this when you need the component library."
-                    icon={<IconPlayerPlay size={16} />}
+                    icon={<IconCircleNumber1 size={18} />}
                 >
                     <CodeFrame>
                         <CodeBlock
                             files={[
+                                {
+                                    name: "bun",
+                                    language: "bash",
+                                    code: "bun add @refraktor/core @refraktor/utils"
+                                },
                                 {
                                     name: "npm",
                                     language: "bash",
@@ -88,16 +89,6 @@ function RouteComponent() {
                                     name: "pnpm",
                                     language: "bash",
                                     code: "pnpm add @refraktor/core @refraktor/utils"
-                                },
-                                {
-                                    name: "yarn",
-                                    language: "bash",
-                                    code: "yarn add @refraktor/core @refraktor/utils"
-                                },
-                                {
-                                    name: "bun",
-                                    language: "bash",
-                                    code: "bun add @refraktor/core @refraktor/utils"
                                 }
                             ]}
                         />
@@ -105,13 +96,19 @@ function RouteComponent() {
                 </SetupStep>
 
                 <SetupStep
-                    title="Dates setup"
-                    description="Use this when you need date/time components."
-                    icon={<IconPlayerPlay size={16} />}
+                    step={2}
+                    title="Dates setup (optional)"
+                    description="Add this when you need date/time components."
+                    icon={<IconCircleNumber2 size={18} />}
                 >
                     <CodeFrame>
                         <CodeBlock
                             files={[
+                                {
+                                    name: "bun",
+                                    language: "bash",
+                                    code: "bun add @refraktor/dates @refraktor/core @refraktor/utils dayjs"
+                                },
                                 {
                                     name: "npm",
                                     language: "bash",
@@ -121,16 +118,6 @@ function RouteComponent() {
                                     name: "pnpm",
                                     language: "bash",
                                     code: "pnpm add @refraktor/dates @refraktor/core @refraktor/utils dayjs"
-                                },
-                                {
-                                    name: "yarn",
-                                    language: "bash",
-                                    code: "yarn add @refraktor/dates @refraktor/core @refraktor/utils dayjs"
-                                },
-                                {
-                                    name: "bun",
-                                    language: "bash",
-                                    code: "bun add @refraktor/dates @refraktor/core @refraktor/utils dayjs"
                                 }
                             ]}
                         />
@@ -143,13 +130,19 @@ function RouteComponent() {
                 title="Wire providers in your app"
                 description="Wrap your app with ThemeProvider at the root so all core components receive theme context."
             >
-                <CodeFrame>
-                    <CodeBlock
-                        files={[
-                            {
-                                name: "src/main.tsx",
-                                language: "tsx",
-                                code: `import { StrictMode } from "react";
+                <SetupStep
+                    step={3}
+                    title="Add ThemeProvider"
+                    description="This gives every Refraktor component access to your theme tokens."
+                    icon={<IconCircleNumber3 size={18} />}
+                >
+                    <CodeFrame>
+                        <CodeBlock
+                            files={[
+                                {
+                                    name: "src/main.tsx",
+                                    language: "tsx",
+                                    code: `import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { ThemeProvider } from "@refraktor/core";
 import App from "./App";
@@ -161,11 +154,11 @@ createRoot(document.getElementById("root")!).render(
     </ThemeProvider>
   </StrictMode>
 );`
-                            },
-                            {
-                                name: "src/App.tsx",
-                                language: "tsx",
-                                code: `import { Button } from "@refraktor/core";
+                                },
+                                {
+                                    name: "src/App.tsx",
+                                    language: "tsx",
+                                    code: `import { Button } from "@refraktor/core";
 
 export default function App() {
   return (
@@ -174,10 +167,11 @@ export default function App() {
     </main>
   );
 }`
-                            }
-                        ]}
-                    />
-                </CodeFrame>
+                                }
+                            ]}
+                        />
+                    </CodeFrame>
+                </SetupStep>
             </Documentation.Section>
 
             <Documentation.Section
@@ -207,10 +201,15 @@ createRoot(document.getElementById("root")!).render(
                     />
                 </CodeFrame>
 
-                <div className="rounded-xl border border-dark-600 bg-dark-800/60 p-4">
+                <div className="rounded-xl border border-dark-600 bg-dark-800/60 p-4 flex items-start gap-3">
                     <p className="text-sm text-dark-200 leading-relaxed">
-                        If you set a custom locale (for example "fr"), import
-                        it first with <code>import "dayjs/locale/fr"</code>.
+                        If you set a custom locale (for example{" "}
+                        <code className="text-primary-400">"fr"</code>), import
+                        it first with{" "}
+                        <code className="text-primary-400">
+                            import "dayjs/locale/fr"
+                        </code>
+                        .
                     </p>
                 </div>
             </Documentation.Section>
@@ -218,7 +217,7 @@ createRoot(document.getElementById("root")!).render(
             <Documentation.Section
                 id="optional-theme"
                 title="Optional theme customization"
-                description="You can customize colors/default radius by passing a theme config to ThemeProvider."
+                description="Customize colors and default radius by passing a theme config to ThemeProvider."
             >
                 <CodeFrame>
                     <CodeBlock
@@ -242,23 +241,31 @@ export function Providers({ children }: { children: React.ReactNode }) {
             <Documentation.Section
                 id="verify"
                 title="Verify your setup"
-                description="Quick sanity checks after installation."
+                description="Quick sanity checks — if all three pass, you're good to go."
             >
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 gap-2">
                     <CheckItem text="Components render without missing-provider errors" />
                     <CheckItem text="Styles are visible (not unstyled HTML controls)" />
                     <CheckItem text="Dates render after importing the selected dayjs locale" />
                 </div>
+
+                <div
+                    className="rounded-xl border border-dark-600 p-5 text-center mt-2"
+                    style={{
+                        background:
+                            "radial-gradient(ellipse 80% 100% at 50% 100%, rgba(59, 130, 246, 0.04), transparent 60%), var(--color-dark-800)"
+                    }}
+                >
+                    <p className="text-sm text-dark-100 font-medium">
+                        All checks passing? You're ready to build.
+                    </p>
+                    <p className="text-xs text-dark-300 mt-1">
+                        Explore the component docs in the sidebar to see what's
+                        available.
+                    </p>
+                </div>
             </Documentation.Section>
         </Documentation>
-    );
-}
-
-function QuickFact({ text }: { text: string }) {
-    return (
-        <div className="rounded-lg border border-dark-600 bg-dark-800/60 px-3 py-2 text-xs font-medium text-dark-200">
-            {text}
-        </div>
     );
 }
 
@@ -266,25 +273,26 @@ interface PackageCardProps {
     name: string;
     icon: ReactNode;
     summary: string;
-    requirements: string;
 }
 
-function PackageCard({ name, icon, summary, requirements }: PackageCardProps) {
+function PackageCard({ name, icon, summary }: PackageCardProps) {
     return (
-        <article className="rounded-xl border border-dark-600 bg-dark-800/60 p-4 flex flex-col gap-3">
-            <p className="text-sm font-semibold text-primary-400 inline-flex items-center gap-2">
-                {icon}
-                {name}
-            </p>
-            <p className="text-sm text-dark-200 leading-relaxed">{summary}</p>
-            <p className="text-xs text-dark-300 leading-relaxed">
-                Peer requirements: {requirements}
+        <article className="group rounded-xl border border-dark-700 bg-dark-800/60 p-5 flex flex-col gap-3 transition-all duration-300 hover:border-dark-500 hover:shadow-[0_0_30px_-10px_rgba(59,130,246,0.08)]">
+            <div className="flex items-center justify-between">
+                <p className="text-sm font-semibold text-primary-400 inline-flex items-center gap-2">
+                    {icon}
+                    {name}
+                </p>
+            </div>
+            <p className="text-sm text-dark-200 leading-relaxed flex-1">
+                {summary}
             </p>
         </article>
     );
 }
 
 interface SetupStepProps {
+    step: number;
     title: string;
     description: string;
     icon: ReactNode;
@@ -293,12 +301,16 @@ interface SetupStepProps {
 
 function SetupStep({ title, description, icon, children }: SetupStepProps) {
     return (
-        <div className="rounded-xl border border-dark-600 bg-dark-800/60 p-4 flex flex-col gap-3">
-            <div className="flex items-start gap-2">
-                <div className="text-primary-400 mt-0.5">{icon}</div>
-                <div className="flex flex-col gap-1">
-                    <h3 className="text-sm font-semibold text-white">{title}</h3>
-                    <p className="text-xs text-dark-200 leading-relaxed">
+        <div className="rounded-xl border border-dark-700 bg-dark-800/60 p-5 flex flex-col gap-4">
+            <div className="flex items-start gap-3">
+                <div className="w-8 h-8 rounded-lg bg-primary-500/10 border border-primary-500/20 flex items-center justify-center text-primary-400 shrink-0">
+                    {icon}
+                </div>
+                <div className="flex flex-col gap-0.5">
+                    <h3 className="text-sm font-semibold text-white">
+                        {title}
+                    </h3>
+                    <p className="text-xs text-dark-300 leading-relaxed">
                         {description}
                     </p>
                 </div>
@@ -311,7 +323,7 @@ function SetupStep({ title, description, icon, children }: SetupStepProps) {
 
 function CodeFrame({ children }: { children: ReactNode }) {
     return (
-        <div className="rounded-xl border border-dark-600 overflow-hidden bg-dark-800">
+        <div className="rounded-xl border border-dark-700 overflow-hidden bg-dark-900">
             {children}
         </div>
     );
@@ -319,8 +331,13 @@ function CodeFrame({ children }: { children: ReactNode }) {
 
 function CheckItem({ text }: { text: string }) {
     return (
-        <div className="rounded-lg border border-dark-600 bg-dark-800/60 px-3 py-2 text-xs text-dark-200 inline-flex items-center gap-2">
-            <IconChecklist size={14} className="text-primary-400 shrink-0" />
+        <div className="rounded-lg border border-dark-700 bg-dark-800/60 px-4 py-3 text-sm text-dark-100 inline-flex items-center gap-3 transition-colors hover:border-dark-600">
+            <div className="w-5 h-5 rounded-full bg-primary-500/10 border border-primary-500/20 flex items-center justify-center shrink-0">
+                <IconChecklist
+                    size={12}
+                    className="text-primary-400 shrink-0"
+                />
+            </div>
             <span>{text}</span>
         </div>
     );

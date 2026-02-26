@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ThemingIndexRouteImport } from './routes/theming/index'
 import { Route as GetStartedIndexRouteImport } from './routes/get-started/index'
 import { Route as CoreTooltipIndexRouteImport } from './routes/core/tooltip/index'
 import { Route as CoreTimelineIndexRouteImport } from './routes/core/timeline/index'
@@ -45,6 +46,11 @@ import { Route as CoreAccordionIndexRouteImport } from './routes/core/accordion/
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ThemingIndexRoute = ThemingIndexRouteImport.update({
+  id: '/theming/',
+  path: '/theming/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GetStartedIndexRoute = GetStartedIndexRouteImport.update({
@@ -207,6 +213,7 @@ const CoreAccordionIndexRoute = CoreAccordionIndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/get-started/': typeof GetStartedIndexRoute
+  '/theming/': typeof ThemingIndexRoute
   '/core/accordion/': typeof CoreAccordionIndexRoute
   '/core/avatar/': typeof CoreAvatarIndexRoute
   '/core/badge/': typeof CoreBadgeIndexRoute
@@ -241,6 +248,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/get-started': typeof GetStartedIndexRoute
+  '/theming': typeof ThemingIndexRoute
   '/core/accordion': typeof CoreAccordionIndexRoute
   '/core/avatar': typeof CoreAvatarIndexRoute
   '/core/badge': typeof CoreBadgeIndexRoute
@@ -276,6 +284,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/get-started/': typeof GetStartedIndexRoute
+  '/theming/': typeof ThemingIndexRoute
   '/core/accordion/': typeof CoreAccordionIndexRoute
   '/core/avatar/': typeof CoreAvatarIndexRoute
   '/core/badge/': typeof CoreBadgeIndexRoute
@@ -312,6 +321,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/get-started/'
+    | '/theming/'
     | '/core/accordion/'
     | '/core/avatar/'
     | '/core/badge/'
@@ -346,6 +356,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/get-started'
+    | '/theming'
     | '/core/accordion'
     | '/core/avatar'
     | '/core/badge'
@@ -380,6 +391,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/get-started/'
+    | '/theming/'
     | '/core/accordion/'
     | '/core/avatar/'
     | '/core/badge/'
@@ -415,6 +427,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   GetStartedIndexRoute: typeof GetStartedIndexRoute
+  ThemingIndexRoute: typeof ThemingIndexRoute
   CoreAccordionIndexRoute: typeof CoreAccordionIndexRoute
   CoreAvatarIndexRoute: typeof CoreAvatarIndexRoute
   CoreBadgeIndexRoute: typeof CoreBadgeIndexRoute
@@ -454,6 +467,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/theming/': {
+      id: '/theming/'
+      path: '/theming'
+      fullPath: '/theming/'
+      preLoaderRoute: typeof ThemingIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/get-started/': {
@@ -679,6 +699,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   GetStartedIndexRoute: GetStartedIndexRoute,
+  ThemingIndexRoute: ThemingIndexRoute,
   CoreAccordionIndexRoute: CoreAccordionIndexRoute,
   CoreAvatarIndexRoute: CoreAvatarIndexRoute,
   CoreBadgeIndexRoute: CoreBadgeIndexRoute,
