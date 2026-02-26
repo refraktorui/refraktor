@@ -48,6 +48,11 @@ const sidebarItems: SidebarNode[] = [
                     },
                     {
                         kind: "link",
+                        title: "Chip",
+                        href: "/core/chip"
+                    },
+                    {
+                        kind: "link",
                         title: "FileInput",
                         href: "/core/file-input"
                     },
@@ -65,6 +70,11 @@ const sidebarItems: SidebarNode[] = [
                         kind: "link",
                         title: "PasswordInput",
                         href: "/core/password-input"
+                    },
+                    {
+                        kind: "link",
+                        title: "PinInput",
+                        href: "/core/pin-input"
                     },
                     {
                         kind: "link",
@@ -220,6 +230,11 @@ const sidebarItems: SidebarNode[] = [
                         kind: "link",
                         title: "For",
                         href: "/core/for"
+                    },
+                    {
+                        kind: "link",
+                        title: "ScrollArea",
+                        href: "/core/scroll-area"
                     }
                 ]
             }

@@ -1,129 +1,160 @@
-import { ComponentPropsWithoutRef, ReactNode } from "react";
+import type { Placement } from "@floating-ui/react";
+import { ComponentPropsWithoutRef, ReactNode, Ref } from "react";
 import {
     RefraktorRadius,
     RefraktorSize,
+    InputVariant,
     createClassNamesConfig,
     createComponentConfig,
     FactoryPayload
 } from "@refraktor/core";
 
 export type TimePickerValue = string;
-export type TimePickerMode = "12h" | "24h";
-export type TimePickerPeriod = "am" | "pm";
-export type TimePickerSize = RefraktorSize;
-export type TimePickerRadius = RefraktorRadius;
-
-export type TimePickerOnChange = (value: TimePickerValue) => void;
-
-export type TimePickerGetHourLabel = (
-    hour: number,
-    mode: TimePickerMode
-) => ReactNode;
-
-export type TimePickerGetMinuteLabel = (minute: number) => ReactNode;
-
-export type TimePickerGetSecondLabel = (second: number) => ReactNode;
-
-export type TimePickerGetPeriodLabel = (period: TimePickerPeriod) => ReactNode;
-
-export type TimePickerGetHourAriaLabel = (
-    hour: number,
-    mode: TimePickerMode,
-    selected: boolean
-) => string;
-
-export type TimePickerGetMinuteAriaLabel = (
-    minute: number,
-    selected: boolean
-) => string;
-
-export type TimePickerGetSecondAriaLabel = (
-    second: number,
-    selected: boolean
-) => string;
-
-export type TimePickerGetPeriodAriaLabel = (
-    period: TimePickerPeriod,
-    selected: boolean
-) => string;
+export type TimePickerFormat = "12h" | "24h";
+export type TimePickerAmPmLabels = { am: string; pm: string };
 
 export type TimePickerClassNames = {
     root?: string;
-    grid?: string;
-    section?: string;
-    sectionLabel?: string;
-    list?: string;
-    option?: string;
-    optionActive?: string;
-    optionDisabled?: string;
-    hourSection?: string;
-    minuteSection?: string;
-    secondSection?: string;
-    periodSection?: string;
+    fieldsWrapper?: string;
+    field?: string;
+    separator?: string;
+    amPmInput?: string;
+    dropdown?: string;
+    dropdownColumn?: string;
+    dropdownColumnLabel?: string;
+    dropdownOption?: string;
+    dropdownOptionActive?: string;
 };
 
-export interface TimePickerProps
-    extends Omit<
-        ComponentPropsWithoutRef<"div">,
-        "onChange" | "value" | "defaultValue"
-    > {
-    /** Active time (controlled), accepts `H:mm:ss` or `HH:mm:ss` (24h). */
+export type TimePickerPopoverProps = {
+    /** Dropdown placement relative to the input @default `bottom-start` */
+    placement?: Placement;
+    /** Offset distance from the input in pixels @default `4` */
+    offset?: number;
+};
+
+interface _TimePickerProps {
+    /** Controlled time value in 24h format (`HH:mm` or `HH:mm:ss`). Empty string for no value. */
     value?: TimePickerValue;
 
-    /** Initial active time (uncontrolled), accepts `H:mm:ss` or `HH:mm:ss` (24h). */
+    /** Uncontrolled initial time value in 24h format (`HH:mm` or `HH:mm:ss`). */
     defaultValue?: TimePickerValue;
 
-    /** Callback called when active time changes in normalized `HH:mm:ss` format (24h). */
-    onChange?: TimePickerOnChange;
+    /** Called when the time value changes. Fires when all visible fields are filled, or all are cleared. */
+    onChange?: (value: TimePickerValue) => void;
 
-    /** Lower selectable bound for time-of-day, accepts `H:mm:ss` or `HH:mm:ss` (24h). */
-    minTime?: TimePickerValue;
+    /** Time display format @default `"24h"` */
+    format?: TimePickerFormat;
 
-    /** Upper selectable bound for time-of-day, accepts `H:mm:ss` or `HH:mm:ss` (24h). */
-    maxTime?: TimePickerValue;
+    /** Show seconds field @default `false` */
+    withSeconds?: boolean;
 
-    /** Time display mode @default `24h` */
-    mode?: TimePickerMode;
+    /** Show scrollable dropdown with time options @default `false` */
+    withDropdown?: boolean;
 
-    /** Whether all controls are disabled @default `false` */
+    /** Show clear button in the right section @default `false` */
+    clearable?: boolean;
+
+    /** Minimum selectable time in 24h format (`HH:mm` or `HH:mm:ss`) */
+    min?: TimePickerValue;
+
+    /** Maximum selectable time in 24h format (`HH:mm` or `HH:mm:ss`) */
+    max?: TimePickerValue;
+
+    /** Step for hour increment/decrement and dropdown generation @default `1` */
+    hoursStep?: number;
+
+    /** Step for minute increment/decrement and dropdown generation @default `1` */
+    minutesStep?: number;
+
+    /** Step for second increment/decrement and dropdown generation @default `1` */
+    secondsStep?: number;
+
+    /** Custom AM/PM labels @default `{ am: "AM", pm: "PM" }` */
+    amPmLabels?: TimePickerAmPmLabels;
+
+    /** Whether the input is disabled @default `false` */
     disabled?: boolean;
 
-    /** Component size @default `md` */
-    size?: TimePickerSize;
+    /** Whether the input is read-only @default `false` */
+    readOnly?: boolean;
 
-    /** Border radius @default `default` */
-    radius?: TimePickerRadius;
+    /** Input variant @default `"default"` */
+    variant?: InputVariant;
 
-    /** Custom hour label renderer. */
-    getHourLabel?: TimePickerGetHourLabel;
+    /** Component size @default `"md"` */
+    size?: RefraktorSize;
 
-    /** Custom minute label renderer. */
-    getMinuteLabel?: TimePickerGetMinuteLabel;
+    /** Border radius @default `"default"` */
+    radius?: RefraktorRadius;
 
-    /** Custom second label renderer. */
-    getSecondLabel?: TimePickerGetSecondLabel;
+    /** Label text */
+    label?: ReactNode;
 
-    /** Custom AM/PM label renderer in 12h mode. */
-    getPeriodLabel?: TimePickerGetPeriodLabel;
+    /** Description text displayed below the label */
+    description?: ReactNode;
 
-    /** Custom aria-label generator for hour options. */
-    getHourAriaLabel?: TimePickerGetHourAriaLabel;
+    /** Error message */
+    error?: ReactNode;
 
-    /** Custom aria-label generator for minute options. */
-    getMinuteAriaLabel?: TimePickerGetMinuteAriaLabel;
+    /** Whether the field is required */
+    required?: boolean;
 
-    /** Custom aria-label generator for second options. */
-    getSecondAriaLabel?: TimePickerGetSecondAriaLabel;
+    /** Display an asterisk next to the label */
+    withAsterisk?: boolean;
 
-    /** Custom aria-label generator for period options. */
-    getPeriodAriaLabel?: TimePickerGetPeriodAriaLabel;
+    /** Left section content */
+    leftSection?: ReactNode;
 
-    /** Used for editing root class name. */
-    className?: string;
+    /** Right section content (overridden by clearable when value is set) */
+    rightSection?: ReactNode;
 
-    /** Used for styling different parts of the component. */
+    /** Ref for the hours input element */
+    hoursRef?: Ref<HTMLInputElement>;
+
+    /** Ref for the minutes input element */
+    minutesRef?: Ref<HTMLInputElement>;
+
+    /** Ref for the seconds input element */
+    secondsRef?: Ref<HTMLInputElement>;
+
+    /** Ref for the AM/PM select element */
+    amPmRef?: Ref<HTMLInputElement>;
+
+    /** Aria label for hours input */
+    hoursInputLabel?: string;
+
+    /** Aria label for minutes input */
+    minutesInputLabel?: string;
+
+    /** Aria label for seconds input */
+    secondsInputLabel?: string;
+
+    /** Aria label for AM/PM input */
+    amPmInputLabel?: string;
+
+    /** Popover props for the dropdown */
+    popoverProps?: TimePickerPopoverProps;
+
+    /** Called when any field gains focus */
+    onFocus?: (event: React.FocusEvent<HTMLDivElement>) => void;
+
+    /** Called when all fields lose focus */
+    onBlur?: (event: React.FocusEvent<HTMLDivElement>) => void;
+
+    /** Used for styling different parts of the component */
     classNames?: TimePickerClassNames;
 }
+
+export type TimePickerProps = _TimePickerProps &
+    Omit<
+        ComponentPropsWithoutRef<"div">,
+        | "onChange"
+        | "value"
+        | "defaultValue"
+        | "onFocus"
+        | "onBlur"
+    >;
 
 export interface TimePickerFactoryPayload extends FactoryPayload {
     props: TimePickerProps;

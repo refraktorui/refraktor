@@ -21,10 +21,12 @@ import { Route as CoreSwitchIndexRouteImport } from './routes/core/switch/index'
 import { Route as CoreSliderIndexRouteImport } from './routes/core/slider/index'
 import { Route as CoreSelectIndexRouteImport } from './routes/core/select/index'
 import { Route as CoreSegmentedControlIndexRouteImport } from './routes/core/segmented-control/index'
+import { Route as CoreScrollAreaIndexRouteImport } from './routes/core/scroll-area/index'
 import { Route as CoreRadioIndexRouteImport } from './routes/core/radio/index'
 import { Route as CoreProgressIndexRouteImport } from './routes/core/progress/index'
 import { Route as CoreProgressCircleIndexRouteImport } from './routes/core/progress-circle/index'
 import { Route as CorePopoverIndexRouteImport } from './routes/core/popover/index'
+import { Route as CorePinInputIndexRouteImport } from './routes/core/pin-input/index'
 import { Route as CorePasswordInputIndexRouteImport } from './routes/core/password-input/index'
 import { Route as CorePaginationIndexRouteImport } from './routes/core/pagination/index'
 import { Route as CoreNumberInputIndexRouteImport } from './routes/core/number-input/index'
@@ -36,6 +38,7 @@ import { Route as CoreForIndexRouteImport } from './routes/core/for/index'
 import { Route as CoreFileInputIndexRouteImport } from './routes/core/file-input/index'
 import { Route as CoreDrawerIndexRouteImport } from './routes/core/drawer/index'
 import { Route as CoreColorSwatchIndexRouteImport } from './routes/core/color-swatch/index'
+import { Route as CoreChipIndexRouteImport } from './routes/core/chip/index'
 import { Route as CoreCheckboxIndexRouteImport } from './routes/core/checkbox/index'
 import { Route as CoreButtonIndexRouteImport } from './routes/core/button/index'
 import { Route as CoreBreadcrumbsIndexRouteImport } from './routes/core/breadcrumbs/index'
@@ -104,6 +107,11 @@ const CoreSegmentedControlIndexRoute =
     path: '/core/segmented-control/',
     getParentRoute: () => rootRouteImport,
   } as any)
+const CoreScrollAreaIndexRoute = CoreScrollAreaIndexRouteImport.update({
+  id: '/core/scroll-area/',
+  path: '/core/scroll-area/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CoreRadioIndexRoute = CoreRadioIndexRouteImport.update({
   id: '/core/radio/',
   path: '/core/radio/',
@@ -122,6 +130,11 @@ const CoreProgressCircleIndexRoute = CoreProgressCircleIndexRouteImport.update({
 const CorePopoverIndexRoute = CorePopoverIndexRouteImport.update({
   id: '/core/popover/',
   path: '/core/popover/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CorePinInputIndexRoute = CorePinInputIndexRouteImport.update({
+  id: '/core/pin-input/',
+  path: '/core/pin-input/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CorePasswordInputIndexRoute = CorePasswordInputIndexRouteImport.update({
@@ -179,6 +192,11 @@ const CoreColorSwatchIndexRoute = CoreColorSwatchIndexRouteImport.update({
   path: '/core/color-swatch/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CoreChipIndexRoute = CoreChipIndexRouteImport.update({
+  id: '/core/chip/',
+  path: '/core/chip/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CoreCheckboxIndexRoute = CoreCheckboxIndexRouteImport.update({
   id: '/core/checkbox/',
   path: '/core/checkbox/',
@@ -220,6 +238,7 @@ export interface FileRoutesByFullPath {
   '/core/breadcrumbs/': typeof CoreBreadcrumbsIndexRoute
   '/core/button/': typeof CoreButtonIndexRoute
   '/core/checkbox/': typeof CoreCheckboxIndexRoute
+  '/core/chip/': typeof CoreChipIndexRoute
   '/core/color-swatch/': typeof CoreColorSwatchIndexRoute
   '/core/drawer/': typeof CoreDrawerIndexRoute
   '/core/file-input/': typeof CoreFileInputIndexRoute
@@ -231,10 +250,12 @@ export interface FileRoutesByFullPath {
   '/core/number-input/': typeof CoreNumberInputIndexRoute
   '/core/pagination/': typeof CorePaginationIndexRoute
   '/core/password-input/': typeof CorePasswordInputIndexRoute
+  '/core/pin-input/': typeof CorePinInputIndexRoute
   '/core/popover/': typeof CorePopoverIndexRoute
   '/core/progress-circle/': typeof CoreProgressCircleIndexRoute
   '/core/progress/': typeof CoreProgressIndexRoute
   '/core/radio/': typeof CoreRadioIndexRoute
+  '/core/scroll-area/': typeof CoreScrollAreaIndexRoute
   '/core/segmented-control/': typeof CoreSegmentedControlIndexRoute
   '/core/select/': typeof CoreSelectIndexRoute
   '/core/slider/': typeof CoreSliderIndexRoute
@@ -255,6 +276,7 @@ export interface FileRoutesByTo {
   '/core/breadcrumbs': typeof CoreBreadcrumbsIndexRoute
   '/core/button': typeof CoreButtonIndexRoute
   '/core/checkbox': typeof CoreCheckboxIndexRoute
+  '/core/chip': typeof CoreChipIndexRoute
   '/core/color-swatch': typeof CoreColorSwatchIndexRoute
   '/core/drawer': typeof CoreDrawerIndexRoute
   '/core/file-input': typeof CoreFileInputIndexRoute
@@ -266,10 +288,12 @@ export interface FileRoutesByTo {
   '/core/number-input': typeof CoreNumberInputIndexRoute
   '/core/pagination': typeof CorePaginationIndexRoute
   '/core/password-input': typeof CorePasswordInputIndexRoute
+  '/core/pin-input': typeof CorePinInputIndexRoute
   '/core/popover': typeof CorePopoverIndexRoute
   '/core/progress-circle': typeof CoreProgressCircleIndexRoute
   '/core/progress': typeof CoreProgressIndexRoute
   '/core/radio': typeof CoreRadioIndexRoute
+  '/core/scroll-area': typeof CoreScrollAreaIndexRoute
   '/core/segmented-control': typeof CoreSegmentedControlIndexRoute
   '/core/select': typeof CoreSelectIndexRoute
   '/core/slider': typeof CoreSliderIndexRoute
@@ -291,6 +315,7 @@ export interface FileRoutesById {
   '/core/breadcrumbs/': typeof CoreBreadcrumbsIndexRoute
   '/core/button/': typeof CoreButtonIndexRoute
   '/core/checkbox/': typeof CoreCheckboxIndexRoute
+  '/core/chip/': typeof CoreChipIndexRoute
   '/core/color-swatch/': typeof CoreColorSwatchIndexRoute
   '/core/drawer/': typeof CoreDrawerIndexRoute
   '/core/file-input/': typeof CoreFileInputIndexRoute
@@ -302,10 +327,12 @@ export interface FileRoutesById {
   '/core/number-input/': typeof CoreNumberInputIndexRoute
   '/core/pagination/': typeof CorePaginationIndexRoute
   '/core/password-input/': typeof CorePasswordInputIndexRoute
+  '/core/pin-input/': typeof CorePinInputIndexRoute
   '/core/popover/': typeof CorePopoverIndexRoute
   '/core/progress-circle/': typeof CoreProgressCircleIndexRoute
   '/core/progress/': typeof CoreProgressIndexRoute
   '/core/radio/': typeof CoreRadioIndexRoute
+  '/core/scroll-area/': typeof CoreScrollAreaIndexRoute
   '/core/segmented-control/': typeof CoreSegmentedControlIndexRoute
   '/core/select/': typeof CoreSelectIndexRoute
   '/core/slider/': typeof CoreSliderIndexRoute
@@ -328,6 +355,7 @@ export interface FileRouteTypes {
     | '/core/breadcrumbs/'
     | '/core/button/'
     | '/core/checkbox/'
+    | '/core/chip/'
     | '/core/color-swatch/'
     | '/core/drawer/'
     | '/core/file-input/'
@@ -339,10 +367,12 @@ export interface FileRouteTypes {
     | '/core/number-input/'
     | '/core/pagination/'
     | '/core/password-input/'
+    | '/core/pin-input/'
     | '/core/popover/'
     | '/core/progress-circle/'
     | '/core/progress/'
     | '/core/radio/'
+    | '/core/scroll-area/'
     | '/core/segmented-control/'
     | '/core/select/'
     | '/core/slider/'
@@ -363,6 +393,7 @@ export interface FileRouteTypes {
     | '/core/breadcrumbs'
     | '/core/button'
     | '/core/checkbox'
+    | '/core/chip'
     | '/core/color-swatch'
     | '/core/drawer'
     | '/core/file-input'
@@ -374,10 +405,12 @@ export interface FileRouteTypes {
     | '/core/number-input'
     | '/core/pagination'
     | '/core/password-input'
+    | '/core/pin-input'
     | '/core/popover'
     | '/core/progress-circle'
     | '/core/progress'
     | '/core/radio'
+    | '/core/scroll-area'
     | '/core/segmented-control'
     | '/core/select'
     | '/core/slider'
@@ -398,6 +431,7 @@ export interface FileRouteTypes {
     | '/core/breadcrumbs/'
     | '/core/button/'
     | '/core/checkbox/'
+    | '/core/chip/'
     | '/core/color-swatch/'
     | '/core/drawer/'
     | '/core/file-input/'
@@ -409,10 +443,12 @@ export interface FileRouteTypes {
     | '/core/number-input/'
     | '/core/pagination/'
     | '/core/password-input/'
+    | '/core/pin-input/'
     | '/core/popover/'
     | '/core/progress-circle/'
     | '/core/progress/'
     | '/core/radio/'
+    | '/core/scroll-area/'
     | '/core/segmented-control/'
     | '/core/select/'
     | '/core/slider/'
@@ -434,6 +470,7 @@ export interface RootRouteChildren {
   CoreBreadcrumbsIndexRoute: typeof CoreBreadcrumbsIndexRoute
   CoreButtonIndexRoute: typeof CoreButtonIndexRoute
   CoreCheckboxIndexRoute: typeof CoreCheckboxIndexRoute
+  CoreChipIndexRoute: typeof CoreChipIndexRoute
   CoreColorSwatchIndexRoute: typeof CoreColorSwatchIndexRoute
   CoreDrawerIndexRoute: typeof CoreDrawerIndexRoute
   CoreFileInputIndexRoute: typeof CoreFileInputIndexRoute
@@ -445,10 +482,12 @@ export interface RootRouteChildren {
   CoreNumberInputIndexRoute: typeof CoreNumberInputIndexRoute
   CorePaginationIndexRoute: typeof CorePaginationIndexRoute
   CorePasswordInputIndexRoute: typeof CorePasswordInputIndexRoute
+  CorePinInputIndexRoute: typeof CorePinInputIndexRoute
   CorePopoverIndexRoute: typeof CorePopoverIndexRoute
   CoreProgressCircleIndexRoute: typeof CoreProgressCircleIndexRoute
   CoreProgressIndexRoute: typeof CoreProgressIndexRoute
   CoreRadioIndexRoute: typeof CoreRadioIndexRoute
+  CoreScrollAreaIndexRoute: typeof CoreScrollAreaIndexRoute
   CoreSegmentedControlIndexRoute: typeof CoreSegmentedControlIndexRoute
   CoreSelectIndexRoute: typeof CoreSelectIndexRoute
   CoreSliderIndexRoute: typeof CoreSliderIndexRoute
@@ -546,6 +585,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CoreSegmentedControlIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/core/scroll-area/': {
+      id: '/core/scroll-area/'
+      path: '/core/scroll-area'
+      fullPath: '/core/scroll-area/'
+      preLoaderRoute: typeof CoreScrollAreaIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/core/radio/': {
       id: '/core/radio/'
       path: '/core/radio'
@@ -572,6 +618,13 @@ declare module '@tanstack/react-router' {
       path: '/core/popover'
       fullPath: '/core/popover/'
       preLoaderRoute: typeof CorePopoverIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/core/pin-input/': {
+      id: '/core/pin-input/'
+      path: '/core/pin-input'
+      fullPath: '/core/pin-input/'
+      preLoaderRoute: typeof CorePinInputIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/core/password-input/': {
@@ -651,6 +704,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CoreColorSwatchIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/core/chip/': {
+      id: '/core/chip/'
+      path: '/core/chip'
+      fullPath: '/core/chip/'
+      preLoaderRoute: typeof CoreChipIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/core/checkbox/': {
       id: '/core/checkbox/'
       path: '/core/checkbox'
@@ -706,6 +766,7 @@ const rootRouteChildren: RootRouteChildren = {
   CoreBreadcrumbsIndexRoute: CoreBreadcrumbsIndexRoute,
   CoreButtonIndexRoute: CoreButtonIndexRoute,
   CoreCheckboxIndexRoute: CoreCheckboxIndexRoute,
+  CoreChipIndexRoute: CoreChipIndexRoute,
   CoreColorSwatchIndexRoute: CoreColorSwatchIndexRoute,
   CoreDrawerIndexRoute: CoreDrawerIndexRoute,
   CoreFileInputIndexRoute: CoreFileInputIndexRoute,
@@ -717,10 +778,12 @@ const rootRouteChildren: RootRouteChildren = {
   CoreNumberInputIndexRoute: CoreNumberInputIndexRoute,
   CorePaginationIndexRoute: CorePaginationIndexRoute,
   CorePasswordInputIndexRoute: CorePasswordInputIndexRoute,
+  CorePinInputIndexRoute: CorePinInputIndexRoute,
   CorePopoverIndexRoute: CorePopoverIndexRoute,
   CoreProgressCircleIndexRoute: CoreProgressCircleIndexRoute,
   CoreProgressIndexRoute: CoreProgressIndexRoute,
   CoreRadioIndexRoute: CoreRadioIndexRoute,
+  CoreScrollAreaIndexRoute: CoreScrollAreaIndexRoute,
   CoreSegmentedControlIndexRoute: CoreSegmentedControlIndexRoute,
   CoreSelectIndexRoute: CoreSelectIndexRoute,
   CoreSliderIndexRoute: CoreSliderIndexRoute,

@@ -1,19 +1,41 @@
 import { useId, useUncontrolled } from "@refraktor/utils";
-import { KeyboardEvent, ReactNode, useMemo } from "react";
+import {
+    KeyboardEvent,
+    ReactNode,
+    Ref,
+    useCallback,
+    useEffect,
+    useMemo,
+    useRef,
+    useState
+} from "react";
 import {
     createClassNamesConfig,
     createComponentConfig,
     factory,
+    Input,
     useClassNames,
     useProps,
     useTheme
 } from "@refraktor/core";
-import { getGridColumns, getPickerSizeStyles } from "../picker-shared";
+import {
+    autoUpdate,
+    flip,
+    FloatingFocusManager,
+    FloatingPortal,
+    offset,
+    shift,
+    useClick,
+    useDismiss,
+    useFloating,
+    useInteractions,
+    useRole
+} from "@floating-ui/react";
+import { getPickerSizeStyles } from "../picker-shared";
 import {
     TimePickerClassNames,
     TimePickerFactoryPayload,
-    TimePickerMode,
-    TimePickerPeriod,
+    TimePickerFormat,
     TimePickerProps,
     TimePickerValue
 } from "./time-picker.types";
@@ -21,299 +43,173 @@ import {
 const HOURS_IN_DAY = 24;
 const MINUTES_IN_HOUR = 60;
 const SECONDS_IN_MINUTE = 60;
-const SECONDS_IN_DAY = HOURS_IN_DAY * MINUTES_IN_HOUR * SECONDS_IN_MINUTE;
-const DEFAULT_MODE: TimePickerMode = "24h";
-const TIME_SEGMENT_PATTERN = /^\d{1,2}$/;
+const PLACEHOLDER = "--";
 
 const defaultProps = {
-    mode: DEFAULT_MODE,
+    format: "24h" as TimePickerFormat,
+    withSeconds: false,
+    withDropdown: false,
+    clearable: false,
     disabled: false,
-    size: "md",
-    radius: "default"
+    readOnly: false,
+    variant: "default" as const,
+    size: "md" as const,
+    radius: "default" as const,
+    hoursStep: 1,
+    minutesStep: 1,
+    secondsStep: 1,
+    amPmLabels: { am: "AM", pm: "PM" }
 } satisfies Partial<TimePickerProps>;
 
-type TimeBounds = {
-    minSeconds: number;
-    maxSeconds: number;
-    hasMin: boolean;
-    hasMax: boolean;
-};
-
 type TimeParts = {
-    hours24: number;
-    hour12: number;
-    minutes: number;
-    seconds: number;
-    period: TimePickerPeriod;
-};
-
-type PickerOptionValue = number | TimePickerPeriod;
-
-type PickerOption<TValue extends PickerOptionValue = PickerOptionValue> = {
-    value: TValue;
-    label: ReactNode;
-    ariaLabel: string;
-    selected: boolean;
-    disabled: boolean;
+    hours: number | null;
+    minutes: number | null;
+    seconds: number | null;
+    amPm: "AM" | "PM" | null;
 };
 
 const pad = (value: number) => String(value).padStart(2, "0");
 
-const to12Hour = (hours24: number) => {
-    const normalized = hours24 % 12;
-    return normalized === 0 ? 12 : normalized;
-};
-
-const to24Hour = (hour12: number, period: TimePickerPeriod) => {
-    const normalizedHour = hour12 % 12;
-    return period === "pm" ? normalizedHour + 12 : normalizedHour;
-};
-
-const toSecondsOfDay = (hours24: number, minutes: number, seconds: number) =>
-    hours24 * MINUTES_IN_HOUR * SECONDS_IN_MINUTE + minutes * SECONDS_IN_MINUTE + seconds;
-
-const createTimeParts = (hours24: number, minutes: number, seconds: number): TimeParts => {
-    const normalizedHours24 = hours24 % HOURS_IN_DAY;
-
-    return {
-        hours24: normalizedHours24,
-        hour12: to12Hour(normalizedHours24),
-        minutes,
-        seconds,
-        period: normalizedHours24 >= 12 ? "pm" : "am"
-    };
-};
-
-const parseTimeValue = (value: unknown): TimeParts | undefined => {
-    if (typeof value !== "string") {
-        return undefined;
+const parseValue = (
+    value: string | undefined,
+    withSeconds: boolean
+): TimeParts => {
+    if (!value || value === "") {
+        return { hours: null, minutes: null, seconds: null, amPm: null };
     }
 
     const segments = value.trim().split(":");
-
-    if (
-        segments.length !== 3 ||
-        !segments.every((segment) => TIME_SEGMENT_PATTERN.test(segment))
-    ) {
-        return undefined;
+    if (segments.length < 2) {
+        return { hours: null, minutes: null, seconds: null, amPm: null };
     }
 
-    const [hoursText, minutesText, secondsText] = segments;
-    const hours24 = Number.parseInt(hoursText, 10);
-    const minutes = Number.parseInt(minutesText, 10);
-    const seconds = Number.parseInt(secondsText, 10);
+    const hours = Number.parseInt(segments[0], 10);
+    const minutes = Number.parseInt(segments[1], 10);
+    const seconds =
+        segments.length >= 3 ? Number.parseInt(segments[2], 10) : 0;
 
     if (
-        hours24 < 0 ||
-        hours24 >= HOURS_IN_DAY ||
+        Number.isNaN(hours) ||
+        Number.isNaN(minutes) ||
+        Number.isNaN(seconds) ||
+        hours < 0 ||
+        hours >= HOURS_IN_DAY ||
         minutes < 0 ||
         minutes >= MINUTES_IN_HOUR ||
         seconds < 0 ||
         seconds >= SECONDS_IN_MINUTE
     ) {
-        return undefined;
-    }
-
-    return createTimeParts(hours24, minutes, seconds);
-};
-
-const formatTimeValue = (hours24: number, minutes: number, seconds: number) =>
-    `${pad(hours24)}:${pad(minutes)}:${pad(seconds)}`;
-
-const toTimePartsFromSeconds = (seconds: number) => {
-    const normalizedSeconds =
-        ((seconds % SECONDS_IN_DAY) + SECONDS_IN_DAY) % SECONDS_IN_DAY;
-    const hours24 = Math.floor(
-        normalizedSeconds / (MINUTES_IN_HOUR * SECONDS_IN_MINUTE)
-    );
-    const minutes = Math.floor(
-        (normalizedSeconds % (MINUTES_IN_HOUR * SECONDS_IN_MINUTE)) /
-            SECONDS_IN_MINUTE
-    );
-    const remainingSeconds = normalizedSeconds % SECONDS_IN_MINUTE;
-
-    return createTimeParts(hours24, minutes, remainingSeconds);
-};
-
-const clampTimeParts = (parts: TimeParts, bounds: TimeBounds) => {
-    const seconds = toSecondsOfDay(parts.hours24, parts.minutes, parts.seconds);
-
-    if (bounds.hasMin && seconds < bounds.minSeconds) {
-        return toTimePartsFromSeconds(bounds.minSeconds);
-    }
-
-    if (bounds.hasMax && seconds > bounds.maxSeconds) {
-        return toTimePartsFromSeconds(bounds.maxSeconds);
-    }
-
-    return parts;
-};
-
-const getCurrentTimeParts = () => {
-    const current = new Date();
-    return createTimeParts(
-        current.getHours(),
-        current.getMinutes(),
-        current.getSeconds()
-    );
-};
-
-const getTimeBounds = (
-    minTime?: TimePickerValue,
-    maxTime?: TimePickerValue
-): TimeBounds => {
-    const minParts = parseTimeValue(minTime);
-    const maxParts = parseTimeValue(maxTime);
-    const hasMin = minParts !== undefined;
-    const hasMax = maxParts !== undefined;
-
-    const minSeconds = hasMin
-        ? toSecondsOfDay(minParts.hours24, minParts.minutes, minParts.seconds)
-        : Number.NEGATIVE_INFINITY;
-    const maxSeconds = hasMax
-        ? toSecondsOfDay(maxParts.hours24, maxParts.minutes, maxParts.seconds)
-        : Number.POSITIVE_INFINITY;
-
-    if (hasMin && hasMax && minSeconds > maxSeconds) {
-        return {
-            minSeconds: maxSeconds,
-            maxSeconds: minSeconds,
-            hasMin: true,
-            hasMax: true
-        };
+        return { hours: null, minutes: null, seconds: null, amPm: null };
     }
 
     return {
-        minSeconds,
-        maxSeconds,
-        hasMin,
-        hasMax
+        hours,
+        minutes,
+        seconds: withSeconds ? seconds : null,
+        amPm: hours >= 12 ? "PM" : "AM"
     };
 };
 
-const isTimeDisabled = (seconds: number, disabled: boolean, bounds: TimeBounds) =>
-    disabled ||
-    (bounds.hasMin && seconds < bounds.minSeconds) ||
-    (bounds.hasMax && seconds > bounds.maxSeconds);
-
-const getSelectablePeriodRange = (
-    period: TimePickerPeriod,
-    bounds: TimeBounds
-) => {
-    const periodStart = period === "am" ? 0 : SECONDS_IN_DAY / 2;
-    const periodEnd = period === "am" ? SECONDS_IN_DAY / 2 - 1 : SECONDS_IN_DAY - 1;
-
-    const start = Math.max(periodStart, bounds.minSeconds);
-    const end = Math.min(periodEnd, bounds.maxSeconds);
-
-    if (start > end) {
-        return undefined;
+const formatValue = (parts: TimeParts, withSeconds: boolean): string => {
+    if (parts.hours === null || parts.minutes === null) {
+        return "";
     }
 
-    return { start, end };
+    const base = `${pad(parts.hours)}:${pad(parts.minutes)}`;
+
+    if (withSeconds) {
+        return `${base}:${pad(parts.seconds ?? 0)}`;
+    }
+
+    return base;
 };
 
-const getFirstEnabledIndex = <TValue extends PickerOptionValue>(
-    options: PickerOption<TValue>[]
-) => options.findIndex((option) => !option.disabled);
-
-const getLastEnabledIndex = <TValue extends PickerOptionValue>(
-    options: PickerOption<TValue>[]
-) => {
-    for (let index = options.length - 1; index >= 0; index -= 1) {
-        if (!options[index].disabled) {
-            return index;
-        }
-    }
-
-    return -1;
+const to12Hour = (hours24: number): number => {
+    if (hours24 === 0 || hours24 === 12) return 12;
+    return hours24 % 12;
 };
 
-const findNextEnabledIndex = <TValue extends PickerOptionValue>(
-    options: PickerOption<TValue>[],
-    startIndex: number,
-    direction: 1 | -1
-) => {
-    let index = startIndex + direction;
-
-    while (index >= 0 && index < options.length) {
-        if (!options[index].disabled) {
-            return index;
-        }
-
-        index += direction;
+const to24Hour = (hour12: number, amPm: "AM" | "PM"): number => {
+    if (amPm === "AM") {
+        return hour12 === 12 ? 0 : hour12;
     }
-
-    return startIndex;
+    return hour12 === 12 ? 12 : hour12 + 12;
 };
 
-const handleListKeyDown = <TValue extends PickerOptionValue>(
-    event: KeyboardEvent<HTMLDivElement>,
-    options: PickerOption<TValue>[],
-    onSelect: (value: TValue) => void
-) => {
-    const firstEnabledIndex = getFirstEnabledIndex(options);
-    const lastEnabledIndex = getLastEnabledIndex(options);
+const clampValue = (
+    value: number,
+    min: number,
+    max: number,
+    step: number
+): number => {
+    const clamped = Math.max(min, Math.min(max, value));
+    return Math.round(clamped / step) * step;
+};
 
-    if (firstEnabledIndex === -1 || lastEnabledIndex === -1) {
-        return;
+const parseMinMax = (
+    timeStr: string | undefined
+): { hours: number; minutes: number; seconds: number } | null => {
+    if (!timeStr) return null;
+    const segments = timeStr.trim().split(":");
+    if (segments.length < 2) return null;
+
+    const hours = Number.parseInt(segments[0], 10);
+    const minutes = Number.parseInt(segments[1], 10);
+    const seconds =
+        segments.length >= 3 ? Number.parseInt(segments[2], 10) : 0;
+
+    if (Number.isNaN(hours) || Number.isNaN(minutes) || Number.isNaN(seconds))
+        return null;
+
+    return { hours, minutes, seconds };
+};
+
+const setRef = <T,>(ref: Ref<T> | undefined, node: T | null) => {
+    if (typeof ref === "function") {
+        ref(node);
+    } else if (ref && "current" in ref) {
+        (ref as React.MutableRefObject<T | null>).current = node;
     }
+};
 
-    const selectedIndex = options.findIndex((option) => option.selected);
+const inputSizes: Record<string, string> = {
+    xs: "h-5 px-2 text-[8px]",
+    sm: "h-6 px-2.5 text-[10px]",
+    md: "h-8 px-3 text-xs",
+    lg: "h-10 px-3.5 text-sm",
+    xl: "h-12 px-4 text-base"
+};
 
-    if (event.key === "Home") {
-        event.preventDefault();
-        onSelect(options[firstEnabledIndex].value);
-        return;
-    }
+const inputVariants: Record<string, string> = {
+    default:
+        "bg-[var(--refraktor-bg)] text-[var(--refraktor-text)] border border-[var(--refraktor-border)]",
+    filled: "bg-[var(--refraktor-bg)] text-[var(--refraktor-text)]",
+    outline:
+        "bg-transparent text-[var(--refraktor-text)] border border-[var(--refraktor-border)]"
+};
 
-    if (event.key === "End") {
-        event.preventDefault();
-        onSelect(options[lastEnabledIndex].value);
-        return;
-    }
+const segmentWidths: Record<string, string> = {
+    xs: "w-[1.25rem]",
+    sm: "w-[1.5rem]",
+    md: "w-[1.75rem]",
+    lg: "w-[2rem]",
+    xl: "w-[2.5rem]"
+};
 
-    const applyStep = (direction: 1 | -1, repeat = 1) => {
-        event.preventDefault();
+const amPmWidths: Record<string, string> = {
+    xs: "w-[1.75rem]",
+    sm: "w-[2rem]",
+    md: "w-[2.25rem]",
+    lg: "w-[2.75rem]",
+    xl: "w-[3.25rem]"
+};
 
-        let index =
-            selectedIndex === -1
-                ? direction === 1
-                    ? firstEnabledIndex
-                    : lastEnabledIndex
-                : selectedIndex;
-
-        for (let step = 0; step < repeat; step += 1) {
-            const nextIndex = findNextEnabledIndex(options, index, direction);
-
-            if (nextIndex === index) {
-                break;
-            }
-
-            index = nextIndex;
-        }
-
-        onSelect(options[index].value);
-    };
-
-    if (event.key === "ArrowDown") {
-        applyStep(1);
-        return;
-    }
-
-    if (event.key === "ArrowUp") {
-        applyStep(-1);
-        return;
-    }
-
-    if (event.key === "PageDown") {
-        applyStep(1, 5);
-        return;
-    }
-
-    if (event.key === "PageUp") {
-        applyStep(-1, 5);
-    }
+const separatorSizes: Record<string, string> = {
+    xs: "text-[8px]",
+    sm: "text-[10px]",
+    md: "text-xs",
+    lg: "text-sm",
+    xl: "text-base"
 };
 
 const TimePicker = factory<TimePickerFactoryPayload>((_props, ref) => {
@@ -323,20 +219,39 @@ const TimePicker = factory<TimePickerFactoryPayload>((_props, ref) => {
         value,
         defaultValue,
         onChange,
-        minTime,
-        maxTime,
-        mode,
+        format,
+        withSeconds,
+        withDropdown,
+        clearable,
+        min,
+        max,
+        hoursStep,
+        minutesStep,
+        secondsStep,
+        amPmLabels,
         disabled,
+        readOnly,
+        variant,
         size,
         radius,
-        getHourLabel,
-        getMinuteLabel,
-        getSecondLabel,
-        getPeriodLabel,
-        getHourAriaLabel,
-        getMinuteAriaLabel,
-        getSecondAriaLabel,
-        getPeriodAriaLabel,
+        label,
+        description,
+        error,
+        required,
+        withAsterisk,
+        leftSection,
+        rightSection,
+        hoursRef: hoursRefProp,
+        minutesRef: minutesRefProp,
+        secondsRef: secondsRefProp,
+        amPmRef: amPmRefProp,
+        hoursInputLabel,
+        minutesInputLabel,
+        secondsInputLabel,
+        amPmInputLabel,
+        popoverProps,
+        onFocus,
+        onBlur,
         className,
         classNames,
         ...props
@@ -344,390 +259,826 @@ const TimePicker = factory<TimePickerFactoryPayload>((_props, ref) => {
     const classes = useClassNames("TimePicker", classNames);
 
     const _id = useId(id);
-    const sizeStyles = getPickerSizeStyles(size);
+    const is12h = format === "12h";
 
-    const bounds = useMemo(() => getTimeBounds(minTime, maxTime), [minTime, maxTime]);
+    const hoursRef = useRef<HTMLInputElement>(null);
+    const minutesRef = useRef<HTMLInputElement>(null);
+    const secondsRef = useRef<HTMLInputElement>(null);
+    const amPmRef = useRef<HTMLInputElement>(null);
+    const wrapperRef = useRef<HTMLDivElement>(null);
+    const blurTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-    const [selectedTimeState, setSelectedTime] = useUncontrolled<
-        TimePickerValue | undefined
-    >({
+    const minParsed = useMemo(() => parseMinMax(min), [min]);
+    const maxParsed = useMemo(() => parseMinMax(max), [max]);
+
+    const [internalValue, setInternalValue] = useUncontrolled<string>({
         value,
         defaultValue,
-        finalValue: undefined,
-        onChange: (nextTime) => {
-            if (nextTime !== undefined) {
-                onChange?.(nextTime);
-            }
-        }
+        finalValue: "",
+        onChange
     });
 
-    const selectedParts = useMemo(() => {
-        const parsed = parseTimeValue(selectedTimeState);
-
-        if (!parsed) {
-            return undefined;
-        }
-
-        return clampTimeParts(parsed, bounds);
-    }, [bounds, selectedTimeState]);
-    const selectedTime = useMemo(
-        () =>
-            selectedParts
-                ? formatTimeValue(
-                      selectedParts.hours24,
-                      selectedParts.minutes,
-                      selectedParts.seconds
-                  )
-                : undefined,
-        [selectedParts]
+    const [parts, setParts] = useState<TimeParts>(() =>
+        parseValue(internalValue, withSeconds)
     );
-    const fallbackParts = useMemo(
-        () => clampTimeParts(getCurrentTimeParts(), bounds),
-        [bounds]
-    );
-    const activeParts = selectedParts ?? fallbackParts;
 
-    const applyTime = (hours24: number, minutes: number, seconds: number) => {
-        if (disabled) {
-            return;
-        }
+    useEffect(() => {
+        const parsed = parseValue(internalValue, withSeconds);
+        setParts(parsed);
+    }, [internalValue, withSeconds]);
 
-        const nextSeconds = toSecondsOfDay(hours24, minutes, seconds);
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const isDropdownVisible = withDropdown && dropdownOpen && !disabled;
 
-        if (isTimeDisabled(nextSeconds, false, bounds)) {
-            return;
-        }
+    const floating = useFloating({
+        placement: popoverProps?.placement ?? "bottom-start",
+        open: isDropdownVisible,
+        onOpenChange: (open) => {
+            if (!disabled && !readOnly) setDropdownOpen(open);
+        },
+        middleware: [
+            offset(popoverProps?.offset ?? 4),
+            flip(),
+            shift()
+        ],
+        whileElementsMounted: autoUpdate,
+        strategy: "fixed"
+    });
 
-        const nextTime = formatTimeValue(hours24, minutes, seconds);
+    const click = useClick(floating.context, {
+        enabled: withDropdown && !disabled && !readOnly
+    });
+    const dismiss = useDismiss(floating.context);
+    const role = useRole(floating.context, { role: "dialog" });
+    const { getReferenceProps, getFloatingProps } = useInteractions([
+        click,
+        dismiss,
+        role
+    ]);
 
-        if (selectedTime === nextTime) {
-            return;
-        }
+    const emitValue = useCallback(
+        (nextParts: TimeParts) => {
+            const allFilled =
+                nextParts.hours !== null &&
+                nextParts.minutes !== null &&
+                (!withSeconds || nextParts.seconds !== null) &&
+                (!is12h || nextParts.amPm !== null);
 
-        setSelectedTime(nextTime);
-    };
+            const allEmpty =
+                nextParts.hours === null &&
+                nextParts.minutes === null &&
+                (nextParts.seconds === null || !withSeconds);
 
-    const setHour = (hour: number) => {
-        const nextHour = mode === "12h" ? to24Hour(hour, activeParts.period) : hour;
-        applyTime(nextHour, activeParts.minutes, activeParts.seconds);
-    };
-
-    const setMinute = (minute: number) => {
-        applyTime(activeParts.hours24, minute, activeParts.seconds);
-    };
-
-    const setSecond = (second: number) => {
-        applyTime(activeParts.hours24, activeParts.minutes, second);
-    };
-
-    const setPeriod = (period: TimePickerPeriod) => {
-        const selectableRange = getSelectablePeriodRange(period, bounds);
-
-        if (!selectableRange) {
-            return;
-        }
-
-        const nextHour24 = to24Hour(activeParts.hour12, period);
-        const candidateSeconds = toSecondsOfDay(
-            nextHour24,
-            activeParts.minutes,
-            activeParts.seconds
-        );
-        const nextSeconds = Math.min(
-            selectableRange.end,
-            Math.max(selectableRange.start, candidateSeconds)
-        );
-        const nextParts = toTimePartsFromSeconds(nextSeconds);
-
-        applyTime(nextParts.hours24, nextParts.minutes, nextParts.seconds);
-    };
-
-    const hourOptions = useMemo<PickerOption<number>[]>(
-        () => {
-            const totalHours = mode === "12h" ? 12 : HOURS_IN_DAY;
-
-            return Array.from({ length: totalHours }, (_, index) => {
-                const hour = mode === "12h" ? index + 1 : index;
-                const hours24 =
-                    mode === "12h" ? to24Hour(hour, activeParts.period) : hour;
-                const nextSeconds = toSecondsOfDay(
-                    hours24,
-                    activeParts.minutes,
-                    activeParts.seconds
+            if (allFilled) {
+                let hours = nextParts.hours!;
+                if (is12h && nextParts.amPm !== null) {
+                    hours = to24Hour(hours, nextParts.amPm);
+                }
+                const formatted = formatValue(
+                    { ...nextParts, hours },
+                    withSeconds
                 );
-                const selected =
-                    selectedParts !== undefined &&
-                    (mode === "12h"
-                        ? selectedParts.hour12 === hour
-                        : selectedParts.hours24 === hour);
+                setInternalValue(formatted);
+            } else if (allEmpty) {
+                setInternalValue("");
+            }
+        },
+        [is12h, setInternalValue, withSeconds]
+    );
 
-                return {
-                    value: hour,
-                    label: getHourLabel ? getHourLabel(hour, mode) : pad(hour),
-                    ariaLabel: getHourAriaLabel
-                        ? getHourAriaLabel(hour, mode, selected)
-                        : selected
-                          ? `Hour ${pad(hour)}, selected`
-                          : `Choose hour ${pad(hour)}`,
-                    selected,
-                    disabled: isTimeDisabled(nextSeconds, disabled ?? false, bounds)
-                };
+    const updateParts = useCallback(
+        (updater: (prev: TimeParts) => TimeParts) => {
+            setParts((prev) => {
+                const next = updater(prev);
+                emitValue(next);
+                return next;
             });
         },
-        [
-            activeParts.minutes,
-            activeParts.period,
-            activeParts.seconds,
-            bounds,
-            disabled,
-            getHourAriaLabel,
-            getHourLabel,
-            mode,
-            selectedParts
-        ]
+        [emitValue]
     );
 
-    const minuteOptions = useMemo<PickerOption<number>[]>(
-        () =>
-            Array.from({ length: MINUTES_IN_HOUR }, (_, minute) => {
-                const nextSeconds = toSecondsOfDay(
-                    activeParts.hours24,
-                    minute,
-                    activeParts.seconds
-                );
-                const selected = selectedParts?.minutes === minute;
-
-                return {
-                    value: minute,
-                    label: getMinuteLabel ? getMinuteLabel(minute) : pad(minute),
-                    ariaLabel: getMinuteAriaLabel
-                        ? getMinuteAriaLabel(minute, selected)
-                        : selected
-                          ? `Minute ${pad(minute)}, selected`
-                          : `Choose minute ${pad(minute)}`,
-                    selected,
-                    disabled: isTimeDisabled(nextSeconds, disabled ?? false, bounds)
-                };
-            }),
-        [
-            activeParts.hours24,
-            activeParts.seconds,
-            bounds,
-            disabled,
-            getMinuteAriaLabel,
-            getMinuteLabel,
-            selectedParts
-        ]
+    const getDisplayHours = useCallback(
+        (hours24: number | null): string => {
+            if (hours24 === null) return PLACEHOLDER;
+            if (is12h) return pad(to12Hour(hours24));
+            return pad(hours24);
+        },
+        [is12h]
     );
 
-    const secondOptions = useMemo<PickerOption<number>[]>(
-        () =>
-            Array.from({ length: SECONDS_IN_MINUTE }, (_, second) => {
-                const nextSeconds = toSecondsOfDay(
-                    activeParts.hours24,
-                    activeParts.minutes,
-                    second
-                );
-                const selected = selectedParts?.seconds === second;
+    const handleClear = useCallback(() => {
+        if (disabled || readOnly) return;
+        const empty: TimeParts = {
+            hours: null,
+            minutes: null,
+            seconds: null,
+            amPm: null
+        };
+        setParts(empty);
+        setInternalValue("");
+        hoursRef.current?.focus();
+    }, [disabled, readOnly, setInternalValue]);
 
-                return {
-                    value: second,
-                    label: getSecondLabel ? getSecondLabel(second) : pad(second),
-                    ariaLabel: getSecondAriaLabel
-                        ? getSecondAriaLabel(second, selected)
-                        : selected
-                          ? `Second ${pad(second)}, selected`
-                          : `Choose second ${pad(second)}`,
-                    selected,
-                    disabled: isTimeDisabled(nextSeconds, disabled ?? false, bounds)
-                };
-            }),
-        [
-            activeParts.hours24,
-            activeParts.minutes,
-            bounds,
-            disabled,
-            getSecondAriaLabel,
-            getSecondLabel,
-            selectedParts
-        ]
+    const createSegmentKeyHandler = useCallback(
+        (
+            segment: "hours" | "minutes" | "seconds",
+            prevRef: React.RefObject<HTMLInputElement | null>,
+            nextRef: React.RefObject<HTMLInputElement | null>
+        ) => {
+            return (event: KeyboardEvent<HTMLInputElement>) => {
+                if (disabled || readOnly) return;
+
+                const step =
+                    segment === "hours"
+                        ? hoursStep
+                        : segment === "minutes"
+                          ? minutesStep
+                          : secondsStep;
+                const maxVal =
+                    segment === "hours"
+                        ? is12h
+                            ? 12
+                            : HOURS_IN_DAY - 1
+                        : segment === "minutes"
+                          ? MINUTES_IN_HOUR - 1
+                          : SECONDS_IN_MINUTE - 1;
+                const minVal = segment === "hours" && is12h ? 1 : 0;
+
+                if (event.key === "ArrowUp") {
+                    event.preventDefault();
+                    updateParts((prev) => {
+                        const current = prev[segment] ?? minVal;
+                        let next = current + step;
+                        if (next > maxVal) next = minVal;
+                        return { ...prev, [segment]: next };
+                    });
+                    return;
+                }
+
+                if (event.key === "ArrowDown") {
+                    event.preventDefault();
+                    updateParts((prev) => {
+                        const current = prev[segment] ?? maxVal;
+                        let next = current - step;
+                        if (next < minVal) next = maxVal;
+                        return { ...prev, [segment]: next };
+                    });
+                    return;
+                }
+
+                if (event.key === "ArrowRight") {
+                    event.preventDefault();
+                    nextRef.current?.focus();
+                    nextRef.current?.select();
+                    return;
+                }
+
+                if (event.key === "ArrowLeft") {
+                    event.preventDefault();
+                    prevRef.current?.focus();
+                    prevRef.current?.select();
+                    return;
+                }
+
+                if (event.key === "Home") {
+                    event.preventDefault();
+                    updateParts((prev) => ({ ...prev, [segment]: minVal }));
+                    return;
+                }
+
+                if (event.key === "End") {
+                    event.preventDefault();
+                    updateParts((prev) => ({ ...prev, [segment]: maxVal }));
+                    return;
+                }
+
+                if (event.key === "Backspace") {
+                    event.preventDefault();
+                    updateParts((prev) => {
+                        if (prev[segment] === null) {
+                            prevRef.current?.focus();
+                            prevRef.current?.select();
+                            return prev;
+                        }
+                        return { ...prev, [segment]: null };
+                    });
+                    return;
+                }
+
+                if (event.key === "Tab") {
+                    return;
+                }
+
+                if (/^\d$/.test(event.key)) {
+                    event.preventDefault();
+                    const digit = Number.parseInt(event.key, 10);
+                    updateParts((prev) => {
+                        const current = prev[segment];
+                        let next: number;
+
+                        if (current === null || current >= 10) {
+                            next = digit;
+                        } else {
+                            next = current * 10 + digit;
+                        }
+
+                        if (next > maxVal) {
+                            next = digit;
+                        }
+
+                        const result = { ...prev, [segment]: next };
+
+                        if (next >= (maxVal + 1) / 10 || (current !== null && current < 10)) {
+                            requestAnimationFrame(() => {
+                                nextRef.current?.focus();
+                                nextRef.current?.select();
+                            });
+                        }
+
+                        return result;
+                    });
+                    return;
+                }
+
+                if (!event.ctrlKey && !event.metaKey && !event.altKey) {
+                    event.preventDefault();
+                }
+            };
+        },
+        [disabled, hoursStep, is12h, minutesStep, readOnly, secondsStep, updateParts]
     );
 
-    const periodOptions = useMemo<PickerOption<TimePickerPeriod>[]>(
-        () =>
-            (["am", "pm"] as const).map((period) => {
-                const selected = selectedParts?.period === period;
+    const handleAmPmKeyDown = useCallback(
+        (event: KeyboardEvent<HTMLInputElement>) => {
+            if (disabled || readOnly) return;
 
-                return {
-                    value: period,
-                    label: getPeriodLabel
-                        ? getPeriodLabel(period)
-                        : period.toUpperCase(),
-                    ariaLabel: getPeriodAriaLabel
-                        ? getPeriodAriaLabel(period, selected)
-                        : selected
-                          ? `${period.toUpperCase()}, selected`
-                          : `Choose ${period.toUpperCase()}`,
-                    selected,
-                    disabled:
-                        (disabled ?? false) ||
-                        !getSelectablePeriodRange(period, bounds)
-                };
-            }),
-        [
-            bounds,
-            disabled,
-            getPeriodAriaLabel,
-            getPeriodLabel,
-            selectedParts
-        ]
+            if (event.key === "ArrowUp" || event.key === "ArrowDown") {
+                event.preventDefault();
+                updateParts((prev) => ({
+                    ...prev,
+                    amPm: prev.amPm === "AM" ? "PM" : "AM"
+                }));
+                return;
+            }
+
+            if (event.key === "ArrowLeft") {
+                event.preventDefault();
+                const prev = withSeconds ? secondsRef : minutesRef;
+                prev.current?.focus();
+                prev.current?.select();
+                return;
+            }
+
+            if (
+                event.key.toLowerCase() === "a" ||
+                event.key.toLowerCase() === "p"
+            ) {
+                event.preventDefault();
+                const nextAmPm = event.key.toLowerCase() === "a" ? "AM" : "PM";
+                updateParts((prev) => ({ ...prev, amPm: nextAmPm }));
+                return;
+            }
+
+            if (event.key === "Backspace") {
+                event.preventDefault();
+                updateParts((prev) => {
+                    if (prev.amPm === null) {
+                        const prev2 = withSeconds ? secondsRef : minutesRef;
+                        prev2.current?.focus();
+                        prev2.current?.select();
+                        return prev;
+                    }
+                    return { ...prev, amPm: null };
+                });
+                return;
+            }
+
+            if (event.key === "Tab") {
+                return;
+            }
+
+            if (!event.ctrlKey && !event.metaKey && !event.altKey) {
+                event.preventDefault();
+            }
+        },
+        [disabled, readOnly, updateParts, withSeconds]
     );
 
-    const renderSection = <TValue extends PickerOptionValue>({
-        label,
-        labelId,
-        listLabel,
-        options,
-        onSelect,
-        className
-    }: {
-        label: ReactNode;
-        labelId: string;
-        listLabel: string;
-        options: PickerOption<TValue>[];
-        onSelect: (value: TValue) => void;
-        className?: string;
-    }) => {
-        const hasVisibleSelection = options.some((option) => option.selected);
-        const firstEnabledIndex = getFirstEnabledIndex(options);
+    const handleWrapperFocus = useCallback(
+        (event: React.FocusEvent<HTMLDivElement>) => {
+            if (blurTimeoutRef.current !== null) {
+                clearTimeout(blurTimeoutRef.current);
+                blurTimeoutRef.current = null;
+            }
 
-        return (
+            if (!wrapperRef.current?.contains(event.relatedTarget as Node)) {
+                onFocus?.(event);
+                if (withDropdown && !disabled && !readOnly) {
+                    setDropdownOpen(true);
+                }
+            }
+        },
+        [disabled, onFocus, readOnly, withDropdown]
+    );
+
+    const handleWrapperBlur = useCallback(
+        (event: React.FocusEvent<HTMLDivElement>) => {
+            blurTimeoutRef.current = setTimeout(() => {
+                if (
+                    !wrapperRef.current?.contains(document.activeElement) &&
+                    !floating.refs.floating.current?.contains(
+                        document.activeElement
+                    )
+                ) {
+                    onBlur?.(event);
+                    setDropdownOpen(false);
+                }
+            }, 0);
+        },
+        [floating.refs.floating, onBlur]
+    );
+
+    const displayHours = is12h
+        ? parts.hours !== null
+            ? pad(to12Hour(parts.hours))
+            : PLACEHOLDER
+        : parts.hours !== null
+          ? pad(parts.hours)
+          : PLACEHOLDER;
+    const displayMinutes =
+        parts.minutes !== null ? pad(parts.minutes) : PLACEHOLDER;
+    const displaySeconds =
+        parts.seconds !== null ? pad(parts.seconds) : PLACEHOLDER;
+    const displayAmPm = parts.amPm ?? PLACEHOLDER;
+
+    const hasValue =
+        parts.hours !== null ||
+        parts.minutes !== null ||
+        (withSeconds && parts.seconds !== null);
+
+    const showClearButton = clearable && hasValue && !disabled && !readOnly;
+
+    const effectiveRightSection = showClearButton ? (
+        <button
+            type="button"
+            tabIndex={-1}
+            aria-label="Clear time"
+            className={cx(
+                "inline-flex items-center justify-center text-[var(--refraktor-text-secondary)] hover:text-[var(--refraktor-text)] transition-colors cursor-pointer"
+            )}
+            onClick={handleClear}
+            onMouseDown={(e) => e.preventDefault()}
+        >
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 16 16"
+                fill="currentColor"
+                className="size-3.5"
+            >
+                <path d="M3.72 3.72a.75.75 0 0 1 1.06 0L8 6.94l3.22-3.22a.75.75 0 1 1 1.06 1.06L9.06 8l3.22 3.22a.75.75 0 1 1-1.06 1.06L8 9.06l-3.22 3.22a.75.75 0 0 1-1.06-1.06L6.94 8 3.72 4.78a.75.75 0 0 1 0-1.06Z" />
+            </svg>
+        </button>
+    ) : (
+        rightSection
+    );
+
+    const sizeClass = inputSizes[size] ?? inputSizes.md;
+    const variantClass = inputVariants[variant] ?? inputVariants.default;
+    const segmentWidth = segmentWidths[size] ?? segmentWidths.md;
+    const amPmWidth = amPmWidths[size] ?? amPmWidths.md;
+    const sepSize = separatorSizes[size] ?? separatorSizes.md;
+
+    const hoursKeyHandler = createSegmentKeyHandler(
+        "hours",
+        { current: null },
+        minutesRef
+    );
+    const minutesKeyHandler = createSegmentKeyHandler(
+        "minutes",
+        hoursRef,
+        withSeconds ? secondsRef : is12h ? amPmRef : { current: null }
+    );
+    const secondsKeyHandler = createSegmentKeyHandler(
+        "seconds",
+        minutesRef,
+        is12h ? amPmRef : { current: null }
+    );
+
+    const renderDropdown = () => {
+        if (!withDropdown) return null;
+
+        const sizeStyles = getPickerSizeStyles(size);
+        const hoursCount = is12h ? 12 : HOURS_IN_DAY;
+        const hoursStart = is12h ? 1 : 0;
+
+        const hourOptions: number[] = [];
+        for (let i = hoursStart; i < hoursStart + hoursCount; i += hoursStep) {
+            hourOptions.push(i);
+        }
+
+        const minuteOptions: number[] = [];
+        for (let i = 0; i < MINUTES_IN_HOUR; i += minutesStep) {
+            minuteOptions.push(i);
+        }
+
+        const secondOptions: number[] = [];
+        for (let i = 0; i < SECONDS_IN_MINUTE; i += secondsStep) {
+            secondOptions.push(i);
+        }
+
+        const currentHourDisplay = is12h
+            ? parts.hours !== null
+                ? to12Hour(parts.hours)
+                : null
+            : parts.hours;
+
+        const renderColumn = (
+            columnLabel: string,
+            options: (number | string)[],
+            selectedValue: number | string | null,
+            onSelect: (value: number | string) => void,
+            extraClassName?: string
+        ) => (
             <div
-                role="group"
-                aria-labelledby={labelId}
-                className={cx("flex flex-col min-w-0", classes.section, className)}
+                className={cx(
+                    "flex flex-col min-w-0",
+                    classes.dropdownColumn,
+                    extraClassName
+                )}
             >
                 <div
-                    id={labelId}
                     className={cx(
-                        "py-2 text-center font-medium text-[var(--refraktor-text-secondary)] border-b border-[var(--refraktor-border)] bg-[var(--refraktor-bg-subtle)]",
+                        "py-1.5 text-center font-medium text-[var(--refraktor-text-secondary)] border-b border-[var(--refraktor-border)] bg-[var(--refraktor-bg-subtle)]",
                         sizeStyles.label,
-                        classes.sectionLabel
+                        classes.dropdownColumnLabel
                     )}
                 >
-                    {label}
+                    {columnLabel}
                 </div>
-
                 <div
-                    role="listbox"
-                    aria-label={listLabel}
                     className={cx(
-                        "refraktor-scrollbar flex max-h-64 flex-col p-1 overflow-y-auto",
-                        sizeStyles.gridGap,
-                        classes.list
+                        "refraktor-scrollbar flex max-h-52 flex-col gap-0.5 p-1 overflow-y-auto"
                     )}
-                    onKeyDown={(event) => handleListKeyDown(event, options, onSelect)}
                 >
-                    {options.map((option, index) => {
-                        const tabIndex =
-                            option.selected ||
-                            (!hasVisibleSelection && index === firstEnabledIndex)
-                                ? 0
-                                : -1;
+                    {options.map((opt) => {
+                        const isSelected = opt === selectedValue;
+                        const displayLabel =
+                            typeof opt === "number" ? pad(opt) : opt;
 
                         return (
                             <button
-                                key={`${labelId}-${String(option.value)}`}
+                                key={String(opt)}
                                 type="button"
-                                role="option"
-                                aria-selected={option.selected}
-                                aria-label={option.ariaLabel}
-                                data-active={option.selected}
-                                data-disabled={option.disabled}
-                                disabled={option.disabled}
-                                tabIndex={tabIndex}
+                                tabIndex={-1}
                                 className={cx(
-                                    "inline-flex w-full items-center justify-center font-medium text-[var(--refraktor-text)] transition-colors",
-                                    option.selected
+                                    "inline-flex w-full items-center justify-center font-medium transition-colors",
+                                    isSelected
                                         ? "bg-[var(--refraktor-primary)] text-[var(--refraktor-primary-text)]"
-                                        : "hover:bg-[var(--refraktor-bg-hover)]",
-                                    option.disabled &&
-                                        "pointer-events-none cursor-not-allowed opacity-50",
+                                        : "hover:bg-[var(--refraktor-bg-hover)] text-[var(--refraktor-text)]",
                                     sizeStyles.cell,
                                     getRadius(radius),
-                                    classes.option,
-                                    option.selected && classes.optionActive,
-                                    option.disabled && classes.optionDisabled
+                                    classes.dropdownOption,
+                                    isSelected && classes.dropdownOptionActive
                                 )}
-                                onClick={() => onSelect(option.value)}
+                                onMouseDown={(e) => e.preventDefault()}
+                                onClick={() => onSelect(opt)}
                             >
-                                {option.label}
+                                {displayLabel}
                             </button>
                         );
                     })}
                 </div>
             </div>
         );
+
+        const handleDropdownHourSelect = (val: number | string) => {
+            const hourVal = typeof val === "number" ? val : Number(val);
+            updateParts((prev) => {
+                const next = { ...prev, hours: is12h ? to24Hour(hourVal, prev.amPm ?? "AM") : hourVal };
+                if (next.minutes === null) {
+                    requestAnimationFrame(() => {
+                        minutesRef.current?.focus();
+                        minutesRef.current?.select();
+                    });
+                }
+                return next;
+            });
+        };
+
+        const handleDropdownMinuteSelect = (val: number | string) => {
+            const minVal = typeof val === "number" ? val : Number(val);
+            updateParts((prev) => {
+                const next = { ...prev, minutes: minVal };
+                if (withSeconds && next.seconds === null) {
+                    requestAnimationFrame(() => {
+                        secondsRef.current?.focus();
+                        secondsRef.current?.select();
+                    });
+                }
+                return next;
+            });
+        };
+
+        const handleDropdownSecondSelect = (val: number | string) => {
+            const secVal = typeof val === "number" ? val : Number(val);
+            updateParts((prev) => ({ ...prev, seconds: secVal }));
+        };
+
+        const handleDropdownAmPmSelect = (val: number | string) => {
+            const amPmVal = val as "AM" | "PM";
+            updateParts((prev) => {
+                if (prev.hours === null) return { ...prev, amPm: amPmVal };
+                const hour12 = to12Hour(prev.hours);
+                const newHours24 = to24Hour(hour12, amPmVal);
+                return { ...prev, hours: newHours24, amPm: amPmVal };
+            });
+        };
+
+        const columnCount =
+            (withSeconds ? 4 : 3) + (is12h ? 1 : 0) - (withSeconds ? 0 : 1);
+        const gridColsClass =
+            columnCount === 2
+                ? "grid-cols-2"
+                : columnCount === 3
+                  ? "grid-cols-3"
+                  : "grid-cols-4";
+
+        return (
+            <FloatingPortal>
+                {isDropdownVisible && (
+                    <FloatingFocusManager
+                        context={floating.context}
+                        modal={false}
+                        initialFocus={-1}
+                        returnFocus={false}
+                    >
+                        <div
+                            ref={floating.refs.setFloating}
+                            style={{
+                                ...floating.floatingStyles,
+                                zIndex: 1000
+                            }}
+                            className={cx(
+                                "border border-[var(--refraktor-border)] bg-[var(--refraktor-bg)] shadow-md overflow-hidden",
+                                getRadius(radius),
+                                classes.dropdown
+                            )}
+                            {...getFloatingProps()}
+                        >
+                            <div
+                                className={cx(
+                                    "grid divide-x divide-[var(--refraktor-border)]",
+                                    gridColsClass
+                                )}
+                            >
+                                {renderColumn(
+                                    "Hour",
+                                    hourOptions,
+                                    currentHourDisplay,
+                                    handleDropdownHourSelect
+                                )}
+                                {renderColumn(
+                                    "Min",
+                                    minuteOptions,
+                                    parts.minutes,
+                                    handleDropdownMinuteSelect
+                                )}
+                                {withSeconds &&
+                                    renderColumn(
+                                        "Sec",
+                                        secondOptions,
+                                        parts.seconds,
+                                        handleDropdownSecondSelect
+                                    )}
+                                {is12h &&
+                                    renderColumn(
+                                        amPmLabels.am + "/" + amPmLabels.pm,
+                                        [amPmLabels.am, amPmLabels.pm],
+                                        parts.amPm ===
+                                            "AM"
+                                            ? amPmLabels.am
+                                            : parts.amPm === "PM"
+                                              ? amPmLabels.pm
+                                              : null,
+                                        (val) => {
+                                            const normalized =
+                                                val === amPmLabels.am
+                                                    ? "AM"
+                                                    : "PM";
+                                            handleDropdownAmPmSelect(
+                                                normalized
+                                            );
+                                        }
+                                    )}
+                            </div>
+                        </div>
+                    </FloatingFocusManager>
+                )}
+            </FloatingPortal>
+        );
     };
 
-    return (
+    const hasWrapper = label || description || error;
+    const inputContent = (
         <div
-            ref={ref}
-            id={_id}
+            ref={(node) => {
+                if (wrapperRef) (wrapperRef as React.MutableRefObject<HTMLDivElement | null>).current = node;
+                floating.refs.setReference(node);
+            }}
             className={cx(
-                "inline-flex w-full flex-col bg-[var(--refraktor-bg)] overflow-hidden border border-[var(--refraktor-border)]",
+                "relative w-full inline-flex items-center transition-all",
+                sizeClass,
+                variantClass,
                 getRadius(radius),
-                classes.root,
-                className
+                "focus-within:border-[var(--refraktor-primary)]",
+                error && typeof error !== "boolean" && "border-[var(--refraktor-colors-red-6)]",
+                disabled && "opacity-50 cursor-not-allowed",
+                classes.fieldsWrapper,
+                !hasWrapper && className
             )}
-            {...props}
+            onFocus={handleWrapperFocus}
+            onBlur={handleWrapperBlur}
+            {...(!hasWrapper ? getReferenceProps(props) : getReferenceProps())}
         >
+            {leftSection && (
+                <div className="flex h-full items-center justify-center text-[var(--refraktor-text-secondary)] shrink-0 select-none">
+                    {leftSection}
+                </div>
+            )}
+
             <div
                 className={cx(
-                    "grid divide-x divide-[var(--refraktor-border)]",
-                    getGridColumns(mode === "12h" ? 4 : 3),
-                    classes.grid
+                    "flex items-center flex-1 min-w-0 gap-0.5"
                 )}
             >
-                {renderSection({
-                    label: "Hour",
-                    labelId: `${_id}-hour-label`,
-                    listLabel: "Hour options",
-                    options: hourOptions,
-                    onSelect: setHour,
-                    className: classes.hourSection
-                })}
+                <input
+                    ref={(node) => {
+                        hoursRef.current = node;
+                        setRef(hoursRefProp, node);
+                    }}
+                    id={`${_id}-hours`}
+                    type="text"
+                    inputMode="numeric"
+                    autoComplete="off"
+                    placeholder={PLACEHOLDER}
+                    value={
+                        parts.hours !== null ? (is12h ? pad(to12Hour(parts.hours)) : pad(parts.hours)) : ""
+                    }
+                    aria-label={hoursInputLabel ?? "Hours"}
+                    readOnly
+                    tabIndex={disabled ? -1 : 0}
+                    disabled={disabled}
+                    className={cx(
+                        "bg-transparent border-none outline-none text-center text-[var(--refraktor-text)] placeholder:text-[var(--refraktor-text-tertiary)] cursor-default select-all p-0",
+                        segmentWidth,
+                        classes.field
+                    )}
+                    onKeyDown={hoursKeyHandler}
+                    onFocus={(e) => e.target.select()}
+                />
 
-                {renderSection({
-                    label: "Minute",
-                    labelId: `${_id}-minute-label`,
-                    listLabel: "Minute options",
-                    options: minuteOptions,
-                    onSelect: setMinute,
-                    className: classes.minuteSection
-                })}
+                <span
+                    className={cx(
+                        "text-[var(--refraktor-text-secondary)] select-none leading-none",
+                        sepSize,
+                        classes.separator
+                    )}
+                >
+                    :
+                </span>
 
-                {renderSection({
-                    label: "Second",
-                    labelId: `${_id}-second-label`,
-                    listLabel: "Second options",
-                    options: secondOptions,
-                    onSelect: setSecond,
-                    className: classes.secondSection
-                })}
+                <input
+                    ref={(node) => {
+                        minutesRef.current = node;
+                        setRef(minutesRefProp, node);
+                    }}
+                    id={`${_id}-minutes`}
+                    type="text"
+                    inputMode="numeric"
+                    autoComplete="off"
+                    placeholder={PLACEHOLDER}
+                    value={
+                        parts.minutes !== null ? pad(parts.minutes) : ""
+                    }
+                    aria-label={minutesInputLabel ?? "Minutes"}
+                    readOnly
+                    tabIndex={disabled ? -1 : 0}
+                    disabled={disabled}
+                    className={cx(
+                        "bg-transparent border-none outline-none text-center text-[var(--refraktor-text)] placeholder:text-[var(--refraktor-text-tertiary)] cursor-default select-all p-0",
+                        segmentWidth,
+                        classes.field
+                    )}
+                    onKeyDown={minutesKeyHandler}
+                    onFocus={(e) => e.target.select()}
+                />
 
-                {mode === "12h" &&
-                    renderSection({
-                        label: "Period",
-                        labelId: `${_id}-period-label`,
-                        listLabel: "AM or PM options",
-                        options: periodOptions,
-                        onSelect: setPeriod,
-                        className: classes.periodSection
-                    })}
+                {withSeconds && (
+                    <>
+                        <span
+                            className={cx(
+                                "text-[var(--refraktor-text-secondary)] select-none leading-none",
+                                sepSize,
+                                classes.separator
+                            )}
+                        >
+                            :
+                        </span>
+                        <input
+                            ref={(node) => {
+                                secondsRef.current = node;
+                                setRef(secondsRefProp, node);
+                            }}
+                            id={`${_id}-seconds`}
+                            type="text"
+                            inputMode="numeric"
+                            autoComplete="off"
+                            placeholder={PLACEHOLDER}
+                            value={
+                                parts.seconds !== null
+                                    ? pad(parts.seconds)
+                                    : ""
+                            }
+                            aria-label={secondsInputLabel ?? "Seconds"}
+                            readOnly
+                            tabIndex={disabled ? -1 : 0}
+                            disabled={disabled}
+                            className={cx(
+                                "bg-transparent border-none outline-none text-center text-[var(--refraktor-text)] placeholder:text-[var(--refraktor-text-tertiary)] cursor-default select-all p-0",
+                                segmentWidth,
+                                classes.field
+                            )}
+                            onKeyDown={secondsKeyHandler}
+                            onFocus={(e) => e.target.select()}
+                        />
+                    </>
+                )}
+
+                {is12h && (
+                    <input
+                        ref={(node) => {
+                            amPmRef.current = node;
+                            setRef(amPmRefProp, node);
+                        }}
+                        id={`${_id}-ampm`}
+                        type="text"
+                        autoComplete="off"
+                        placeholder={PLACEHOLDER}
+                        value={
+                            parts.amPm !== null
+                                ? parts.amPm === "AM"
+                                    ? amPmLabels.am
+                                    : amPmLabels.pm
+                                : ""
+                        }
+                        aria-label={amPmInputLabel ?? "AM/PM"}
+                        readOnly
+                        tabIndex={disabled ? -1 : 0}
+                        disabled={disabled}
+                        className={cx(
+                            "bg-transparent border-none outline-none text-center text-[var(--refraktor-text)] placeholder:text-[var(--refraktor-text-tertiary)] cursor-default select-all p-0 ml-1",
+                            amPmWidth,
+                            classes.amPmInput
+                        )}
+                        onKeyDown={handleAmPmKeyDown}
+                        onFocus={(e) => e.target.select()}
+                    />
+                )}
             </div>
+
+            {effectiveRightSection && (
+                <div className="flex h-full items-center justify-center text-[var(--refraktor-text-secondary)] shrink-0 select-none">
+                    {effectiveRightSection}
+                </div>
+            )}
         </div>
     );
+
+    const content = hasWrapper ? (
+        <Input.Wrapper
+            ref={ref}
+            label={label}
+            description={description}
+            error={error}
+            required={required}
+            withAsterisk={withAsterisk}
+            inputId={`${_id}-hours`}
+            className={cx(classes.root, className)}
+        >
+            {inputContent}
+            {renderDropdown()}
+        </Input.Wrapper>
+    ) : (
+        <div
+            ref={ref}
+            className={cx(classes.root, className)}
+        >
+            {inputContent}
+            {renderDropdown()}
+        </div>
+    );
+
+    return content;
 });
 
 TimePicker.displayName = "@refraktor/dates/TimePicker";

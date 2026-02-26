@@ -251,30 +251,36 @@
 
 /** Scrollbar */
 .refraktor-scrollbar {
+    --refraktor-scrollbar-size: 6px;
+    --refraktor-scrollbar-radius: 99px;
+    --refraktor-scrollbar-track: var(--refraktor-scroll-track);
+    --refraktor-scrollbar-thumb: var(--refraktor-scroll-thumb);
+    --refraktor-scrollbar-thumb-hover: var(--refraktor-scroll-thumb-hover);
     scrollbar-width: thin;
-    scrollbar-color: var(--refraktor-scroll-thumb) transparent;
+    scrollbar-color: var(--refraktor-scrollbar-thumb)
+        var(--refraktor-scrollbar-track);
 }
 
 .refraktor-scrollbar::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: var(--refraktor-scrollbar-size);
+    height: var(--refraktor-scrollbar-size);
 }
 
 .refraktor-scrollbar::-webkit-scrollbar-track {
-    background: transparent;
+    background: var(--refraktor-scrollbar-track);
 }
 
 .refraktor-scrollbar::-webkit-scrollbar-thumb {
-    background: var(--refraktor-scroll-thumb);
-    border-radius: 99px;
+    background: var(--refraktor-scrollbar-thumb);
+    border-radius: var(--refraktor-scrollbar-radius);
 }
 
 .refraktor-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: var(--refraktor-scroll-thumb-hover);
+    background: var(--refraktor-scrollbar-thumb-hover);
 }
 
 :where(.refraktor-scrollbar)::-webkit-scrollbar-thumb {
-    background: var(--refraktor-scroll-thumb);
+    background: var(--refraktor-scrollbar-thumb);
 }
 
 /** Input */
