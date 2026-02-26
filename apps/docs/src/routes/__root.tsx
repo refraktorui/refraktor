@@ -19,6 +19,16 @@ function TitleManager() {
     return null;
 }
 
+function ScrollToTop() {
+    const pathname = useRouterState({ select: (s) => s.location.pathname });
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
+
+    return null;
+}
+
 export const Route = createRootRoute({
     component: () => {
         const [mobileOpen, setMobileOpen] = useState(false);
@@ -26,6 +36,7 @@ export const Route = createRootRoute({
         return (
             <div className="flex flex-col min-h-screen bg-dark-900 text-white">
                 <TitleManager />
+                <ScrollToTop />
                 <Header
                     onMenuClick={() => setMobileOpen((prev) => !prev)}
                     mobileOpen={mobileOpen}
