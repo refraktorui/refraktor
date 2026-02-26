@@ -1,7 +1,11 @@
 import {
     IconRocket,
-    IconLayoutList,
-    IconLayoutGrid
+    IconForms,
+    IconTable,
+    IconLoader2,
+    IconLayersSubtract,
+    IconCompass,
+    IconTool
 } from "@tabler/icons-react";
 import type { SidebarNode } from "@/typings";
 
@@ -18,14 +22,9 @@ const sidebarItems: SidebarNode[] = [
         items: [
             {
                 kind: "group",
-                title: "Feedback",
-                icon: <IconLayoutList size={16} />,
+                title: "Inputs",
+                icon: <IconForms size={16} />,
                 items: [
-                    {
-                        kind: "link",
-                        title: "Accordion",
-                        href: "/core/accordion"
-                    },
                     {
                         kind: "link",
                         title: "Button",
@@ -38,8 +37,23 @@ const sidebarItems: SidebarNode[] = [
                     },
                     {
                         kind: "link",
-                        title: "Switch",
-                        href: "/core/switch"
+                        title: "FileInput",
+                        href: "/core/file-input"
+                    },
+                    {
+                        kind: "link",
+                        title: "Input",
+                        href: "/core/input"
+                    },
+                    {
+                        kind: "link",
+                        title: "NumberInput",
+                        href: "/core/number-input"
+                    },
+                    {
+                        kind: "link",
+                        title: "PasswordInput",
+                        href: "/core/password-input"
                     },
                     {
                         kind: "link",
@@ -53,36 +67,6 @@ const sidebarItems: SidebarNode[] = [
                     },
                     {
                         kind: "link",
-                        title: "Drawer",
-                        href: "/core/drawer"
-                    },
-                    {
-                        kind: "link",
-                        title: "Modal",
-                        href: "/core/modal"
-                    },
-                    {
-                        kind: "link",
-                        title: "Input",
-                        href: "/core/input"
-                    },
-                    {
-                        kind: "link",
-                        title: "Textarea",
-                        href: "/core/textarea"
-                    },
-                    {
-                        kind: "link",
-                        title: "PasswordInput",
-                        href: "/core/password-input"
-                    },
-                    {
-                        kind: "link",
-                        title: "NumberInput",
-                        href: "/core/number-input"
-                    },
-                    {
-                        kind: "link",
                         title: "Select",
                         href: "/core/select"
                     },
@@ -93,31 +77,26 @@ const sidebarItems: SidebarNode[] = [
                     },
                     {
                         kind: "link",
-                        title: "Loader",
-                        href: "/core/loader"
+                        title: "Switch",
+                        href: "/core/switch"
                     },
                     {
                         kind: "link",
-                        title: "Progress",
-                        href: "/core/progress"
-                    },
-                    {
-                        kind: "link",
-                        title: "ProgressCircle",
-                        href: "/core/progress-circle"
-                    },
-                    {
-                        kind: "link",
-                        title: "FileInput",
-                        href: "/core/file-input"
+                        title: "Textarea",
+                        href: "/core/textarea"
                     }
                 ]
             },
             {
                 kind: "group",
                 title: "Data Display",
-                icon: <IconLayoutGrid size={16} />,
+                icon: <IconTable size={16} />,
                 items: [
+                    {
+                        kind: "link",
+                        title: "Accordion",
+                        href: "/core/accordion"
+                    },
                     {
                         kind: "link",
                         title: "Avatar",
@@ -147,17 +126,45 @@ const sidebarItems: SidebarNode[] = [
             },
             {
                 kind: "group",
-                title: "Navigation",
+                title: "Feedback",
+                icon: <IconLoader2 size={16} />,
                 items: [
                     {
                         kind: "link",
-                        title: "Breadcrumbs",
-                        href: "/core/breadcrumbs"
+                        title: "Loader",
+                        href: "/core/loader"
+                    },
+                    {
+                        kind: "link",
+                        title: "Progress",
+                        href: "/core/progress"
+                    },
+                    {
+                        kind: "link",
+                        title: "ProgressCircle",
+                        href: "/core/progress-circle"
+                    }
+                ]
+            },
+            {
+                kind: "group",
+                title: "Overlays",
+                icon: <IconLayersSubtract size={16} />,
+                items: [
+                    {
+                        kind: "link",
+                        title: "Drawer",
+                        href: "/core/drawer"
                     },
                     {
                         kind: "link",
                         title: "Menu",
                         href: "/core/menu"
+                    },
+                    {
+                        kind: "link",
+                        title: "Modal",
+                        href: "/core/modal"
                     },
                     {
                         kind: "link",
@@ -168,6 +175,18 @@ const sidebarItems: SidebarNode[] = [
                         kind: "link",
                         title: "Tooltip",
                         href: "/core/tooltip"
+                    }
+                ]
+            },
+            {
+                kind: "group",
+                title: "Navigation",
+                icon: <IconCompass size={16} />,
+                items: [
+                    {
+                        kind: "link",
+                        title: "Breadcrumbs",
+                        href: "/core/breadcrumbs"
                     },
                     {
                         kind: "link",
@@ -184,6 +203,7 @@ const sidebarItems: SidebarNode[] = [
             {
                 kind: "group",
                 title: "Utilities",
+                icon: <IconTool size={16} />,
                 items: [
                     {
                         kind: "link",
