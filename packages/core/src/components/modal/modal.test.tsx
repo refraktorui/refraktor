@@ -20,7 +20,7 @@ describe("@refraktor/core/Modal", () => {
                 <Modal.Overlay />
 
                 <Modal.Content>
-                    <Modal.Header text="Delete item" />
+                    <Modal.Header>Delete item</Modal.Header>
                     <Modal.Body>
                         <p>Are you sure?</p>
                     </Modal.Body>
