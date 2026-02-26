@@ -3,6 +3,7 @@ export { ModalRoot } from "./modal-root";
 export { ModalOverlay } from "./modal-overlay";
 export { ModalContent } from "./modal-content";
 export { ModalHeader } from "./modal-header";
+export { ModalBody } from "./modal-body";
 export { ModalClose } from "./modal-close";
 export type {
     ModalProps,
@@ -10,6 +11,8 @@ export type {
     ModalOverlayProps,
     ModalContentProps,
     ModalHeaderProps,
+    ModalBodyProps,
     ModalCloseProps,
-    ModalClassNames
+    ModalClassNames,
+    ModalSize
 } from "./modal.types";

@@ -10,19 +10,23 @@ import { ModalRoot } from "./modal-root";
 import { ModalOverlay } from "./modal-overlay";
 import { ModalContent } from "./modal-content";
 import { ModalHeader } from "./modal-header";
+import { ModalBody } from "./modal-body";
 import { ModalClose } from "./modal-close";
+
+export type ModalSize = "xs" | "sm" | "md" | "lg" | "xl" | "full";
 
 export type ModalClassNames = {
     root?: string;
     overlay?: string;
     content?: string;
     header?: string;
+    body?: string;
     close?: string;
 };
 
-export interface ModalProps extends ComponentPropsWithoutRef<"div"> {
+export interface ModalRootProps extends ComponentPropsWithoutRef<"div"> {
     /** Children containing modal subcomponents */
-    children: ReactNode;
+    children?: ReactNode;
 
     /** State of the modal (controlled) */
     opened?: boolean;
@@ -48,6 +52,18 @@ export interface ModalProps extends ComponentPropsWithoutRef<"div"> {
     /** Radius for modal content @default `md` */
     radius?: RefraktorRadius;
 
+    /** Modal content width @default `md` */
+    size?: ModalSize;
+
+    /** Whether to center modal vertically @default `true` */
+    centered?: boolean;
+
+    /** Whether to trap focus within the modal @default `true` */
+    trapFocus?: boolean;
+
+    /** Whether to return focus to trigger after close @default `true` */
+    returnFocus?: boolean;
+
     /** Transition props for overlay/content, uses Transition internally */
     transitionProps?: Omit<TransitionProps, "children" | "mounted">;
 
@@ -58,7 +74,19 @@ export interface ModalProps extends ComponentPropsWithoutRef<"div"> {
     classNames?: ModalClassNames;
 }
 
-export type ModalRootProps = ModalProps;
+export interface ModalProps extends Omit<ModalRootProps, "title"> {
+    /** Title text rendered in the header */
+    title?: ReactNode;
+
+    /** Whether to render the overlay @default `true` */
+    withOverlay?: boolean;
+
+    /** Whether to show the close button in the header @default `true` */
+    withCloseButton?: boolean;
+
+    /** Props passed to the Overlay subcomponent */
+    overlayProps?: ModalOverlayProps;
+}
 
 export interface ModalOverlayProps extends ComponentPropsWithoutRef<"div"> {
     /** Whether clicking the overlay closes modal @default `true` */
@@ -86,9 +114,6 @@ export interface ModalHeaderProps extends ComponentPropsWithoutRef<"div"> {
     /** Header content */
     children?: ReactNode;
 
-    /** Shorthand header text */
-    text?: ReactNode;
-
     /** Whether to show close button inside header @default `true` */
     withClose?: boolean;
 
@@ -96,8 +121,18 @@ export interface ModalHeaderProps extends ComponentPropsWithoutRef<"div"> {
     className?: string;
 }
 
-export interface ModalCloseProps
-    extends Omit<ComponentPropsWithoutRef<"button">, "onClick"> {
+export interface ModalBodyProps extends ComponentPropsWithoutRef<"div"> {
+    /** Body content */
+    children?: ReactNode;
+
+    /** Used for editing root class name */
+    className?: string;
+}
+
+export interface ModalCloseProps extends Omit<
+    ComponentPropsWithoutRef<"button">,
+    "onClick"
+> {
     /** Optional close content (defaults to `x`) */
     children?: ReactNode;
 
@@ -118,6 +153,7 @@ export interface ModalFactoryPayload extends FactoryPayload {
         Overlay: typeof ModalOverlay;
         Content: typeof ModalContent;
         Header: typeof ModalHeader;
+        Body: typeof ModalBody;
         Close: typeof ModalClose;
     };
 }
@@ -139,6 +175,11 @@ export interface ModalContentFactoryPayload extends FactoryPayload {
 
 export interface ModalHeaderFactoryPayload extends FactoryPayload {
     props: ModalHeaderProps;
+    ref: HTMLDivElement;
+}
+
+export interface ModalBodyFactoryPayload extends FactoryPayload {
+    props: ModalBodyProps;
     ref: HTMLDivElement;
 }
 

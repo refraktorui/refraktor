@@ -5,7 +5,7 @@ import { useModalContext } from "../modal.context";
 import { ModalHeaderFactoryPayload } from "../modal.types";
 
 const ModalHeader = factory<ModalHeaderFactoryPayload>(
-    ({ children, className, id, text, withClose = true, ...props }, ref) => {
+    ({ children, className, id, withClose = true, ...props }, ref) => {
         const { cx } = useTheme();
         const { headerId, getStyles } = useModalContext();
         const resolvedId = id ?? headerId;
@@ -24,7 +24,7 @@ const ModalHeader = factory<ModalHeaderFactoryPayload>(
                     id={resolvedId}
                     className="min-w-0 flex-1 text-sm font-semibold leading-5 text-[var(--refraktor-text)]"
                 >
-                    {text ?? children}
+                    {children}
                 </div>
 
                 {withClose && (

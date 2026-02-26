@@ -1,5 +1,4 @@
 import { useId } from "@refraktor/utils";
-import { useRef } from "react";
 import { useTheme } from "../../../theme";
 import { factory, useClassNames, useProps } from "../../../utils";
 import { ModalProvider } from "../modal.context";
@@ -9,14 +8,17 @@ import {
     ModalRootFactoryPayload,
     ModalRootProps
 } from "../modal.types";
-import { RemoveScroll } from "react-remove-scroll";
 
 const defaultProps = {
     closeOnClickOutside: true,
     closeOnEscape: true,
     lockScroll: true,
     withinPortal: true,
-    radius: "md"
+    radius: "md",
+    size: "md",
+    centered: true,
+    trapFocus: true,
+    returnFocus: true
 } satisfies Partial<ModalRootProps>;
 
 const ModalRoot = factory<ModalRootFactoryPayload>((_props, ref) => {
@@ -32,6 +34,10 @@ const ModalRoot = factory<ModalRootFactoryPayload>((_props, ref) => {
         lockScroll,
         withinPortal,
         radius,
+        size,
+        centered,
+        trapFocus,
+        returnFocus,
         transitionProps,
         className,
         classNames,
@@ -41,15 +47,13 @@ const ModalRoot = factory<ModalRootFactoryPayload>((_props, ref) => {
 
     const _id = useId(id);
     const headerId = `${_id}-header`;
-    const contentRef = useRef<HTMLDivElement | null>(null);
 
     const modal = useModal({
         opened,
         defaultOpened,
         onOpenedChange,
         closeOnClickOutside,
-        closeOnEscape,
-        contentRef
+        closeOnEscape
     });
 
     const getStyles = (part: keyof ModalClassNames) => classes[part];
@@ -62,23 +66,24 @@ const ModalRoot = factory<ModalRootFactoryPayload>((_props, ref) => {
                 lockScroll,
                 withinPortal,
                 radius,
+                size,
+                centered,
+                trapFocus,
+                returnFocus,
                 transitionProps,
                 headerId,
-                contentRef,
                 classNames,
                 getStyles
             }}
         >
-            <RemoveScroll enabled={modal.opened && lockScroll}>
-                <div
-                    ref={ref}
-                    id={_id}
-                    className={cx(classes.root, className)}
-                    {...props}
-                >
-                    {children}
-                </div>
-            </RemoveScroll>
+            <div
+                ref={ref}
+                id={_id}
+                className={cx(classes.root, className)}
+                {...props}
+            >
+                {children}
+            </div>
         </ModalProvider>
     );
 });
