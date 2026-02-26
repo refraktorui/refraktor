@@ -230,6 +230,11 @@ const sidebarItems: SidebarNode[] = [
                         kind: "link",
                         title: "For",
                         href: "/core/for"
+                    },
+                    {
+                        kind: "link",
+                        title: "ScrollArea",
+                        href: "/core/scroll-area"
                     }
                 ]
             }
