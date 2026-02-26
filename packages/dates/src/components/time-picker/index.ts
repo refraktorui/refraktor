@@ -1,19 +1,10 @@
 export { default as TimePicker } from "./time-picker";
 export type {
+    TimePickerAmPmLabels,
     TimePickerClassNames,
-    TimePickerGetHourAriaLabel,
-    TimePickerGetHourLabel,
-    TimePickerGetMinuteAriaLabel,
-    TimePickerGetMinuteLabel,
-    TimePickerGetPeriodAriaLabel,
-    TimePickerGetPeriodLabel,
-    TimePickerGetSecondAriaLabel,
-    TimePickerGetSecondLabel,
-    TimePickerMode,
-    TimePickerOnChange,
-    TimePickerPeriod,
+    TimePickerFactoryPayload,
+    TimePickerFormat,
+    TimePickerPopoverProps,
     TimePickerProps,
-    TimePickerRadius,
-    TimePickerSize,
     TimePickerValue
 } from "./time-picker.types";
