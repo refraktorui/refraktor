@@ -1,0 +1,43 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@import "tailwindcss";
+
+@source "../../../packages/core/src";
+@source "../../../packages/dates/src";
+
+@theme {
+    --color-dark-50: var(--refraktor-colors-dark-0);
+    --color-dark-100: var(--refraktor-colors-dark-1);
+    --color-dark-200: var(--refraktor-colors-dark-2);
+    --color-dark-300: var(--refraktor-colors-dark-3);
+    --color-dark-400: var(--refraktor-colors-dark-4);
+    --color-dark-500: var(--refraktor-colors-dark-5);
+    --color-dark-600: var(--refraktor-colors-dark-6);
+    --color-dark-700: var(--refraktor-colors-dark-7);
+    --color-dark-800: var(--refraktor-colors-dark-8);
+    --color-dark-900: var(--refraktor-colors-dark-9);
+
+    --color-primary-50: var(--refraktor-colors-cloud-0);
+    --color-primary-100: var(--refraktor-colors-cloud-1);
+    --color-primary-200: var(--refraktor-colors-cloud-2);
+    --color-primary-300: var(--refraktor-colors-cloud-3);
+    --color-primary-400: var(--refraktor-colors-cloud-4);
+    --color-primary-500: var(--refraktor-colors-cloud-5);
+    --color-primary-600: var(--refraktor-colors-cloud-6);
+    --color-primary-700: var(--refraktor-colors-cloud-7);
+    --color-primary-800: var(--refraktor-colors-cloud-8);
+    --color-primary-900: var(--refraktor-colors-cloud-9);
+}
+
+:root {
+    background-color: var(--color-dark-900);
+}
+
+body {
+    margin: 0;
+    font-family: "Inter", sans-serif;
+    height: 100%;
+}
+
+#root {
+    height: 100%;
+}

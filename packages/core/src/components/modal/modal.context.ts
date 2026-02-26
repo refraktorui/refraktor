@@ -1,7 +1,7 @@
 import { createSafeContext } from "@refraktor/utils";
 import { RefraktorRadius } from "../../theme";
 import { TransitionProps } from "../transition";
-import { ModalClassNames } from "./modal.types";
+import { ModalClassNames, ModalSize } from "./modal.types";
 import { UseModalReturn } from "./use-modal";
 
 export interface ModalContextValue {
@@ -10,9 +10,12 @@ export interface ModalContextValue {
     lockScroll: boolean;
     withinPortal: boolean;
     radius: RefraktorRadius;
+    size: ModalSize;
+    centered: boolean;
+    trapFocus: boolean;
+    returnFocus: boolean;
     transitionProps?: Omit<TransitionProps, "children" | "mounted">;
     headerId: string;
-    contentRef: React.MutableRefObject<HTMLDivElement | null>;
     classNames?: ModalClassNames;
     getStyles: (part: keyof ModalClassNames) => string | undefined;
 }

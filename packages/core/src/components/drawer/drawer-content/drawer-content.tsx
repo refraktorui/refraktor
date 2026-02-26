@@ -1,6 +1,9 @@
+import {
+    FloatingFocusManager,
+    FloatingPortal
+} from "@floating-ui/react";
 import { useTheme } from "../../../theme";
 import { factory } from "../../../utils";
-import { Portal } from "../../portal";
 import { Transition, TransitionProps } from "../../transition";
 import { useDrawerContext } from "../drawer.context";
 import { DrawerContentFactoryPayload, DrawerPosition } from "../drawer.types";
@@ -32,14 +35,15 @@ const DrawerContent = factory<DrawerContentFactoryPayload>(
             radius,
             position,
             size,
+            trapFocus,
+            returnFocus,
             transitionProps,
             headerId,
-            contentRef,
             getStyles
         } = useDrawerContext();
 
         const setRefs = (node: HTMLDivElement | null) => {
-            contentRef.current = node;
+            drawer.refs.setFloating(node);
 
             if (typeof ref === "function") {
                 ref(node);
@@ -64,32 +68,65 @@ const DrawerContent = factory<DrawerContentFactoryPayload>(
                     transitionClassName
                 )}
             >
-                <div
-                    ref={setRefs}
-                    role="dialog"
-                    aria-modal="true"
-                    aria-labelledby={headerId}
-                    data-opened={drawer.opened}
-                    data-position={position}
-                    style={{
-                        ...sizeStyles,
-                        ...style
-                    }}
-                    className={cx(
-                        "pointer-events-auto fixed z-50 border border-[var(--refraktor-border)] bg-[var(--refraktor-bg)] p-4 text-[var(--refraktor-text)] shadow-md",
-                        positionClasses[position],
-                        getRadius(radius),
-                        getStyles("content"),
-                        className
-                    )}
-                    {...props}
-                >
-                    {children}
-                </div>
+                {drawer.opened ? (
+                    <FloatingFocusManager
+                        context={drawer.context}
+                        modal={trapFocus}
+                        returnFocus={returnFocus}
+                        outsideElementsInert={false}
+                    >
+                        <div
+                            ref={setRefs}
+                            aria-labelledby={headerId}
+                            data-opened={drawer.opened}
+                            data-position={position}
+                            style={{
+                                ...sizeStyles,
+                                ...style
+                            }}
+                            className={cx(
+                                "pointer-events-auto fixed z-50 border border-[var(--refraktor-border)] bg-[var(--refraktor-bg)] p-4 text-[var(--refraktor-text)] shadow-md",
+                                positionClasses[position],
+                                getRadius(radius),
+                                getStyles("content"),
+                                className
+                            )}
+                            {...drawer.getFloatingProps()}
+                            {...props}
+                        >
+                            {children}
+                        </div>
+                    </FloatingFocusManager>
+                ) : (
+                    <div
+                        ref={setRefs}
+                        aria-labelledby={headerId}
+                        data-opened={drawer.opened}
+                        data-position={position}
+                        style={{
+                            ...sizeStyles,
+                            ...style
+                        }}
+                        className={cx(
+                            "pointer-events-auto fixed z-50 border border-[var(--refraktor-border)] bg-[var(--refraktor-bg)] p-4 text-[var(--refraktor-text)] shadow-md",
+                            positionClasses[position],
+                            getRadius(radius),
+                            getStyles("content"),
+                            className
+                        )}
+                        {...props}
+                    >
+                        {children}
+                    </div>
+                )}
             </Transition>
         );
 
-        return withinPortal ? <Portal>{content}</Portal> : content;
+        return withinPortal ? (
+            <FloatingPortal>{content}</FloatingPortal>
+        ) : (
+            content
+        );
     }
 );
 

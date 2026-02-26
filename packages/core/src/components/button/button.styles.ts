@@ -6,11 +6,11 @@ const sizes: Record<ButtonSize, string> = {
     md: "text-sm px-2.5 h-8 gap-2",
     lg: "text-base px-3 h-10 gap-2.5",
     xl: "text-lg px-4 h-12 gap-3",
-    "icon-xs": "size-5",
-    "icon-sm": "size-6",
-    "icon-md": "size-8",
-    "icon-lg": "size-10",
-    "icon-xl": "size-12"
+    "icon-xs": "size-5 shrink-0",
+    "icon-sm": "size-6 shrink-0",
+    "icon-md": "size-8 shrink-0",
+    "icon-lg": "size-10 shrink-0",
+    "icon-xl": "size-12 shrink-0"
 };
 
 export const getSize = (size: ButtonSize = "md") => sizes[size];

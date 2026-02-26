@@ -1,5 +1,12 @@
 import { useUncontrolled } from "@refraktor/utils";
-import { useCallback, useEffect } from "react";
+import {
+    FloatingContext,
+    useDismiss,
+    useFloating,
+    useInteractions,
+    useRole
+} from "@floating-ui/react";
+import { useCallback } from "react";
 
 interface UseModalProps {
     opened?: boolean;
@@ -7,7 +14,6 @@ interface UseModalProps {
     onOpenedChange?: (opened: boolean) => void;
     closeOnClickOutside?: boolean;
     closeOnEscape?: boolean;
-    contentRef: React.MutableRefObject<HTMLElement | null>;
 }
 
 export interface UseModalReturn {
@@ -15,6 +21,15 @@ export interface UseModalReturn {
     open: () => void;
     close: () => void;
     toggle: () => void;
+    context: FloatingContext;
+    refs: {
+        setReference: (node: HTMLElement | null) => void;
+        setFloating: (node: HTMLElement | null) => void;
+        floating: React.MutableRefObject<HTMLElement | null>;
+    };
+    getFloatingProps: (
+        userProps?: React.HTMLAttributes<HTMLElement>
+    ) => Record<string, unknown>;
 }
 
 export function useModal(options: UseModalProps): UseModalReturn {
@@ -23,8 +38,7 @@ export function useModal(options: UseModalProps): UseModalReturn {
         defaultOpened,
         onOpenedChange,
         closeOnClickOutside = true,
-        closeOnEscape = true,
-        contentRef
+        closeOnEscape = true
     } = options;
 
     const [isOpen, setIsOpen] = useUncontrolled({
@@ -33,6 +47,23 @@ export function useModal(options: UseModalProps): UseModalReturn {
         finalValue: false,
         onChange: onOpenedChange
     });
+
+    const floating = useFloating({
+        open: isOpen,
+        onOpenChange: setIsOpen
+    });
+
+    const dismiss = useDismiss(floating.context, {
+        outsidePress: closeOnClickOutside,
+        outsidePressEvent: "mousedown",
+        escapeKey: closeOnEscape
+    });
+
+    const role = useRole(floating.context, {
+        role: "dialog"
+    });
+
+    const { getFloatingProps } = useInteractions([dismiss, role]);
 
     const open = useCallback(() => {
         setIsOpen(true);
@@ -46,56 +77,18 @@ export function useModal(options: UseModalProps): UseModalReturn {
         setIsOpen(!isOpen);
     }, [isOpen, setIsOpen]);
 
-    useEffect(() => {
-        if (!isOpen || !closeOnEscape) {
-            return;
-        }
-
-        const handleKeyDown = (event: KeyboardEvent) => {
-            if (event.key === "Escape") {
-                setIsOpen(false);
-            }
-        };
-
-        document.addEventListener("keydown", handleKeyDown);
-
-        return () => {
-            document.removeEventListener("keydown", handleKeyDown);
-        };
-    }, [closeOnEscape, isOpen, setIsOpen]);
-
-    useEffect(() => {
-        if (!isOpen || !closeOnClickOutside) {
-            return;
-        }
-
-        const handlePointerDown = (event: MouseEvent | TouchEvent) => {
-            const target = event.target;
-
-            if (!(target instanceof Node)) {
-                return;
-            }
-
-            if (contentRef.current?.contains(target)) {
-                return;
-            }
-
-            setIsOpen(false);
-        };
-
-        document.addEventListener("mousedown", handlePointerDown);
-        document.addEventListener("touchstart", handlePointerDown);
-
-        return () => {
-            document.removeEventListener("mousedown", handlePointerDown);
-            document.removeEventListener("touchstart", handlePointerDown);
-        };
-    }, [closeOnClickOutside, contentRef, isOpen, setIsOpen]);
-
     return {
         opened: isOpen,
         open,
         close,
-        toggle
+        toggle,
+        context: floating.context,
+        refs: {
+            setReference: floating.refs.setReference,
+            setFloating: floating.refs.setFloating,
+            floating: floating.refs
+                .floating as React.MutableRefObject<HTMLElement | null>
+        },
+        getFloatingProps
     };
 }

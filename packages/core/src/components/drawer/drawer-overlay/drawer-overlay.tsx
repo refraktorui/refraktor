@@ -1,6 +1,6 @@
+import { FloatingOverlay, FloatingPortal } from "@floating-ui/react";
 import { useTheme } from "../../../theme";
 import { factory } from "../../../utils";
-import { Portal } from "../../portal";
 import { Transition } from "../../transition";
 import { useDrawerContext } from "../drawer.context";
 import { DrawerOverlayFactoryPayload } from "../drawer.types";
@@ -22,6 +22,7 @@ const DrawerOverlay = factory<DrawerOverlayFactoryPayload>(
         const {
             drawer,
             closeOnClickOutside,
+            lockScroll,
             withinPortal,
             transitionProps,
             getStyles
@@ -54,11 +55,11 @@ const DrawerOverlay = factory<DrawerOverlayFactoryPayload>(
                 mounted={drawer.opened}
                 {...transitionProps}
             >
-                <div
+                <FloatingOverlay
+                    lockScroll={lockScroll}
                     ref={ref}
-                    aria-hidden="true"
                     className={cx(
-                        "fixed inset-0 z-40",
+                        "z-40",
                         getStyles("overlay"),
                         className
                     )}
@@ -74,7 +75,7 @@ const DrawerOverlay = factory<DrawerOverlayFactoryPayload>(
         );
 
         return withinPortal ? (
-            <Portal>{overlayContent}</Portal>
+            <FloatingPortal>{overlayContent}</FloatingPortal>
         ) : (
             overlayContent
         );

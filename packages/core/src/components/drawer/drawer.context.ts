@@ -12,9 +12,10 @@ export interface DrawerContextValue {
     radius: RefraktorRadius;
     position: DrawerPosition;
     size: RefraktorSize;
+    trapFocus: boolean;
+    returnFocus: boolean;
     transitionProps?: Omit<TransitionProps, "children" | "mounted">;
     headerId: string;
-    contentRef: React.MutableRefObject<HTMLDivElement | null>;
     classNames?: DrawerClassNames;
     getStyles: (part: keyof DrawerClassNames) => string | undefined;
 }

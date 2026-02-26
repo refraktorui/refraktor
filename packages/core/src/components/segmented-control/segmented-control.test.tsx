@@ -24,6 +24,24 @@ describe("@refraktor/core/SegmentedControl", () => {
         );
     });
 
+    it("renders data icon without changing accessible name", async () => {
+        await render(
+            <SegmentedControl
+                defaultValue="react"
+                data={[
+                    {
+                        value: "react",
+                        label: "React",
+                        icon: <span data-testid="react-icon">R</span>
+                    }
+                ]}
+            />
+        );
+
+        expect(screen.getByTestId("react-icon")).toBeInTheDocument();
+        expect(screen.getByRole("radio", { name: "React" })).toBeInTheDocument();
+    });
+
     it("forwards ref correctly", async () => {
         const ref = createRef<HTMLDivElement>();
 

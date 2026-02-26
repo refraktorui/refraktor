@@ -13,6 +13,9 @@ export interface SegmentedControlItem {
     /** Item label */
     label: ReactNode;
 
+    /** Optional item icon */
+    icon?: ReactNode;
+
     /** Whether item is disabled */
     disabled?: boolean;
 }
