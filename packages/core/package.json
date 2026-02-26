@@ -1,10 +1,37 @@
 {
     "name": "@refraktor/core",
+    "description": "React UI component library built with Tailwind CSS v4",
     "version": "0.0.4",
     "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/refraktorui/refraktor.git",
+        "directory": "packages/core"
+    },
+    "bugs": {
+        "url": "https://github.com/refraktorui/refraktor/issues"
+    },
+    "keywords": [
+        "react",
+        "ui",
+        "ui-kit",
+        "component",
+        "design",
+        "frontend",
+        "tailwindcss",
+        "tailwind"
+    ],
     "publishConfig": {
         "access": "public"
     },
+    "sideEffects": [
+        "*.css"
+    ],
+    "files": [
+        "build",
+        "README.md",
+        "LICENSE"
+    ],
     "main": "./build/index.js",
     "module": "./build/index.js",
     "types": "./build/index.d.ts",

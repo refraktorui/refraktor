@@ -1,10 +1,31 @@
 {
     "name": "@refraktor/utils",
+    "description": "Shared React hooks and utilities for Refraktor",
     "version": "0.0.4",
     "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/refraktorui/refraktor.git",
+        "directory": "packages/utils"
+    },
+    "bugs": {
+        "url": "https://github.com/refraktorui/refraktor/issues"
+    },
+    "keywords": [
+        "react",
+        "hooks",
+        "utilities",
+        "utils"
+    ],
     "publishConfig": {
         "access": "public"
     },
+    "sideEffects": false,
+    "files": [
+        "build",
+        "README.md",
+        "LICENSE"
+    ],
     "main": "./build/index.js",
     "module": "./build/index.js",
     "types": "./build/index.d.ts",

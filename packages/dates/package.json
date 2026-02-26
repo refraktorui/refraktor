@@ -1,10 +1,39 @@
 {
     "name": "@refraktor/dates",
+    "description": "React UI component library for date and time management",
     "version": "0.0.4",
     "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/refraktorui/refraktor.git",
+        "directory": "packages/dates"
+    },
+    "bugs": {
+        "url": "https://github.com/refraktorui/refraktor/issues"
+    },
+    "keywords": [
+        "react",
+        "ui",
+        "ui-kit",
+        "component",
+        "design",
+        "frontend",
+        "tailwindcss",
+        "tailwind",
+        "date",
+        "time"
+    ],
     "publishConfig": {
         "access": "public"
     },
+    "sideEffects": [
+        "*.css"
+    ],
+    "files": [
+        "build",
+        "README.md",
+        "LICENSE"
+    ],
     "main": "./build/index.js",
     "module": "./build/index.js",
     "types": "./build/index.d.ts",
