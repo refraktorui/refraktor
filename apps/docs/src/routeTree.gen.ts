@@ -10,6 +10,29 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as GetStartedIndexRouteImport } from './routes/get-started/index'
+import { Route as CoreTooltipIndexRouteImport } from './routes/core/tooltip/index'
+import { Route as CoreTimelineIndexRouteImport } from './routes/core/timeline/index'
+import { Route as CoreTextareaIndexRouteImport } from './routes/core/textarea/index'
+import { Route as CoreTabsIndexRouteImport } from './routes/core/tabs/index'
+import { Route as CoreTableIndexRouteImport } from './routes/core/table/index'
+import { Route as CoreSwitchIndexRouteImport } from './routes/core/switch/index'
+import { Route as CoreSliderIndexRouteImport } from './routes/core/slider/index'
+import { Route as CoreSelectIndexRouteImport } from './routes/core/select/index'
+import { Route as CoreSegmentedControlIndexRouteImport } from './routes/core/segmented-control/index'
+import { Route as CoreRadioIndexRouteImport } from './routes/core/radio/index'
+import { Route as CoreProgressIndexRouteImport } from './routes/core/progress/index'
+import { Route as CoreProgressCircleIndexRouteImport } from './routes/core/progress-circle/index'
+import { Route as CorePopoverIndexRouteImport } from './routes/core/popover/index'
+import { Route as CorePasswordInputIndexRouteImport } from './routes/core/password-input/index'
+import { Route as CorePaginationIndexRouteImport } from './routes/core/pagination/index'
+import { Route as CoreNumberInputIndexRouteImport } from './routes/core/number-input/index'
+import { Route as CoreModalIndexRouteImport } from './routes/core/modal/index'
+import { Route as CoreMenuIndexRouteImport } from './routes/core/menu/index'
+import { Route as CoreLoaderIndexRouteImport } from './routes/core/loader/index'
+import { Route as CoreInputIndexRouteImport } from './routes/core/input/index'
+import { Route as CoreForIndexRouteImport } from './routes/core/for/index'
+import { Route as CoreFileInputIndexRouteImport } from './routes/core/file-input/index'
 import { Route as CoreDrawerIndexRouteImport } from './routes/core/drawer/index'
 import { Route as CoreColorSwatchIndexRouteImport } from './routes/core/color-swatch/index'
 import { Route as CoreCheckboxIndexRouteImport } from './routes/core/checkbox/index'
@@ -22,6 +45,122 @@ import { Route as CoreAccordionIndexRouteImport } from './routes/core/accordion/
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GetStartedIndexRoute = GetStartedIndexRouteImport.update({
+  id: '/get-started/',
+  path: '/get-started/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoreTooltipIndexRoute = CoreTooltipIndexRouteImport.update({
+  id: '/core/tooltip/',
+  path: '/core/tooltip/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoreTimelineIndexRoute = CoreTimelineIndexRouteImport.update({
+  id: '/core/timeline/',
+  path: '/core/timeline/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoreTextareaIndexRoute = CoreTextareaIndexRouteImport.update({
+  id: '/core/textarea/',
+  path: '/core/textarea/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoreTabsIndexRoute = CoreTabsIndexRouteImport.update({
+  id: '/core/tabs/',
+  path: '/core/tabs/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoreTableIndexRoute = CoreTableIndexRouteImport.update({
+  id: '/core/table/',
+  path: '/core/table/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoreSwitchIndexRoute = CoreSwitchIndexRouteImport.update({
+  id: '/core/switch/',
+  path: '/core/switch/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoreSliderIndexRoute = CoreSliderIndexRouteImport.update({
+  id: '/core/slider/',
+  path: '/core/slider/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoreSelectIndexRoute = CoreSelectIndexRouteImport.update({
+  id: '/core/select/',
+  path: '/core/select/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoreSegmentedControlIndexRoute =
+  CoreSegmentedControlIndexRouteImport.update({
+    id: '/core/segmented-control/',
+    path: '/core/segmented-control/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const CoreRadioIndexRoute = CoreRadioIndexRouteImport.update({
+  id: '/core/radio/',
+  path: '/core/radio/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoreProgressIndexRoute = CoreProgressIndexRouteImport.update({
+  id: '/core/progress/',
+  path: '/core/progress/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoreProgressCircleIndexRoute = CoreProgressCircleIndexRouteImport.update({
+  id: '/core/progress-circle/',
+  path: '/core/progress-circle/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CorePopoverIndexRoute = CorePopoverIndexRouteImport.update({
+  id: '/core/popover/',
+  path: '/core/popover/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CorePasswordInputIndexRoute = CorePasswordInputIndexRouteImport.update({
+  id: '/core/password-input/',
+  path: '/core/password-input/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CorePaginationIndexRoute = CorePaginationIndexRouteImport.update({
+  id: '/core/pagination/',
+  path: '/core/pagination/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoreNumberInputIndexRoute = CoreNumberInputIndexRouteImport.update({
+  id: '/core/number-input/',
+  path: '/core/number-input/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoreModalIndexRoute = CoreModalIndexRouteImport.update({
+  id: '/core/modal/',
+  path: '/core/modal/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoreMenuIndexRoute = CoreMenuIndexRouteImport.update({
+  id: '/core/menu/',
+  path: '/core/menu/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoreLoaderIndexRoute = CoreLoaderIndexRouteImport.update({
+  id: '/core/loader/',
+  path: '/core/loader/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoreInputIndexRoute = CoreInputIndexRouteImport.update({
+  id: '/core/input/',
+  path: '/core/input/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoreForIndexRoute = CoreForIndexRouteImport.update({
+  id: '/core/for/',
+  path: '/core/for/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoreFileInputIndexRoute = CoreFileInputIndexRouteImport.update({
+  id: '/core/file-input/',
+  path: '/core/file-input/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CoreDrawerIndexRoute = CoreDrawerIndexRouteImport.update({
@@ -67,6 +206,7 @@ const CoreAccordionIndexRoute = CoreAccordionIndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/get-started/': typeof GetStartedIndexRoute
   '/core/accordion/': typeof CoreAccordionIndexRoute
   '/core/avatar/': typeof CoreAvatarIndexRoute
   '/core/badge/': typeof CoreBadgeIndexRoute
@@ -75,9 +215,32 @@ export interface FileRoutesByFullPath {
   '/core/checkbox/': typeof CoreCheckboxIndexRoute
   '/core/color-swatch/': typeof CoreColorSwatchIndexRoute
   '/core/drawer/': typeof CoreDrawerIndexRoute
+  '/core/file-input/': typeof CoreFileInputIndexRoute
+  '/core/for/': typeof CoreForIndexRoute
+  '/core/input/': typeof CoreInputIndexRoute
+  '/core/loader/': typeof CoreLoaderIndexRoute
+  '/core/menu/': typeof CoreMenuIndexRoute
+  '/core/modal/': typeof CoreModalIndexRoute
+  '/core/number-input/': typeof CoreNumberInputIndexRoute
+  '/core/pagination/': typeof CorePaginationIndexRoute
+  '/core/password-input/': typeof CorePasswordInputIndexRoute
+  '/core/popover/': typeof CorePopoverIndexRoute
+  '/core/progress-circle/': typeof CoreProgressCircleIndexRoute
+  '/core/progress/': typeof CoreProgressIndexRoute
+  '/core/radio/': typeof CoreRadioIndexRoute
+  '/core/segmented-control/': typeof CoreSegmentedControlIndexRoute
+  '/core/select/': typeof CoreSelectIndexRoute
+  '/core/slider/': typeof CoreSliderIndexRoute
+  '/core/switch/': typeof CoreSwitchIndexRoute
+  '/core/table/': typeof CoreTableIndexRoute
+  '/core/tabs/': typeof CoreTabsIndexRoute
+  '/core/textarea/': typeof CoreTextareaIndexRoute
+  '/core/timeline/': typeof CoreTimelineIndexRoute
+  '/core/tooltip/': typeof CoreTooltipIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/get-started': typeof GetStartedIndexRoute
   '/core/accordion': typeof CoreAccordionIndexRoute
   '/core/avatar': typeof CoreAvatarIndexRoute
   '/core/badge': typeof CoreBadgeIndexRoute
@@ -86,10 +249,33 @@ export interface FileRoutesByTo {
   '/core/checkbox': typeof CoreCheckboxIndexRoute
   '/core/color-swatch': typeof CoreColorSwatchIndexRoute
   '/core/drawer': typeof CoreDrawerIndexRoute
+  '/core/file-input': typeof CoreFileInputIndexRoute
+  '/core/for': typeof CoreForIndexRoute
+  '/core/input': typeof CoreInputIndexRoute
+  '/core/loader': typeof CoreLoaderIndexRoute
+  '/core/menu': typeof CoreMenuIndexRoute
+  '/core/modal': typeof CoreModalIndexRoute
+  '/core/number-input': typeof CoreNumberInputIndexRoute
+  '/core/pagination': typeof CorePaginationIndexRoute
+  '/core/password-input': typeof CorePasswordInputIndexRoute
+  '/core/popover': typeof CorePopoverIndexRoute
+  '/core/progress-circle': typeof CoreProgressCircleIndexRoute
+  '/core/progress': typeof CoreProgressIndexRoute
+  '/core/radio': typeof CoreRadioIndexRoute
+  '/core/segmented-control': typeof CoreSegmentedControlIndexRoute
+  '/core/select': typeof CoreSelectIndexRoute
+  '/core/slider': typeof CoreSliderIndexRoute
+  '/core/switch': typeof CoreSwitchIndexRoute
+  '/core/table': typeof CoreTableIndexRoute
+  '/core/tabs': typeof CoreTabsIndexRoute
+  '/core/textarea': typeof CoreTextareaIndexRoute
+  '/core/timeline': typeof CoreTimelineIndexRoute
+  '/core/tooltip': typeof CoreTooltipIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/get-started/': typeof GetStartedIndexRoute
   '/core/accordion/': typeof CoreAccordionIndexRoute
   '/core/avatar/': typeof CoreAvatarIndexRoute
   '/core/badge/': typeof CoreBadgeIndexRoute
@@ -98,11 +284,34 @@ export interface FileRoutesById {
   '/core/checkbox/': typeof CoreCheckboxIndexRoute
   '/core/color-swatch/': typeof CoreColorSwatchIndexRoute
   '/core/drawer/': typeof CoreDrawerIndexRoute
+  '/core/file-input/': typeof CoreFileInputIndexRoute
+  '/core/for/': typeof CoreForIndexRoute
+  '/core/input/': typeof CoreInputIndexRoute
+  '/core/loader/': typeof CoreLoaderIndexRoute
+  '/core/menu/': typeof CoreMenuIndexRoute
+  '/core/modal/': typeof CoreModalIndexRoute
+  '/core/number-input/': typeof CoreNumberInputIndexRoute
+  '/core/pagination/': typeof CorePaginationIndexRoute
+  '/core/password-input/': typeof CorePasswordInputIndexRoute
+  '/core/popover/': typeof CorePopoverIndexRoute
+  '/core/progress-circle/': typeof CoreProgressCircleIndexRoute
+  '/core/progress/': typeof CoreProgressIndexRoute
+  '/core/radio/': typeof CoreRadioIndexRoute
+  '/core/segmented-control/': typeof CoreSegmentedControlIndexRoute
+  '/core/select/': typeof CoreSelectIndexRoute
+  '/core/slider/': typeof CoreSliderIndexRoute
+  '/core/switch/': typeof CoreSwitchIndexRoute
+  '/core/table/': typeof CoreTableIndexRoute
+  '/core/tabs/': typeof CoreTabsIndexRoute
+  '/core/textarea/': typeof CoreTextareaIndexRoute
+  '/core/timeline/': typeof CoreTimelineIndexRoute
+  '/core/tooltip/': typeof CoreTooltipIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/get-started/'
     | '/core/accordion/'
     | '/core/avatar/'
     | '/core/badge/'
@@ -111,9 +320,32 @@ export interface FileRouteTypes {
     | '/core/checkbox/'
     | '/core/color-swatch/'
     | '/core/drawer/'
+    | '/core/file-input/'
+    | '/core/for/'
+    | '/core/input/'
+    | '/core/loader/'
+    | '/core/menu/'
+    | '/core/modal/'
+    | '/core/number-input/'
+    | '/core/pagination/'
+    | '/core/password-input/'
+    | '/core/popover/'
+    | '/core/progress-circle/'
+    | '/core/progress/'
+    | '/core/radio/'
+    | '/core/segmented-control/'
+    | '/core/select/'
+    | '/core/slider/'
+    | '/core/switch/'
+    | '/core/table/'
+    | '/core/tabs/'
+    | '/core/textarea/'
+    | '/core/timeline/'
+    | '/core/tooltip/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/get-started'
     | '/core/accordion'
     | '/core/avatar'
     | '/core/badge'
@@ -122,9 +354,32 @@ export interface FileRouteTypes {
     | '/core/checkbox'
     | '/core/color-swatch'
     | '/core/drawer'
+    | '/core/file-input'
+    | '/core/for'
+    | '/core/input'
+    | '/core/loader'
+    | '/core/menu'
+    | '/core/modal'
+    | '/core/number-input'
+    | '/core/pagination'
+    | '/core/password-input'
+    | '/core/popover'
+    | '/core/progress-circle'
+    | '/core/progress'
+    | '/core/radio'
+    | '/core/segmented-control'
+    | '/core/select'
+    | '/core/slider'
+    | '/core/switch'
+    | '/core/table'
+    | '/core/tabs'
+    | '/core/textarea'
+    | '/core/timeline'
+    | '/core/tooltip'
   id:
     | '__root__'
     | '/'
+    | '/get-started/'
     | '/core/accordion/'
     | '/core/avatar/'
     | '/core/badge/'
@@ -133,10 +388,33 @@ export interface FileRouteTypes {
     | '/core/checkbox/'
     | '/core/color-swatch/'
     | '/core/drawer/'
+    | '/core/file-input/'
+    | '/core/for/'
+    | '/core/input/'
+    | '/core/loader/'
+    | '/core/menu/'
+    | '/core/modal/'
+    | '/core/number-input/'
+    | '/core/pagination/'
+    | '/core/password-input/'
+    | '/core/popover/'
+    | '/core/progress-circle/'
+    | '/core/progress/'
+    | '/core/radio/'
+    | '/core/segmented-control/'
+    | '/core/select/'
+    | '/core/slider/'
+    | '/core/switch/'
+    | '/core/table/'
+    | '/core/tabs/'
+    | '/core/textarea/'
+    | '/core/timeline/'
+    | '/core/tooltip/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  GetStartedIndexRoute: typeof GetStartedIndexRoute
   CoreAccordionIndexRoute: typeof CoreAccordionIndexRoute
   CoreAvatarIndexRoute: typeof CoreAvatarIndexRoute
   CoreBadgeIndexRoute: typeof CoreBadgeIndexRoute
@@ -145,6 +423,28 @@ export interface RootRouteChildren {
   CoreCheckboxIndexRoute: typeof CoreCheckboxIndexRoute
   CoreColorSwatchIndexRoute: typeof CoreColorSwatchIndexRoute
   CoreDrawerIndexRoute: typeof CoreDrawerIndexRoute
+  CoreFileInputIndexRoute: typeof CoreFileInputIndexRoute
+  CoreForIndexRoute: typeof CoreForIndexRoute
+  CoreInputIndexRoute: typeof CoreInputIndexRoute
+  CoreLoaderIndexRoute: typeof CoreLoaderIndexRoute
+  CoreMenuIndexRoute: typeof CoreMenuIndexRoute
+  CoreModalIndexRoute: typeof CoreModalIndexRoute
+  CoreNumberInputIndexRoute: typeof CoreNumberInputIndexRoute
+  CorePaginationIndexRoute: typeof CorePaginationIndexRoute
+  CorePasswordInputIndexRoute: typeof CorePasswordInputIndexRoute
+  CorePopoverIndexRoute: typeof CorePopoverIndexRoute
+  CoreProgressCircleIndexRoute: typeof CoreProgressCircleIndexRoute
+  CoreProgressIndexRoute: typeof CoreProgressIndexRoute
+  CoreRadioIndexRoute: typeof CoreRadioIndexRoute
+  CoreSegmentedControlIndexRoute: typeof CoreSegmentedControlIndexRoute
+  CoreSelectIndexRoute: typeof CoreSelectIndexRoute
+  CoreSliderIndexRoute: typeof CoreSliderIndexRoute
+  CoreSwitchIndexRoute: typeof CoreSwitchIndexRoute
+  CoreTableIndexRoute: typeof CoreTableIndexRoute
+  CoreTabsIndexRoute: typeof CoreTabsIndexRoute
+  CoreTextareaIndexRoute: typeof CoreTextareaIndexRoute
+  CoreTimelineIndexRoute: typeof CoreTimelineIndexRoute
+  CoreTooltipIndexRoute: typeof CoreTooltipIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -154,6 +454,167 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/get-started/': {
+      id: '/get-started/'
+      path: '/get-started'
+      fullPath: '/get-started/'
+      preLoaderRoute: typeof GetStartedIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/core/tooltip/': {
+      id: '/core/tooltip/'
+      path: '/core/tooltip'
+      fullPath: '/core/tooltip/'
+      preLoaderRoute: typeof CoreTooltipIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/core/timeline/': {
+      id: '/core/timeline/'
+      path: '/core/timeline'
+      fullPath: '/core/timeline/'
+      preLoaderRoute: typeof CoreTimelineIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/core/textarea/': {
+      id: '/core/textarea/'
+      path: '/core/textarea'
+      fullPath: '/core/textarea/'
+      preLoaderRoute: typeof CoreTextareaIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/core/tabs/': {
+      id: '/core/tabs/'
+      path: '/core/tabs'
+      fullPath: '/core/tabs/'
+      preLoaderRoute: typeof CoreTabsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/core/table/': {
+      id: '/core/table/'
+      path: '/core/table'
+      fullPath: '/core/table/'
+      preLoaderRoute: typeof CoreTableIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/core/switch/': {
+      id: '/core/switch/'
+      path: '/core/switch'
+      fullPath: '/core/switch/'
+      preLoaderRoute: typeof CoreSwitchIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/core/slider/': {
+      id: '/core/slider/'
+      path: '/core/slider'
+      fullPath: '/core/slider/'
+      preLoaderRoute: typeof CoreSliderIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/core/select/': {
+      id: '/core/select/'
+      path: '/core/select'
+      fullPath: '/core/select/'
+      preLoaderRoute: typeof CoreSelectIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/core/segmented-control/': {
+      id: '/core/segmented-control/'
+      path: '/core/segmented-control'
+      fullPath: '/core/segmented-control/'
+      preLoaderRoute: typeof CoreSegmentedControlIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/core/radio/': {
+      id: '/core/radio/'
+      path: '/core/radio'
+      fullPath: '/core/radio/'
+      preLoaderRoute: typeof CoreRadioIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/core/progress/': {
+      id: '/core/progress/'
+      path: '/core/progress'
+      fullPath: '/core/progress/'
+      preLoaderRoute: typeof CoreProgressIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/core/progress-circle/': {
+      id: '/core/progress-circle/'
+      path: '/core/progress-circle'
+      fullPath: '/core/progress-circle/'
+      preLoaderRoute: typeof CoreProgressCircleIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/core/popover/': {
+      id: '/core/popover/'
+      path: '/core/popover'
+      fullPath: '/core/popover/'
+      preLoaderRoute: typeof CorePopoverIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/core/password-input/': {
+      id: '/core/password-input/'
+      path: '/core/password-input'
+      fullPath: '/core/password-input/'
+      preLoaderRoute: typeof CorePasswordInputIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/core/pagination/': {
+      id: '/core/pagination/'
+      path: '/core/pagination'
+      fullPath: '/core/pagination/'
+      preLoaderRoute: typeof CorePaginationIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/core/number-input/': {
+      id: '/core/number-input/'
+      path: '/core/number-input'
+      fullPath: '/core/number-input/'
+      preLoaderRoute: typeof CoreNumberInputIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/core/modal/': {
+      id: '/core/modal/'
+      path: '/core/modal'
+      fullPath: '/core/modal/'
+      preLoaderRoute: typeof CoreModalIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/core/menu/': {
+      id: '/core/menu/'
+      path: '/core/menu'
+      fullPath: '/core/menu/'
+      preLoaderRoute: typeof CoreMenuIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/core/loader/': {
+      id: '/core/loader/'
+      path: '/core/loader'
+      fullPath: '/core/loader/'
+      preLoaderRoute: typeof CoreLoaderIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/core/input/': {
+      id: '/core/input/'
+      path: '/core/input'
+      fullPath: '/core/input/'
+      preLoaderRoute: typeof CoreInputIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/core/for/': {
+      id: '/core/for/'
+      path: '/core/for'
+      fullPath: '/core/for/'
+      preLoaderRoute: typeof CoreForIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/core/file-input/': {
+      id: '/core/file-input/'
+      path: '/core/file-input'
+      fullPath: '/core/file-input/'
+      preLoaderRoute: typeof CoreFileInputIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/core/drawer/': {
@@ -217,6 +678,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  GetStartedIndexRoute: GetStartedIndexRoute,
   CoreAccordionIndexRoute: CoreAccordionIndexRoute,
   CoreAvatarIndexRoute: CoreAvatarIndexRoute,
   CoreBadgeIndexRoute: CoreBadgeIndexRoute,
@@ -225,6 +687,28 @@ const rootRouteChildren: RootRouteChildren = {
   CoreCheckboxIndexRoute: CoreCheckboxIndexRoute,
   CoreColorSwatchIndexRoute: CoreColorSwatchIndexRoute,
   CoreDrawerIndexRoute: CoreDrawerIndexRoute,
+  CoreFileInputIndexRoute: CoreFileInputIndexRoute,
+  CoreForIndexRoute: CoreForIndexRoute,
+  CoreInputIndexRoute: CoreInputIndexRoute,
+  CoreLoaderIndexRoute: CoreLoaderIndexRoute,
+  CoreMenuIndexRoute: CoreMenuIndexRoute,
+  CoreModalIndexRoute: CoreModalIndexRoute,
+  CoreNumberInputIndexRoute: CoreNumberInputIndexRoute,
+  CorePaginationIndexRoute: CorePaginationIndexRoute,
+  CorePasswordInputIndexRoute: CorePasswordInputIndexRoute,
+  CorePopoverIndexRoute: CorePopoverIndexRoute,
+  CoreProgressCircleIndexRoute: CoreProgressCircleIndexRoute,
+  CoreProgressIndexRoute: CoreProgressIndexRoute,
+  CoreRadioIndexRoute: CoreRadioIndexRoute,
+  CoreSegmentedControlIndexRoute: CoreSegmentedControlIndexRoute,
+  CoreSelectIndexRoute: CoreSelectIndexRoute,
+  CoreSliderIndexRoute: CoreSliderIndexRoute,
+  CoreSwitchIndexRoute: CoreSwitchIndexRoute,
+  CoreTableIndexRoute: CoreTableIndexRoute,
+  CoreTabsIndexRoute: CoreTabsIndexRoute,
+  CoreTextareaIndexRoute: CoreTextareaIndexRoute,
+  CoreTimelineIndexRoute: CoreTimelineIndexRoute,
+  CoreTooltipIndexRoute: CoreTooltipIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
