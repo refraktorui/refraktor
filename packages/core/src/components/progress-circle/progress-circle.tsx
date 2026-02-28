@@ -12,7 +12,7 @@ import {
     ProgressCircleFactoryPayload,
     ProgressCircleProps
 } from "./progress-circle.types";
-import { getSize } from "./progress-circle.styles";
+import { defaultSize, defaultStroke } from "./progress-circle.styles";
 
 const defaultProps = {
     value: 0,
@@ -20,7 +20,8 @@ const defaultProps = {
     max: 100,
     indeterminate: false,
     animated: true,
-    size: "md"
+    size: defaultSize,
+    stroke: defaultStroke
 } satisfies Partial<ProgressCircleProps>;
 
 const ProgressCircle = factory<ProgressCircleFactoryPayload>((_props, ref) => {
@@ -33,6 +34,7 @@ const ProgressCircle = factory<ProgressCircleFactoryPayload>((_props, ref) => {
         indeterminate,
         animated,
         size,
+        stroke,
         className,
         classNames,
         ...props
@@ -41,9 +43,8 @@ const ProgressCircle = factory<ProgressCircleFactoryPayload>((_props, ref) => {
 
     const _id = useId(id);
 
-    const sizeStyles = getSize(size);
-    const diameter = sizeStyles.size;
-    const strokeWidth = sizeStyles.stroke;
+    const diameter = size;
+    const strokeWidth = stroke;
     const radius = Math.max(0, diameter / 2 - strokeWidth / 2);
     const circumference = 2 * Math.PI * radius;
 

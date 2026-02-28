@@ -1,10 +1,6 @@
 import Documentation, { createPlayground } from "@/components/Documentation";
 import { createSnippet } from "@/utils/createSnippet";
-import {
-    ProgressCircle,
-    type ProgressCircleClassNames,
-    type RefraktorSize
-} from "@refraktor/core";
+import { ProgressCircle, type ProgressCircleClassNames } from "@refraktor/core";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/core/progress-circle/")({
@@ -38,10 +34,20 @@ const ProgressCirclePlayground = createPlayground(
             default: 100
         },
         size: {
-            type: "select",
+            type: "number",
             label: "Size",
-            options: ["xs", "sm", "md", "lg", "xl"] as const,
-            default: "md"
+            min: 8,
+            max: 80,
+            step: 1,
+            default: 32
+        },
+        stroke: {
+            type: "number",
+            label: "Stroke",
+            min: 1,
+            max: 10,
+            step: 0.5,
+            default: 3
         },
         animated: {
             type: "switch",
@@ -64,6 +70,7 @@ const ProgressCirclePlayground = createPlayground(
                     min: props.min,
                     max: props.max,
                     size: props.size,
+                    stroke: props.stroke,
                     animated: props.animated,
                     indeterminate: props.indeterminate,
                     "aria-label": "Upload progress"
@@ -72,6 +79,7 @@ const ProgressCirclePlayground = createPlayground(
                     min: defaults.min,
                     max: defaults.max,
                     size: defaults.size,
+                    stroke: defaults.stroke,
                     animated: defaults.animated,
                     indeterminate: defaults.indeterminate
                 }
@@ -90,7 +98,7 @@ function ProgressCircleSlotsShowcase({
     return (
         <ProgressCircle
             value={68}
-            size="xl"
+            size={40}
             classNames={classNames}
             aria-label="Preview"
         />
@@ -117,15 +125,17 @@ function RouteComponent() {
                                     min,
                                     max,
                                     size,
+                                    stroke,
                                     animated,
                                     indeterminate
                                 }) => (
                                     <ProgressCircle
-                                        key={`${value}-${min}-${max}-${size}-${animated}-${indeterminate}`}
+                                        key={`${value}-${min}-${max}-${size}-${stroke}-${animated}-${indeterminate}`}
                                         value={value}
                                         min={min}
                                         max={max}
-                                        size={size as RefraktorSize}
+                                        size={size}
+                                        stroke={stroke}
                                         animated={animated}
                                         indeterminate={indeterminate}
                                         aria-label="Upload progress"
@@ -150,21 +160,21 @@ function RouteComponent() {
 export function Demo() {
   return (
     <div className="flex items-center gap-4">
-      <ProgressCircle value={55} size="xs" aria-label="XS" />
-      <ProgressCircle value={55} size="sm" aria-label="SM" />
-      <ProgressCircle value={55} size="md" aria-label="MD" />
-      <ProgressCircle value={55} size="lg" aria-label="LG" />
-      <ProgressCircle value={55} size="xl" aria-label="XL" />
+      <ProgressCircle value={55} size={16} stroke={2} aria-label="16px" />
+      <ProgressCircle value={55} size={24} aria-label="24px" />
+      <ProgressCircle value={55} size={32} aria-label="32px" />
+      <ProgressCircle value={55} size={40} stroke={4} aria-label="40px" />
+      <ProgressCircle value={55} size={56} stroke={5} aria-label="56px" />
     </div>
   );
 }`}
                         >
                             <div className="flex items-center gap-4">
-                                <ProgressCircle value={55} size="xs" aria-label="XS" />
-                                <ProgressCircle value={55} size="sm" aria-label="SM" />
-                                <ProgressCircle value={55} size="md" aria-label="MD" />
-                                <ProgressCircle value={55} size="lg" aria-label="LG" />
-                                <ProgressCircle value={55} size="xl" aria-label="XL" />
+                                <ProgressCircle value={55} size={16} stroke={2} aria-label="16px" />
+                                <ProgressCircle value={55} size={24} aria-label="24px" />
+                                <ProgressCircle value={55} size={32} aria-label="32px" />
+                                <ProgressCircle value={55} size={40} stroke={4} aria-label="40px" />
+                                <ProgressCircle value={55} size={56} stroke={5} aria-label="56px" />
                             </div>
                         </Documentation.Showcase>
                     </Documentation.Section>
@@ -183,7 +193,7 @@ export function Demo() {
       min={40}
       max={140}
       value={90}
-      size="xl"
+      size={40}
       aria-label="Custom range progress"
     />
   );
@@ -194,7 +204,7 @@ export function Demo() {
                                     min={40}
                                     max={140}
                                     value={90}
-                                    size="xl"
+                                    size={40}
                                     aria-label="Custom range progress"
                                 />
                                 <p className="text-sm text-dark-200">
@@ -214,12 +224,12 @@ export function Demo() {
                             code={`import { ProgressCircle } from "@refraktor/core";
 
 export function Demo() {
-  return <ProgressCircle indeterminate size="lg" aria-label="Loading" />;
+  return <ProgressCircle indeterminate size={32} aria-label="Loading" />;
 }`}
                         >
                             <ProgressCircle
                                 indeterminate
-                                size="lg"
+                                size={32}
                                 aria-label="Loading"
                             />
                         </Documentation.Showcase>
@@ -278,9 +288,15 @@ export function Demo() {
                             />
                             <Documentation.Props.Content
                                 name="size"
-                                type='"xs" | "sm" | "md" | "lg" | "xl"'
-                                default='"md"'
-                                description="Controls overall circle diameter and stroke width."
+                                type="number"
+                                default="32"
+                                description="Circle diameter in pixels."
+                            />
+                            <Documentation.Props.Content
+                                name="stroke"
+                                type="number"
+                                default="3"
+                                description="Stroke width in pixels."
                             />
                             <Documentation.Props.Content
                                 name="className"

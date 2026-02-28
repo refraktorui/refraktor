@@ -1,5 +1,4 @@
 import { ComponentPropsWithoutRef } from "react";
-import { RefraktorSize } from "../../theme";
 import {
     createClassNamesConfig,
     createComponentConfig,
@@ -30,8 +29,11 @@ export interface ProgressCircleProps
     /** Whether dash-offset transitions are animated @default `true` */
     animated?: boolean;
 
-    /** Circle size @default `md` */
-    size?: RefraktorSize;
+    /** Circle diameter in pixels @default `32` */
+    size?: number;
+
+    /** Stroke width in pixels @default `3` */
+    stroke?: number;
 
     /** Used for editing root class name */
     className?: string;
