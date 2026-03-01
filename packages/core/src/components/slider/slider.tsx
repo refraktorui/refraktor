@@ -17,7 +17,7 @@ import {
     SliderFactoryPayload,
     SliderProps
 } from "./slider.types";
-import { ReactNode, useCallback, useRef, useState } from "react";
+import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import { getSize } from "./slider.styles";
 
 const defaultProps = {
@@ -63,6 +63,10 @@ const Slider = factory<SliderFactoryPayload>((_props, ref) => {
     const [isDragging, setIsDragging] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
     const trackRef = useRef<HTMLDivElement>(null);
+    const trackRectRef = useRef<DOMRect | null>(null);
+    const rafRef = useRef<number | null>(null);
+    const pendingPositionRef = useRef<number | null>(null);
+    const lastEmittedValueRef = useRef(_value);
 
     const _id = useId(id);
     const sizeStyles = getSize(size);
@@ -84,15 +88,14 @@ const Slider = factory<SliderFactoryPayload>((_props, ref) => {
         [min, max, step, precision]
     );
 
-    const getPositionFromEvent = useCallback(
-        (
-            event: MouseEvent | TouchEvent | React.MouseEvent | React.TouchEvent
-        ) => {
-            if (!trackRef.current) return 0;
+    const updateTrackRect = useCallback(() => {
+        trackRectRef.current = trackRef.current?.getBoundingClientRect() ?? null;
+    }, []);
 
-            const rect = trackRef.current.getBoundingClientRect();
-            const clientX =
-                "touches" in event ? event.touches[0].clientX : event.clientX;
+    const getPositionFromClientX = useCallback(
+        (clientX: number) => {
+            const rect = trackRectRef.current;
+            if (!rect || rect.width === 0) return 0;
 
             const position = (clientX - rect.left) / rect.width;
             return clamp(position, 0, 1);
@@ -100,26 +103,68 @@ const Slider = factory<SliderFactoryPayload>((_props, ref) => {
         []
     );
 
+    const flushPendingChange = useCallback(() => {
+        if (pendingPositionRef.current === null) return;
+
+        const newValue = getValueFromPosition(pendingPositionRef.current);
+        pendingPositionRef.current = null;
+
+        if (newValue === lastEmittedValueRef.current) return;
+
+        lastEmittedValueRef.current = newValue;
+        handleChange(newValue);
+    }, [getValueFromPosition, handleChange]);
+
+    const queueChange = useCallback(
+        (position: number) => {
+            pendingPositionRef.current = position;
+
+            if (rafRef.current !== null) return;
+
+            rafRef.current = requestAnimationFrame(() => {
+                rafRef.current = null;
+                flushPendingChange();
+            });
+        },
+        [flushPendingChange]
+    );
+
     const handleMove = useCallback(
         (event: MouseEvent | TouchEvent) => {
             if (disabled) return;
 
-            const position = getPositionFromEvent(event);
-            const newValue = getValueFromPosition(position);
-            handleChange(newValue);
+            const clientX =
+                "touches" in event ? event.touches[0]?.clientX : event.clientX;
+            if (clientX === undefined) return;
+
+            if ("touches" in event) {
+                event.preventDefault();
+            }
+
+            const position = getPositionFromClientX(clientX);
+            queueChange(position);
         },
-        [disabled, getPositionFromEvent, getValueFromPosition, handleChange]
+        [disabled, getPositionFromClientX, queueChange]
     );
 
     const handleEnd = useCallback(() => {
+        if (rafRef.current !== null) {
+            cancelAnimationFrame(rafRef.current);
+            rafRef.current = null;
+        }
+
+        flushPendingChange();
         setIsDragging(false);
-        onChangeEnd?.(_value);
+        onChangeEnd?.(lastEmittedValueRef.current);
+        trackRectRef.current = null;
 
         document.removeEventListener("mousemove", handleMove);
         document.removeEventListener("mouseup", handleEnd);
         document.removeEventListener("touchmove", handleMove);
         document.removeEventListener("touchend", handleEnd);
-    }, [handleMove, onChangeEnd, _value]);
+        document.removeEventListener("scroll", updateTrackRect, true);
+        window.removeEventListener("resize", updateTrackRect);
+    }, [flushPendingChange, handleMove, onChangeEnd, updateTrackRect]);
 
     const handleStart = useCallback(
         (event: React.MouseEvent | React.TouchEvent) => {
@@ -128,24 +173,38 @@ const Slider = factory<SliderFactoryPayload>((_props, ref) => {
             event.preventDefault();
             setIsDragging(true);
 
-            const position = getPositionFromEvent(event);
-            const newValue = getValueFromPosition(position);
-            handleChange(newValue);
+            updateTrackRect();
+
+            const clientX =
+                "touches" in event ? event.touches[0]?.clientX : event.clientX;
+            if (clientX === undefined) return;
+
+            const position = getPositionFromClientX(clientX);
+            pendingPositionRef.current = position;
+            flushPendingChange();
 
             document.addEventListener("mousemove", handleMove);
             document.addEventListener("mouseup", handleEnd);
-            document.addEventListener("touchmove", handleMove);
+            document.addEventListener("touchmove", handleMove, {
+                passive: false
+            });
             document.addEventListener("touchend", handleEnd);
+            document.addEventListener("scroll", updateTrackRect, true);
+            window.addEventListener("resize", updateTrackRect);
         },
         [
             disabled,
-            getPositionFromEvent,
-            getValueFromPosition,
-            handleChange,
+            flushPendingChange,
+            getPositionFromClientX,
             handleMove,
-            handleEnd
+            handleEnd,
+            updateTrackRect
         ]
     );
+
+    useEffect(() => {
+        lastEmittedValueRef.current = _value;
+    }, [_value]);
 
     const position = getPositionFromValue(_value);
     const showLabel =
@@ -166,7 +225,7 @@ const Slider = factory<SliderFactoryPayload>((_props, ref) => {
             <div
                 ref={trackRef}
                 className={cx(
-                    "relative w-full bg-[var(--refraktor-bg)] cursor-pointer",
+                    "relative w-full bg-[var(--refraktor-bg)] cursor-pointer touch-none",
                     sizeStyles.track,
                     getRadius(radius),
                     disabled && "cursor-not-allowed",
