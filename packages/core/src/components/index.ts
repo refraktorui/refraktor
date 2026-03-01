@@ -25,6 +25,7 @@ export * from "./radio";
 export * from "./scroll-area";
 export * from "./select";
 export * from "./segmented-control";
+export * from "./show";
 export * from "./slider";
 export * from "./switch";
 export * from "./table";

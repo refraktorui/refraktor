@@ -19,6 +19,7 @@ import { Route as CoreTabsIndexRouteImport } from './routes/core/tabs/index'
 import { Route as CoreTableIndexRouteImport } from './routes/core/table/index'
 import { Route as CoreSwitchIndexRouteImport } from './routes/core/switch/index'
 import { Route as CoreSliderIndexRouteImport } from './routes/core/slider/index'
+import { Route as CoreShowIndexRouteImport } from './routes/core/show/index'
 import { Route as CoreSelectIndexRouteImport } from './routes/core/select/index'
 import { Route as CoreSegmentedControlIndexRouteImport } from './routes/core/segmented-control/index'
 import { Route as CoreScrollAreaIndexRouteImport } from './routes/core/scroll-area/index'
@@ -94,6 +95,11 @@ const CoreSwitchIndexRoute = CoreSwitchIndexRouteImport.update({
 const CoreSliderIndexRoute = CoreSliderIndexRouteImport.update({
   id: '/core/slider/',
   path: '/core/slider/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoreShowIndexRoute = CoreShowIndexRouteImport.update({
+  id: '/core/show/',
+  path: '/core/show/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CoreSelectIndexRoute = CoreSelectIndexRouteImport.update({
@@ -258,6 +264,7 @@ export interface FileRoutesByFullPath {
   '/core/scroll-area/': typeof CoreScrollAreaIndexRoute
   '/core/segmented-control/': typeof CoreSegmentedControlIndexRoute
   '/core/select/': typeof CoreSelectIndexRoute
+  '/core/show/': typeof CoreShowIndexRoute
   '/core/slider/': typeof CoreSliderIndexRoute
   '/core/switch/': typeof CoreSwitchIndexRoute
   '/core/table/': typeof CoreTableIndexRoute
@@ -296,6 +303,7 @@ export interface FileRoutesByTo {
   '/core/scroll-area': typeof CoreScrollAreaIndexRoute
   '/core/segmented-control': typeof CoreSegmentedControlIndexRoute
   '/core/select': typeof CoreSelectIndexRoute
+  '/core/show': typeof CoreShowIndexRoute
   '/core/slider': typeof CoreSliderIndexRoute
   '/core/switch': typeof CoreSwitchIndexRoute
   '/core/table': typeof CoreTableIndexRoute
@@ -335,6 +343,7 @@ export interface FileRoutesById {
   '/core/scroll-area/': typeof CoreScrollAreaIndexRoute
   '/core/segmented-control/': typeof CoreSegmentedControlIndexRoute
   '/core/select/': typeof CoreSelectIndexRoute
+  '/core/show/': typeof CoreShowIndexRoute
   '/core/slider/': typeof CoreSliderIndexRoute
   '/core/switch/': typeof CoreSwitchIndexRoute
   '/core/table/': typeof CoreTableIndexRoute
@@ -375,6 +384,7 @@ export interface FileRouteTypes {
     | '/core/scroll-area/'
     | '/core/segmented-control/'
     | '/core/select/'
+    | '/core/show/'
     | '/core/slider/'
     | '/core/switch/'
     | '/core/table/'
@@ -413,6 +423,7 @@ export interface FileRouteTypes {
     | '/core/scroll-area'
     | '/core/segmented-control'
     | '/core/select'
+    | '/core/show'
     | '/core/slider'
     | '/core/switch'
     | '/core/table'
@@ -451,6 +462,7 @@ export interface FileRouteTypes {
     | '/core/scroll-area/'
     | '/core/segmented-control/'
     | '/core/select/'
+    | '/core/show/'
     | '/core/slider/'
     | '/core/switch/'
     | '/core/table/'
@@ -490,6 +502,7 @@ export interface RootRouteChildren {
   CoreScrollAreaIndexRoute: typeof CoreScrollAreaIndexRoute
   CoreSegmentedControlIndexRoute: typeof CoreSegmentedControlIndexRoute
   CoreSelectIndexRoute: typeof CoreSelectIndexRoute
+  CoreShowIndexRoute: typeof CoreShowIndexRoute
   CoreSliderIndexRoute: typeof CoreSliderIndexRoute
   CoreSwitchIndexRoute: typeof CoreSwitchIndexRoute
   CoreTableIndexRoute: typeof CoreTableIndexRoute
@@ -569,6 +582,13 @@ declare module '@tanstack/react-router' {
       path: '/core/slider'
       fullPath: '/core/slider/'
       preLoaderRoute: typeof CoreSliderIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/core/show/': {
+      id: '/core/show/'
+      path: '/core/show'
+      fullPath: '/core/show/'
+      preLoaderRoute: typeof CoreShowIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/core/select/': {
@@ -786,6 +806,7 @@ const rootRouteChildren: RootRouteChildren = {
   CoreScrollAreaIndexRoute: CoreScrollAreaIndexRoute,
   CoreSegmentedControlIndexRoute: CoreSegmentedControlIndexRoute,
   CoreSelectIndexRoute: CoreSelectIndexRoute,
+  CoreShowIndexRoute: CoreShowIndexRoute,
   CoreSliderIndexRoute: CoreSliderIndexRoute,
   CoreSwitchIndexRoute: CoreSwitchIndexRoute,
   CoreTableIndexRoute: CoreTableIndexRoute,
