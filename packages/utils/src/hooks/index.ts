@@ -6,3 +6,4 @@ export { useMergedRefs } from "./use-merged-refs";
 export { useUncontrolled } from "./use-uncontrolled";
 export { useDebouncedCallback } from "./use-debounced-callback";
 export { useIsomorphicLayoutEffect } from "./use-isomorphic-layout-effect";
+export { useKeybind } from "./use-keybind";
