@@ -30,6 +30,30 @@
 
 :root {
     background-color: var(--color-dark-900);
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-dark-500) transparent;
+}
+
+::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-dark-500);
+    border-radius: 99px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-dark-400);
+}
+
+::-webkit-scrollbar-corner {
+    background: transparent;
 }
 
 body {
@@ -40,4 +64,32 @@ body {
 
 #root {
     height: 100%;
+}
+
+.docs-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-dark-500) transparent;
+}
+
+.docs-scrollbar::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+}
+
+.docs-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.docs-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--color-dark-500);
+    border-radius: 99px;
+    transition: background 150ms ease;
+}
+
+.docs-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: var(--color-dark-400);
+}
+
+.docs-scrollbar::-webkit-scrollbar-corner {
+    background: transparent;
 }

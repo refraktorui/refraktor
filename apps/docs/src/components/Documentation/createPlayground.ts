@@ -67,7 +67,7 @@ function SelectInput({
         data: normalizeControlOptions(options),
         className: "w-full",
         classNames: {
-            dropdown: "overflow-y-auto refraktor-scrollbar max-h-64"
+            dropdown: "overflow-y-auto docs-scrollbar max-h-64"
         }
     });
 }

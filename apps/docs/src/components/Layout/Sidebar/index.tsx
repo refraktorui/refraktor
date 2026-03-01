@@ -32,7 +32,7 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
         <>
             <aside
                 className={cx(
-                    "w-72 flex-shrink-0 border-r border-dark-600 bg-dark-800 p-4 overflow-y-auto refraktor-scrollbar transition-transform duration-300 z-1",
+                    "w-72 flex-shrink-0 border-r border-dark-600 bg-dark-800 p-4 overflow-y-auto docs-scrollbar transition-transform duration-300 z-1",
                     "fixed top-12 bottom-0 left-0 z-40",
                     mobileStateClasses,
                     "md:sticky md:top-12 md:h-[calc(100vh-3rem)] md:translate-x-0 md:pointer-events-auto"
