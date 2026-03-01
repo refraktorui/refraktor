@@ -241,7 +241,7 @@ function BentoProgressCard() {
             </span>
 
             <div className="flex-1 flex flex-col items-center justify-center gap-3 py-4">
-                <ProgressCircle value={72} size="lg" />
+                <ProgressCircle value={72} size={48} />
                 <div className="text-center">
                     <span className="text-2xl font-bold text-white tabular-nums">
                         72%
