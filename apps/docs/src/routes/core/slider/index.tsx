@@ -31,14 +31,6 @@ function normalizeRange(min: number, max: number) {
 
 const SliderPlayground = createPlayground(
     {
-        value: {
-            type: "number",
-            label: "Value",
-            min: 0,
-            max: 100,
-            step: 1,
-            default: 45
-        },
         min: {
             type: "number",
             label: "Min",
@@ -110,7 +102,6 @@ const SliderPlayground = createPlayground(
                 imports: [`import { Slider } from "@refraktor/core";`],
                 component: "Slider",
                 values: {
-                    value: props.value,
                     min: range.min,
                     max: range.max,
                     step: props.step,
@@ -189,7 +180,6 @@ function RouteComponent() {
                         <SliderPlayground.Wrapper>
                             <SliderPlayground.Preview>
                                 {({
-                                    value,
                                     min,
                                     max,
                                     step,
@@ -204,8 +194,7 @@ function RouteComponent() {
                                     return (
                                         <div className="w-full max-w-2xl pt-4">
                                             <Slider
-                                                key={`${value}-${range.min}-${range.max}-${step}-${size}-${radius}-${withMarks}-${showLabelOnHover}-${disabled}`}
-                                                value={value}
+                                                key={`${range.min}-${range.max}-${step}-${size}-${radius}-${withMarks}-${showLabelOnHover}-${disabled}`}
                                                 min={range.min}
                                                 max={range.max}
                                                 step={step}
