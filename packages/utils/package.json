@@ -1,7 +1,7 @@
 {
     "name": "@refraktor/utils",
     "description": "Shared React hooks and utilities for Refraktor",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "license": "MIT",
     "repository": {
         "type": "git",
