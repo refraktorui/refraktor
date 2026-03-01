@@ -1,16 +1,26 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import corePackage from "../../../../../../packages/core/package.json";
 import { Badge, Button, cx, Tooltip } from "@refraktor/core";
-import { IconBrandGithub, IconMenu2, IconX } from "@tabler/icons-react";
+import {
+    IconBrandGithub,
+    IconMenu2,
+    IconSearch,
+    IconX
+} from "@tabler/icons-react";
 
 const coreVersion = corePackage.version;
 
 interface HeaderProps {
     onMenuClick: () => void;
     mobileOpen: boolean;
+    onCommandPaletteOpen: () => void;
 }
 
-export default function Header({ onMenuClick, mobileOpen }: HeaderProps) {
+export default function Header({
+    onMenuClick,
+    mobileOpen,
+    onCommandPaletteOpen
+}: HeaderProps) {
     const { location } = useRouterState();
 
     const isHome = location.pathname === "/";
@@ -59,10 +69,25 @@ export default function Header({ onMenuClick, mobileOpen }: HeaderProps) {
             </div>
 
             <div className="flex items-center gap-3 h-full">
-                <Badge
-                    size="sm"
-                    className="border border-dark-500 bg-dark-600 text-dark-100"
+                <div
+                    className="hidden md:flex items-center gap-2 px-2 h-7 rounded-md border border-dark-500 bg-dark-600 text-dark-100 cursor-pointer hover:bg-dark-500 transition-colors"
+                    onClick={onCommandPaletteOpen}
                 >
+                    <IconSearch size={14} className="shrink-0" />
+                    <span className="text-xs leading-none">Search</span>
+                </div>
+
+                <Button
+                    size="icon-md"
+                    variant="ghost"
+                    className="md:hidden text-dark-100 hover:bg-dark-600"
+                    onClick={onCommandPaletteOpen}
+                    aria-label="Open component search"
+                >
+                    <IconSearch size={18} />
+                </Button>
+
+                <Badge className="border border-dark-500 bg-dark-600 text-dark-100 h-7 px-2">
                     v{coreVersion}
                 </Badge>
 
@@ -73,12 +98,8 @@ export default function Header({ onMenuClick, mobileOpen }: HeaderProps) {
                         to="https://github.com/refraktorui/refraktor"
                         target="_blank"
                     >
-                        <Button
-                            size="icon-md"
-                            variant="ghost"
-                            className="text-dark-100 hover:bg-dark-700"
-                        >
-                            <IconBrandGithub size={18} />
+                        <Button className="text-dark-100 hover:bg-dark-500 size-7">
+                            <IconBrandGithub size={16} />
                         </Button>
                     </Link>
                 </Tooltip>
