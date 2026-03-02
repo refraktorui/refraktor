@@ -129,10 +129,10 @@ export function usePopover(options: UsePopoverProps = {}): UsePopoverReturn {
             );
         }
 
-        if (arrowRef.current && showArrow) {
+        if (showArrow) {
             middlewareList.push(
                 arrow({
-                    element: arrowRef.current
+                    element: arrowRef
                 })
             );
         }

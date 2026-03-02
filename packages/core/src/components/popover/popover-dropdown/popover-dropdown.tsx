@@ -23,53 +23,49 @@ const PopoverDropdown = factory<PopoverDropdownFactoryPayload>(
 
         const dropdownContent = (
             <Transition
+                ref={(node: HTMLDivElement | null) => {
+                    popover.refs.setFloating(node);
+
+                    if (typeof ref === "function") {
+                        ref(node);
+                    } else if (ref) {
+                        ref.current = node;
+                    }
+                }}
                 transition="fade"
                 duration={200}
                 mounted={popover.opened}
-                style={{ position: "relative", zIndex: 1000 }}
+                role="dialog"
+                aria-modal="true"
+                style={{
+                    ...popover.floatingStyles,
+                    zIndex: 1000,
+                    ...style
+                }}
+                className={cx(
+                    "z-50 p-2 bg-[var(--refraktor-bg)] text-[var(--refraktor-text)] shadow-md text-sm border-0",
+                    getRadius(radius),
+                    getStyles("dropdown"),
+                    className
+                )}
+                {...popover.getFloatingProps()}
                 {...transitionProps}
+                {...props}
             >
-                <div
-                    ref={(node) => {
-                        popover.refs.setFloating(node);
+                {children}
 
-                        if (typeof ref === "function") {
-                            ref(node);
-                        } else if (ref) {
-                            ref.current = node;
-                        }
-                    }}
-                    role="dialog"
-                    aria-modal="true"
-                    style={{
-                        ...popover.floatingStyles,
-                        zIndex: 1000,
-                        ...style
-                    }}
-                    className={cx(
-                        "z-50 p-2 bg-[var(--refraktor-bg)] text-[var(--refraktor-text)] shadow-md text-sm border-0",
-                        getRadius(radius),
-                        getStyles("dropdown"),
-                        className
-                    )}
-                    {...popover.getFloatingProps()}
-                    {...props}
-                >
-                    {children}
-
-                    {showArrow && (
-                        <FloatingArrow
-                            ref={popover.arrowRef}
-                            context={popover.context}
-                            width={10}
-                            height={5}
-                            className={cx(
-                                "fill-[var(--refraktor-bg)]",
-                                getStyles("arrow")
-                            )}
-                        />
-                    )}
-                </div>
+                {showArrow && (
+                    <FloatingArrow
+                        ref={popover.arrowRef}
+                        context={popover.context}
+                        width={10}
+                        height={5}
+                        className={cx(
+                            "fill-[var(--refraktor-bg)]",
+                            getStyles("arrow")
+                        )}
+                    />
+                )}
             </Transition>
         );
 

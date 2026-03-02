@@ -123,10 +123,10 @@ export function useTooltip(options: UseTooltipProps = {}): UseTooltipReturn {
             );
         }
 
-        if (arrowRef.current && showArrow) {
+        if (showArrow) {
             middleware.push(
                 arrow({
-                    element: arrowRef.current
+                    element: arrowRef
                 })
             );
         }

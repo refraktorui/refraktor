@@ -95,53 +95,49 @@ const Tooltip = factory<TooltipFactoryPayload>((_props, ref) => {
 
     const tooltipContent = (
         <Transition
+            ref={(node: HTMLDivElement | null) => {
+                refs.setFloating(node);
+
+                if (typeof ref === "function") {
+                    ref(node);
+                } else if (ref) {
+                    ref.current = node;
+                }
+            }}
             transition="fade"
             duration={200}
             mounted={isOpened}
-            style={{ position: "relative", zIndex: 1000 }}
+            id={_id}
+            role="tooltip"
+            style={{
+                ...floatingStyles,
+                zIndex: 1000,
+                ...style
+            }}
+            className={cx(
+                "z-50 px-2 py-1 text-xs font-medium bg-[var(--refraktor-bg)] text-[var(--refraktor-text)]",
+                getRadius(radius),
+                classes.content,
+                className
+            )}
+            {...getFloatingProps()}
             {...transitionProps}
+            {...props}
         >
-            <div
-                ref={(node) => {
-                    refs.setFloating(node);
+            {content}
 
-                    if (typeof ref === "function") {
-                        ref(node);
-                    } else if (ref) {
-                        ref.current = node;
-                    }
-                }}
-                id={_id}
-                role="tooltip"
-                style={{
-                    ...floatingStyles,
-                    zIndex: 1000,
-                    ...style
-                }}
-                className={cx(
-                    "z-50 px-2 py-1 text-xs font-medium bg-[var(--refraktor-bg)] text-[var(--refraktor-text)]",
-                    getRadius(radius),
-                    classes.content,
-                    className
-                )}
-                {...getFloatingProps()}
-                {...props}
-            >
-                {content}
-
-                {showArrow && (
-                    <FloatingArrow
-                        ref={arrowRef}
-                        context={context}
-                        width={10}
-                        height={5}
-                        className={cx(
-                            "fill-[var(--refraktor-bg)]",
-                            classes.arrow
-                        )}
-                    />
-                )}
-            </div>
+            {showArrow && (
+                <FloatingArrow
+                    ref={arrowRef}
+                    context={context}
+                    width={10}
+                    height={5}
+                    className={cx(
+                        "fill-[var(--refraktor-bg)]",
+                        classes.arrow
+                    )}
+                />
+            )}
         </Transition>
     );
 
