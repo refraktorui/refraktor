@@ -12,6 +12,7 @@ import {
 const defaultProps = {
     closeOnClickOutside: true,
     closeOnEscape: true,
+    strategy: "absolute",
     lockScroll: true,
     withinPortal: true,
     radius: "none",
@@ -31,6 +32,7 @@ const DrawerRoot = factory<DrawerRootFactoryPayload>((_props, ref) => {
         onOpenedChange,
         closeOnClickOutside,
         closeOnEscape,
+        strategy,
         lockScroll,
         withinPortal,
         radius,
@@ -53,7 +55,8 @@ const DrawerRoot = factory<DrawerRootFactoryPayload>((_props, ref) => {
         defaultOpened,
         onOpenedChange,
         closeOnClickOutside,
-        closeOnEscape
+        closeOnEscape,
+        strategy
     });
 
     const getStyles = (part: keyof DrawerClassNames) => classes[part];

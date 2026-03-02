@@ -431,6 +431,12 @@ export function Demo() {
                                 description="Floating placement and offset configuration."
                             />
                             <Documentation.Props.Content
+                                name="strategy"
+                                type='"absolute" | "fixed"'
+                                default='"fixed"'
+                                description="Floating UI positioning strategy for the dropdown."
+                            />
+                            <Documentation.Props.Content
                                 name="middlewares"
                                 type="SelectMiddlewares"
                                 default='{ flip: true, shift: true }'

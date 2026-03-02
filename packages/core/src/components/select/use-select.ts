@@ -8,6 +8,7 @@ import {
     offset,
     Placement,
     shift,
+    Strategy,
     useClick,
     useDismiss,
     useFloating,
@@ -21,6 +22,7 @@ interface UseSelectProps {
     defaultOpened?: boolean;
     onOpenedChange?: (opened: boolean) => void;
     positioning?: SelectPositioning;
+    strategy?: Strategy;
     middlewares?: SelectMiddlewares;
     disabled?: boolean;
     closeOnClickOutside?: boolean;
@@ -58,6 +60,7 @@ export function useSelect(options: UseSelectProps = {}): UseSelectReturn {
             placement: "bottom-start",
             offset: 4
         },
+        strategy = "fixed",
         middlewares = { flip: true, shift: true },
         disabled = false,
         closeOnClickOutside = true,
@@ -115,7 +118,7 @@ export function useSelect(options: UseSelectProps = {}): UseSelectReturn {
         onOpenChange: setIsOpen,
         middleware,
         whileElementsMounted: autoUpdate,
-        strategy: "fixed"
+        strategy
     });
 
     const click = useClick(floating.context, {

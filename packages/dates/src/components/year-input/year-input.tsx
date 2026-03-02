@@ -48,6 +48,7 @@ const defaultProps = {
         placement: "bottom-start",
         offset: 4
     },
+    strategy: "fixed",
     middlewares: {
         flip: true,
         shift: true
@@ -85,6 +86,7 @@ const YearInput = factory<YearInputFactoryPayload>((_props, ref) => {
         size,
         radius,
         positioning,
+        strategy,
         middlewares,
         withinPortal,
         closeOnClickOutside,
@@ -181,7 +183,7 @@ const YearInput = factory<YearInputFactoryPayload>((_props, ref) => {
         onOpenChange: handleOpenChange,
         middleware,
         whileElementsMounted: autoUpdate,
-        strategy: "fixed"
+        strategy
     });
 
     const focus = useFocus(floating.context, {

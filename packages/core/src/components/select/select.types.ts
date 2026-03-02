@@ -3,7 +3,8 @@ import type {
     FlipOptions,
     InlineOptions,
     Placement,
-    ShiftOptions
+    ShiftOptions,
+    Strategy
 } from "@floating-ui/react";
 import type { RefraktorRadius, RefraktorSize } from "../../theme";
 import {
@@ -117,6 +118,9 @@ export interface SelectRootProps
 
     /** Positioning settings */
     positioning?: SelectPositioning;
+
+    /** CSS positioning strategy used by Floating UI @default `fixed` */
+    strategy?: Strategy;
 
     /** Floating middleware settings */
     middlewares?: SelectMiddlewares;

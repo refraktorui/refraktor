@@ -14,6 +14,7 @@ import {
     offset,
     Placement,
     shift,
+    Strategy,
     useDismiss,
     useFloating,
     useFocus,
@@ -28,6 +29,7 @@ interface UseTooltipProps {
     defaultOpened?: boolean;
     onOpenedChange?: (opened: boolean) => void;
     positioning?: TooltipPositioning;
+    strategy?: Strategy;
     middlewares?: TooltipMiddlewares;
     disabled?: boolean;
     trigger?: TooltipTrigger;
@@ -68,6 +70,7 @@ export function useTooltip(options: UseTooltipProps = {}): UseTooltipReturn {
             placement: "top",
             offset: 8
         },
+        strategy = "fixed",
         middlewares = { flip: true, shift: true, inline: true },
         disabled = false,
         trigger = "hover",
@@ -137,7 +140,7 @@ export function useTooltip(options: UseTooltipProps = {}): UseTooltipReturn {
         onOpenChange: setIsOpen,
         middleware: middleware,
         whileElementsMounted: autoUpdate,
-        strategy: "fixed"
+        strategy
     });
 
     const hover = useHover(floating.context, {

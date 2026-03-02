@@ -9,6 +9,7 @@ import {
     Placement,
     safePolygon,
     shift,
+    Strategy,
     useClick,
     useDismiss,
     useFloating,
@@ -29,6 +30,7 @@ interface UseMenuProps {
     defaultOpened?: boolean;
     onOpenedChange?: (opened: boolean) => void;
     positioning?: MenuPositioning;
+    strategy?: Strategy;
     middlewares?: MenuMiddlewares;
     disabled?: boolean;
     trigger?: MenuTriggerType;
@@ -69,6 +71,7 @@ export function useMenu(options: UseMenuProps = {}): UseMenuReturn {
             placement: "bottom-start",
             offset: 4
         },
+        strategy = "fixed",
         middlewares = { flip: true, shift: true },
         disabled = false,
         trigger = "click",
@@ -129,7 +132,7 @@ export function useMenu(options: UseMenuProps = {}): UseMenuReturn {
         onOpenChange: setIsOpen,
         middleware,
         whileElementsMounted: autoUpdate,
-        strategy: "fixed"
+        strategy
     });
 
     const click = useClick(floating.context, {

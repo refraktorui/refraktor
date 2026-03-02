@@ -12,6 +12,7 @@ import {
 const defaultProps = {
     closeOnClickOutside: true,
     closeOnEscape: true,
+    strategy: "absolute",
     lockScroll: true,
     withinPortal: true,
     radius: "md",
@@ -31,6 +32,7 @@ const ModalRoot = factory<ModalRootFactoryPayload>((_props, ref) => {
         onOpenedChange,
         closeOnClickOutside,
         closeOnEscape,
+        strategy,
         lockScroll,
         withinPortal,
         radius,
@@ -53,7 +55,8 @@ const ModalRoot = factory<ModalRootFactoryPayload>((_props, ref) => {
         defaultOpened,
         onOpenedChange,
         closeOnClickOutside,
-        closeOnEscape
+        closeOnEscape,
+        strategy
     });
 
     const getStyles = (part: keyof ModalClassNames) => classes[part];

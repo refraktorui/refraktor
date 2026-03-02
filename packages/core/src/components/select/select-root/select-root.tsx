@@ -34,6 +34,7 @@ const defaultProps = {
         placement: "bottom-start",
         offset: 4
     },
+    strategy: "fixed",
     middlewares: { flip: true, shift: true },
     searchable: false,
     placeholder: "Select option",
@@ -100,6 +101,7 @@ const SelectRoot = factory<SelectRootFactoryPayload>((_props, ref) => {
         defaultOpened,
         onOpenedChange,
         positioning,
+        strategy,
         middlewares,
         disabled,
         searchable,
@@ -147,6 +149,7 @@ const SelectRoot = factory<SelectRootFactoryPayload>((_props, ref) => {
         defaultOpened,
         onOpenedChange,
         positioning,
+        strategy,
         middlewares,
         disabled,
         closeOnClickOutside,

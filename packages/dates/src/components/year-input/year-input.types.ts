@@ -2,7 +2,8 @@ import type {
     FlipOptions,
     InlineOptions,
     Placement,
-    ShiftOptions
+    ShiftOptions,
+    Strategy
 } from "@floating-ui/react";
 import {
     createClassNamesConfig,
@@ -77,6 +78,9 @@ interface _YearInputProps {
 
     /** Positioning settings for the dropdown. */
     positioning?: YearInputPositioning;
+
+    /** CSS positioning strategy used by Floating UI @default `fixed` */
+    strategy?: Strategy;
 
     /** Floating middleware settings. */
     middlewares?: YearInputMiddlewares;

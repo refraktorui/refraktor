@@ -77,6 +77,20 @@ describe("@refraktor/core/Modal", () => {
         });
     });
 
+    it("supports strategy prop on Modal.Root", async () => {
+        await render(
+            <Modal.Root
+                defaultOpened
+                strategy="fixed"
+                transitionProps={transitionProps}
+            >
+                <Modal.Content>Strategy modal</Modal.Content>
+            </Modal.Root>
+        );
+
+        expect(await screen.findByRole("dialog")).toBeInTheDocument();
+    });
+
     it("supports standalone subcomponents with ModalRoot", async () => {
         await render(
             <ModalRoot defaultOpened transitionProps={transitionProps}>

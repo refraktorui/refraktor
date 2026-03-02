@@ -3,7 +3,8 @@ import type {
     FlipOptions,
     InlineOptions,
     Placement,
-    ShiftOptions
+    ShiftOptions,
+    Strategy
 } from "@floating-ui/react";
 import {
     createClassNamesConfig,
@@ -57,6 +58,9 @@ export interface TooltipProps extends Omit<
 
     /** Positioning settings for the tooltip */
     positioning?: TooltipPositioning;
+
+    /** CSS positioning strategy used by Floating UI @default `fixed` */
+    strategy?: Strategy;
 
     /** Middlewares settings for the tooltip */
     middlewares?: TooltipMiddlewares;

@@ -3,7 +3,8 @@ import type {
     FlipOptions,
     InlineOptions,
     Placement,
-    ShiftOptions
+    ShiftOptions,
+    Strategy
 } from "@floating-ui/react";
 import { TransitionProps } from "../transition";
 import { RefraktorRadius } from "../../theme";
@@ -66,6 +67,9 @@ export interface MenuProps extends ComponentPropsWithoutRef<"div"> {
 
     /** Positioning settings for the menu */
     positioning?: MenuPositioning;
+
+    /** CSS positioning strategy used by Floating UI @default `fixed` */
+    strategy?: Strategy;
 
     /** Middlewares settings for the menu */
     middlewares?: MenuMiddlewares;
@@ -178,6 +182,9 @@ export interface MenuSubProps extends ComponentPropsWithoutRef<"div"> {
 
     /** Positioning settings for the submenu */
     positioning?: MenuPositioning;
+
+    /** CSS positioning strategy used by Floating UI @default `fixed` */
+    strategy?: Strategy;
 
     /** Middlewares settings for the submenu */
     middlewares?: MenuMiddlewares;

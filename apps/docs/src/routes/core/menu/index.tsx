@@ -233,6 +233,12 @@ export function Demo() {
                                 description="Floating placement and offset configuration."
                             />
                             <Documentation.Props.Content
+                                name="strategy"
+                                type='"absolute" | "fixed"'
+                                default='"fixed"'
+                                description="Floating UI positioning strategy for menu dropdowns."
+                            />
+                            <Documentation.Props.Content
                                 name="middlewares"
                                 type="MenuMiddlewares"
                                 default='{ flip: true, shift: true }'
@@ -366,6 +372,12 @@ export function Demo() {
                                 type='"click" | "hover" | "focus"'
                                 default='"hover"'
                                 description="How the submenu is opened."
+                            />
+                            <Documentation.Props.Content
+                                name="strategy"
+                                type='"absolute" | "fixed"'
+                                default='"fixed"'
+                                description="Floating UI positioning strategy for the submenu dropdown."
                             />
                             <Documentation.Props.Content
                                 name="openDelay"

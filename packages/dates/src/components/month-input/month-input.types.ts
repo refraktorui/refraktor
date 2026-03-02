@@ -2,7 +2,8 @@ import type {
     FlipOptions,
     InlineOptions,
     Placement,
-    ShiftOptions
+    ShiftOptions,
+    Strategy
 } from "@floating-ui/react";
 import {
     createClassNamesConfig,
@@ -98,6 +99,9 @@ interface _MonthInputProps {
 
     /** Positioning settings for the dropdown. */
     positioning?: MonthInputPositioning;
+
+    /** CSS positioning strategy used by Floating UI @default `fixed` */
+    strategy?: Strategy;
 
     /** Floating middleware settings. */
     middlewares?: MonthInputMiddlewares;

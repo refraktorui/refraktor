@@ -133,4 +133,29 @@ describe("@refraktor/core/Menu", () => {
             expect(screen.queryAllByRole("menu")).toHaveLength(0);
         });
     });
+
+    it("supports custom positioning strategy", async () => {
+        const user = userEvent.setup();
+
+        await render(
+            <Menu
+                strategy="absolute"
+                transitionProps={transitionProps}
+            >
+                <Menu.Trigger>
+                    <button type="button">Open menu</button>
+                </Menu.Trigger>
+
+                <Menu.Dropdown>
+                    <Menu.Item>Profile</Menu.Item>
+                </Menu.Dropdown>
+            </Menu>
+        );
+
+        await user.click(screen.getByRole("button", { name: "Open menu" }));
+
+        expect(await screen.findByRole("menu")).toHaveStyle({
+            position: "absolute"
+        });
+    });
 });

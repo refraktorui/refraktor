@@ -3,7 +3,8 @@ import type {
     FlipOptions,
     InlineOptions,
     Placement,
-    ShiftOptions
+    ShiftOptions,
+    Strategy
 } from "@floating-ui/react";
 import { TransitionProps } from "../transition";
 import { RefraktorRadius } from "../../theme";
@@ -53,6 +54,9 @@ export interface PopoverProps extends ComponentPropsWithoutRef<"div"> {
 
     /** Positioning settings for the popover */
     positioning?: PopoverPositioning;
+
+    /** CSS positioning strategy used by Floating UI @default `fixed` */
+    strategy?: Strategy;
 
     /** Middlewares settings for the popover */
     middlewares?: PopoverMiddlewares;

@@ -22,6 +22,7 @@ const defaultProps = {
         placement: "bottom",
         offset: 8
     },
+    strategy: "fixed",
     middlewares: { flip: true, shift: true },
     trigger: "click",
     openDelay: 0,
@@ -43,6 +44,7 @@ const Popover = factory<PopoverFactoryPayload>((_props, ref) => {
         defaultOpened,
         onOpenedChange,
         positioning,
+        strategy,
         middlewares,
         disabled,
         trigger,
@@ -68,6 +70,7 @@ const Popover = factory<PopoverFactoryPayload>((_props, ref) => {
         defaultOpened,
         onOpenedChange,
         positioning,
+        strategy,
         middlewares,
         disabled,
         trigger,

@@ -6,6 +6,7 @@ import {
     useInteractions,
     useRole
 } from "@floating-ui/react";
+import type { Strategy } from "@floating-ui/react";
 import { useCallback } from "react";
 
 interface UseDrawerProps {
@@ -14,6 +15,7 @@ interface UseDrawerProps {
     onOpenedChange?: (opened: boolean) => void;
     closeOnClickOutside?: boolean;
     closeOnEscape?: boolean;
+    strategy?: Strategy;
 }
 
 export interface UseDrawerReturn {
@@ -38,7 +40,8 @@ export function useDrawer(options: UseDrawerProps): UseDrawerReturn {
         defaultOpened,
         onOpenedChange,
         closeOnClickOutside = true,
-        closeOnEscape = true
+        closeOnEscape = true,
+        strategy = "absolute"
     } = options;
 
     const [isOpen, setIsOpen] = useUncontrolled({
@@ -50,7 +53,8 @@ export function useDrawer(options: UseDrawerProps): UseDrawerReturn {
 
     const floating = useFloating({
         open: isOpen,
-        onOpenChange: setIsOpen
+        onOpenChange: setIsOpen,
+        strategy
     });
 
     const dismiss = useDismiss(floating.context, {

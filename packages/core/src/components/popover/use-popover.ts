@@ -15,6 +15,7 @@ import {
     Placement,
     safePolygon,
     shift,
+    Strategy,
     useClick,
     useDismiss,
     useFloating,
@@ -30,6 +31,7 @@ interface UsePopoverProps {
     defaultOpened?: boolean;
     onOpenedChange?: (opened: boolean) => void;
     positioning?: PopoverPositioning;
+    strategy?: Strategy;
     middlewares?: PopoverMiddlewares;
     disabled?: boolean;
     trigger?: PopoverTrigger;
@@ -72,6 +74,7 @@ export function usePopover(options: UsePopoverProps = {}): UsePopoverReturn {
             placement: "bottom",
             offset: 8
         },
+        strategy = "fixed",
         middlewares = { flip: true, shift: true },
         disabled = false,
         trigger = "click",
@@ -143,7 +146,7 @@ export function usePopover(options: UsePopoverProps = {}): UsePopoverReturn {
         onOpenChange: setIsOpen,
         middleware: middleware,
         whileElementsMounted: autoUpdate,
-        strategy: "fixed"
+        strategy
     });
 
     const click = useClick(floating.context, {

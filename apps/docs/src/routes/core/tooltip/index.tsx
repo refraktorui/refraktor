@@ -349,6 +349,12 @@ export function Demo() {
                                 description="Floating placement and offset configuration."
                             />
                             <Documentation.Props.Content
+                                name="strategy"
+                                type='"absolute" | "fixed"'
+                                default='"fixed"'
+                                description="Floating UI positioning strategy for the tooltip."
+                            />
+                            <Documentation.Props.Content
                                 name="middlewares"
                                 type="TooltipMiddlewares"
                                 default='{ flip: true, shift: true, inline: true }'

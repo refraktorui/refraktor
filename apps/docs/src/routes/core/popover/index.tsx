@@ -456,6 +456,12 @@ export function Demo() {
                                 description="Floating placement and distance from trigger."
                             />
                             <Documentation.Props.Content
+                                name="strategy"
+                                type='"absolute" | "fixed"'
+                                default='"fixed"'
+                                description="Floating UI positioning strategy for the popover."
+                            />
+                            <Documentation.Props.Content
                                 name="middlewares"
                                 type="PopoverMiddlewares"
                                 default='{ flip: true, shift: true }'

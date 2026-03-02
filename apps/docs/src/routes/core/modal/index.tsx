@@ -484,6 +484,12 @@ export function Demo() {
                                 description="Closes the modal when Escape is pressed."
                             />
                             <Documentation.Props.Content
+                                name="strategy"
+                                type='"absolute" | "fixed"'
+                                default='"absolute"'
+                                description="Floating UI positioning strategy used by modal interactions."
+                            />
+                            <Documentation.Props.Content
                                 name="lockScroll"
                                 type="boolean"
                                 default="true"

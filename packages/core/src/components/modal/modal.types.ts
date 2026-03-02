@@ -1,4 +1,5 @@
 import { ComponentPropsWithoutRef, MouseEvent, ReactNode } from "react";
+import type { Strategy } from "@floating-ui/react";
 import {
     createClassNamesConfig,
     createComponentConfig,
@@ -42,6 +43,9 @@ export interface ModalRootProps extends ComponentPropsWithoutRef<"div"> {
 
     /** Whether to close modal on Escape key @default `true` */
     closeOnEscape?: boolean;
+
+    /** CSS positioning strategy used by Floating UI @default `absolute` */
+    strategy?: Strategy;
 
     /** Whether to lock body scroll while opened @default `true` */
     lockScroll?: boolean;

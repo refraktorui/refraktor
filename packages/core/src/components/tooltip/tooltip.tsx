@@ -22,6 +22,7 @@ const defaultProps = {
         placement: "top",
         offset: 8
     },
+    strategy: "fixed",
     middlewares: { flip: true, shift: true, inline: true },
     trigger: "hover",
     openDelay: 0,
@@ -41,6 +42,7 @@ const Tooltip = factory<TooltipFactoryPayload>((_props, ref) => {
         defaultOpened,
         onOpenedChange,
         positioning,
+        strategy,
         middlewares,
         disabled,
         trigger,
@@ -73,6 +75,7 @@ const Tooltip = factory<TooltipFactoryPayload>((_props, ref) => {
         defaultOpened,
         onOpenedChange,
         positioning,
+        strategy,
         middlewares,
         disabled,
         trigger,

@@ -489,6 +489,12 @@ export function Demo() {
                                 description="Closes the drawer when Escape is pressed."
                             />
                             <Documentation.Props.Content
+                                name="strategy"
+                                type='"absolute" | "fixed"'
+                                default='"absolute"'
+                                description="Floating UI positioning strategy used by drawer interactions."
+                            />
+                            <Documentation.Props.Content
                                 name="lockScroll"
                                 type="boolean"
                                 default="true"

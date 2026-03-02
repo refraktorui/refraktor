@@ -167,6 +167,27 @@ describe("@refraktor/core/Select", () => {
         expect(screen.getByRole("combobox")).toHaveValue("Vue");
     });
 
+    it("supports custom positioning strategy", async () => {
+        const user = userEvent.setup();
+
+        await render(
+            <Select
+                strategy="absolute"
+                transitionProps={transitionProps}
+                data={[
+                    { value: "react", label: "React" },
+                    { value: "vue", label: "Vue" }
+                ]}
+            />
+        );
+
+        await user.click(screen.getByRole("combobox"));
+
+        expect(await screen.findByRole("listbox")).toHaveStyle({
+            position: "absolute"
+        });
+    });
+
     it("supports input wrapper props", async () => {
         await render(
             <Select

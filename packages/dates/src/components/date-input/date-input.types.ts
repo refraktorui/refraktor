@@ -2,7 +2,8 @@ import type {
     FlipOptions,
     InlineOptions,
     Placement,
-    ShiftOptions
+    ShiftOptions,
+    Strategy
 } from "@floating-ui/react";
 import {
     createClassNamesConfig,
@@ -120,6 +121,9 @@ interface _DateInputProps {
 
     /** Positioning settings for the dropdown. */
     positioning?: DateInputPositioning;
+
+    /** CSS positioning strategy used by Floating UI @default `fixed` */
+    strategy?: Strategy;
 
     /** Floating middleware settings. */
     middlewares?: DateInputMiddlewares;

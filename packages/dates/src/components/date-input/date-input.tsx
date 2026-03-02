@@ -50,6 +50,7 @@ const defaultProps = {
         placement: "bottom-start",
         offset: 4
     },
+    strategy: "fixed",
     middlewares: {
         flip: true,
         shift: true
@@ -102,6 +103,7 @@ const DateInput = factory<DateInputFactoryPayload>((_props, ref) => {
         size,
         radius,
         positioning,
+        strategy,
         middlewares,
         withinPortal,
         closeOnClickOutside,
@@ -196,7 +198,7 @@ const DateInput = factory<DateInputFactoryPayload>((_props, ref) => {
         onOpenChange: handleOpenChange,
         middleware,
         whileElementsMounted: autoUpdate,
-        strategy: "fixed"
+        strategy
     });
 
     const focus = useFocus(floating.context, {

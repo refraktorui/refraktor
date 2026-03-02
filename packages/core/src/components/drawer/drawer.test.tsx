@@ -77,6 +77,20 @@ describe("@refraktor/core/Drawer", () => {
         });
     });
 
+    it("supports strategy prop on Drawer.Root", async () => {
+        await render(
+            <Drawer.Root
+                defaultOpened
+                strategy="fixed"
+                transitionProps={transitionProps}
+            >
+                <Drawer.Content>Strategy drawer</Drawer.Content>
+            </Drawer.Root>
+        );
+
+        expect(await screen.findByRole("dialog")).toBeInTheDocument();
+    });
+
     it("supports standalone subcomponents with DrawerRoot", async () => {
         await render(
             <DrawerRoot defaultOpened transitionProps={transitionProps}>

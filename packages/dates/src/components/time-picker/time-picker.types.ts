@@ -1,4 +1,4 @@
-import type { Placement } from "@floating-ui/react";
+import type { Placement, Strategy } from "@floating-ui/react";
 import { ComponentPropsWithoutRef, ReactNode, Ref } from "react";
 import {
     RefraktorRadius,
@@ -135,6 +135,9 @@ interface _TimePickerProps {
 
     /** Popover props for the dropdown */
     popoverProps?: TimePickerPopoverProps;
+
+    /** CSS positioning strategy used by Floating UI @default `fixed` */
+    strategy?: Strategy;
 
     /** Called when any field gains focus */
     onFocus?: (event: React.FocusEvent<HTMLDivElement>) => void;

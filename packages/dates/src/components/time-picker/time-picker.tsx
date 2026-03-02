@@ -58,7 +58,8 @@ const defaultProps = {
     hoursStep: 1,
     minutesStep: 1,
     secondsStep: 1,
-    amPmLabels: { am: "AM", pm: "PM" }
+    amPmLabels: { am: "AM", pm: "PM" },
+    strategy: "fixed"
 } satisfies Partial<TimePickerProps>;
 
 type TimeParts = {
@@ -250,6 +251,7 @@ const TimePicker = factory<TimePickerFactoryPayload>((_props, ref) => {
         secondsInputLabel,
         amPmInputLabel,
         popoverProps,
+        strategy,
         onFocus,
         onBlur,
         className,
@@ -302,7 +304,7 @@ const TimePicker = factory<TimePickerFactoryPayload>((_props, ref) => {
             shift()
         ],
         whileElementsMounted: autoUpdate,
-        strategy: "fixed"
+        strategy
     });
 
     const click = useClick(floating.context, {

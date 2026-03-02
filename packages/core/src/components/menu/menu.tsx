@@ -28,6 +28,7 @@ const defaultProps = {
         placement: "bottom-start",
         offset: 4
     },
+    strategy: "fixed",
     middlewares: { flip: true, shift: true },
     trigger: "click",
     openDelay: 0,
@@ -48,6 +49,7 @@ const Menu = factory<MenuFactoryPayload>((_props, ref) => {
         defaultOpened,
         onOpenedChange,
         positioning,
+        strategy,
         middlewares,
         disabled,
         trigger,
@@ -71,6 +73,7 @@ const Menu = factory<MenuFactoryPayload>((_props, ref) => {
         defaultOpened,
         onOpenedChange,
         positioning,
+        strategy,
         middlewares,
         disabled,
         trigger,
