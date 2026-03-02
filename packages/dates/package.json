@@ -1,67 +1,64 @@
 {
-    "name": "@refraktor/dates",
-    "description": "React UI component library for date and time management",
-    "version": "0.0.5",
-    "license": "MIT",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/refraktorui/refraktor.git",
-        "directory": "packages/dates"
+  "name": "@refraktor/dates",
+  "description": "React UI component library for date and time management",
+  "version": "0.0.6",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/refraktorui/refraktor.git",
+    "directory": "packages/dates"
+  },
+  "bugs": {
+    "url": "https://github.com/refraktorui/refraktor/issues"
+  },
+  "keywords": [
+    "react",
+    "ui",
+    "ui-kit",
+    "component",
+    "design",
+    "frontend",
+    "tailwindcss",
+    "tailwind",
+    "date",
+    "time"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "build",
+    "README.md",
+    "LICENSE"
+  ],
+  "main": "./build/index.js",
+  "module": "./build/index.js",
+  "types": "./build/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./build/index.d.ts",
+      "import": "./build/index.js"
     },
-    "bugs": {
-        "url": "https://github.com/refraktorui/refraktor/issues"
-    },
-    "keywords": [
-        "react",
-        "ui",
-        "ui-kit",
-        "component",
-        "design",
-        "frontend",
-        "tailwindcss",
-        "tailwind",
-        "date",
-        "time"
-    ],
-    "publishConfig": {
-        "access": "public"
-    },
-    "sideEffects": [
-        "*.css"
-    ],
-    "files": [
-        "build",
-        "README.md",
-        "LICENSE"
-    ],
-    "main": "./build/index.js",
-    "module": "./build/index.js",
-    "types": "./build/index.d.ts",
-    "exports": {
-        ".": {
-            "types": "./build/index.d.ts",
-            "import": "./build/index.js"
-        },
-        "./style.css": "./build/style.css"
-    },
-    "scripts": {
-        "build": "tsc && tailwindcss -i src/style.css -o build/style.css --minify",
-        "dev": "concurrently \"tsc --watch\" \"tailwindcss -i src/style.css -o build/style.css --watch\"",
-        "test": "vitest"
-    },
-    "peerDependencies": {
-        "react": ">=18.0.0",
-        "react-dom": ">=18.0.0",
-        "dayjs": "^1.11.19",
-        "@refraktor/core": "0.0.5",
-        "@refraktor/utils": "0.0.5"
-    },
-    "devDependencies": {
-        "typescript": "^5.9.3"
-    },
-    "dependencies": {
-        "@floating-ui/react": "^0.27.18",
-        "clsx": "^2.1.1",
-        "tailwind-merge": "^3.4.0"
-    }
+    "./style.css": "./build/style.css"
+  },
+  "scripts": {
+    "build": "tsc && tailwindcss -i src/style.css -o build/style.css --minify",
+    "dev": "concurrently \"tsc --watch\" \"tailwindcss -i src/style.css -o build/style.css --watch\"",
+    "test": "vitest"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0",
+    "dayjs": "^1.11.19",
+    "@refraktor/core": "0.0.6",
+    "@refraktor/utils": "0.0.6"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@floating-ui/react": "^0.27.18",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.4.0"
+  }
 }

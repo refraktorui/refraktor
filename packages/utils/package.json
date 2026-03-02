@@ -1,50 +1,50 @@
 {
-    "name": "@refraktor/utils",
-    "description": "Shared React hooks and utilities for Refraktor",
-    "version": "0.0.5",
-    "license": "MIT",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/refraktorui/refraktor.git",
-        "directory": "packages/utils"
-    },
-    "bugs": {
-        "url": "https://github.com/refraktorui/refraktor/issues"
-    },
-    "keywords": [
-        "react",
-        "hooks",
-        "utilities",
-        "utils"
-    ],
-    "publishConfig": {
-        "access": "public"
-    },
-    "sideEffects": false,
-    "files": [
-        "build",
-        "README.md",
-        "LICENSE"
-    ],
-    "main": "./build/index.js",
-    "module": "./build/index.js",
-    "types": "./build/index.d.ts",
-    "exports": {
-        ".": {
-            "types": "./build/index.d.ts",
-            "import": "./build/index.js"
-        }
-    },
-    "scripts": {
-        "build": "tsc",
-        "dev": "tsc --watch",
-        "clean": "rm -rf build"
-    },
-    "peerDependencies": {
-        "react": ">=18.0.0"
-    },
-    "devDependencies": {
-        "@types/react": "^19.2.14",
-        "typescript": "^5.9.3"
+  "name": "@refraktor/utils",
+  "description": "Shared React hooks and utilities for Refraktor",
+  "version": "0.0.6",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/refraktorui/refraktor.git",
+    "directory": "packages/utils"
+  },
+  "bugs": {
+    "url": "https://github.com/refraktorui/refraktor/issues"
+  },
+  "keywords": [
+    "react",
+    "hooks",
+    "utilities",
+    "utils"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "sideEffects": false,
+  "files": [
+    "build",
+    "README.md",
+    "LICENSE"
+  ],
+  "main": "./build/index.js",
+  "module": "./build/index.js",
+  "types": "./build/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./build/index.d.ts",
+      "import": "./build/index.js"
     }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rm -rf build"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.14",
+    "typescript": "^5.9.3"
+  }
 }
