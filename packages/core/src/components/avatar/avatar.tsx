@@ -42,6 +42,7 @@ const Avatar = factory<AvatarFactoryPayload>((_props, ref) => {
         name,
         initials,
         fallback,
+        children,
         size,
         radius,
         className,
@@ -79,6 +80,8 @@ const Avatar = factory<AvatarFactoryPayload>((_props, ref) => {
     const showInitials = !showImage && displayInitials;
 
     const showFallback = !showImage && !showInitials;
+
+    const fallbackContent = children ?? fallback ?? <UserIcon size={24} />;
 
     return (
         <div
@@ -127,7 +130,7 @@ const Avatar = factory<AvatarFactoryPayload>((_props, ref) => {
                     )}
                     aria-label="Avatar"
                 >
-                    {fallback || <UserIcon size={24} />}
+                    {fallbackContent}
                 </span>
             )}
         </div>
