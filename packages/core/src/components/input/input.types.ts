@@ -1,6 +1,10 @@
 import { ComponentPropsWithoutRef, ReactNode } from "react";
 import { RefraktorRadius, RefraktorSize } from "../../theme";
-import { createComponentConfig, FactoryPayload } from "../../utils";
+import {
+    createClassNamesConfig,
+    createComponentConfig,
+    FactoryPayload
+} from "../../utils";
 import { InputLabel } from "./input-label";
 import { InputDescription } from "./input-description";
 import { InputError } from "./input-error";
@@ -14,6 +18,15 @@ export type InputFieldClassNames = {
     leftSection?: string;
     rightSection?: string;
 };
+
+export interface InputClassNames extends InputFieldClassNames {
+    wrapper?: string;
+    field?: string;
+    label?: string;
+    description?: string;
+    error?: string;
+    [key: string]: string | undefined;
+}
 
 export interface InputWrapperProps extends ComponentPropsWithoutRef<"div"> {
     /** Label text */
@@ -39,6 +52,15 @@ export interface InputWrapperProps extends ComponentPropsWithoutRef<"div"> {
 
     /** Used for editing root class name */
     className?: string;
+
+    /** Used for editing label class name */
+    labelClassName?: string;
+
+    /** Used for editing description class name */
+    descriptionClassName?: string;
+
+    /** Used for editing error class name */
+    errorClassName?: string;
 }
 
 export interface InputFieldProps
@@ -67,7 +89,7 @@ export interface InputFieldProps
     classNames?: InputFieldClassNames;
 }
 
-export interface InputProps extends Omit<InputFieldProps, "error"> {
+export interface InputProps extends Omit<InputFieldProps, "error" | "classNames"> {
     /** Label text */
     label?: ReactNode;
 
@@ -82,6 +104,9 @@ export interface InputProps extends Omit<InputFieldProps, "error"> {
 
     /** Display an asterisk next to the label */
     withAsterisk?: boolean;
+
+    /** Used for styling different parts of the component */
+    classNames?: InputClassNames;
 }
 
 export interface InputFactoryPayload extends FactoryPayload {
@@ -89,6 +114,7 @@ export interface InputFactoryPayload extends FactoryPayload {
     ref: HTMLInputElement;
     compound: {
         configure: ReturnType<typeof createComponentConfig<InputProps>>;
+        classNames: ReturnType<typeof createClassNamesConfig<InputClassNames>>;
         Wrapper: typeof InputWrapper;
         Label: typeof InputLabel;
         Description: typeof InputDescription;
@@ -107,5 +133,8 @@ export interface InputFieldFactoryPayload extends FactoryPayload {
     ref: HTMLInputElement;
     compound: {
         configure: ReturnType<typeof createComponentConfig<InputFieldProps>>;
+        classNames: ReturnType<
+            typeof createClassNamesConfig<InputFieldClassNames>
+        >;
     };
 }

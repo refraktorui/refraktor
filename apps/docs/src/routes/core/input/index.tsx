@@ -1,5 +1,5 @@
 import Documentation from "@/components/Documentation";
-import { Input, type InputFieldClassNames } from "@refraktor/core";
+import { Input, type InputClassNames } from "@refraktor/core";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/core/input/")({
@@ -7,7 +7,7 @@ export const Route = createFileRoute("/core/input/")({
 });
 
 interface InputSlotsShowcaseProps {
-    classNames?: InputFieldClassNames;
+    classNames?: InputClassNames;
 }
 
 function InputSlotsShowcase({ classNames }: InputSlotsShowcaseProps) {
@@ -15,6 +15,8 @@ function InputSlotsShowcase({ classNames }: InputSlotsShowcaseProps) {
         <div className="w-full max-w-md">
             <Input
                 label="Search"
+                description="Use keywords to quickly find components."
+                error="Try a more specific search term."
                 placeholder="Search components"
                 leftSection={<span aria-hidden>?</span>}
                 rightSection={<span aria-hidden>k</span>}
@@ -175,7 +177,16 @@ export function Demo() {
                     >
                         <Documentation.ClassesInspector
                             Component={InputSlotsShowcase}
-                            slots={["root", "leftSection", "rightSection"]}
+                            slots={[
+                                "wrapper",
+                                "label",
+                                "description",
+                                "error",
+                                "field",
+                                "root",
+                                "leftSection",
+                                "rightSection"
+                            ]}
                         />
                     </Documentation.Section>
                 </Documentation.Tab>
@@ -249,8 +260,8 @@ export function Demo() {
                             />
                             <Documentation.Props.Content
                                 name="classNames"
-                                type="InputFieldClassNames"
-                                description="Slot-level class overrides for root, leftSection, and rightSection."
+                                type="InputClassNames"
+                                description="Slot-level class overrides for wrapper, label, description, error, field, root, leftSection, and rightSection."
                             />
                         </Documentation.Props>
                     </Documentation.Section>

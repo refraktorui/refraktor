@@ -14,6 +14,9 @@ const InputWrapper = factory<InputWrapperFactoryPayload>((_props, ref) => {
         inputId,
         children,
         className,
+        labelClassName,
+        descriptionClassName,
+        errorClassName,
         ...props
     } = useProps("InputWrapper", null, _props);
 
@@ -22,17 +25,25 @@ const InputWrapper = factory<InputWrapperFactoryPayload>((_props, ref) => {
     return (
         <div ref={ref} className={cx("flex flex-col", className)} {...props}>
             {label && (
-                <InputLabel htmlFor={inputId} required={showAsterisk}>
+                <InputLabel
+                    htmlFor={inputId}
+                    required={showAsterisk}
+                    className={labelClassName}
+                >
                     {label}
                 </InputLabel>
             )}
 
-            {description && <InputDescription>{description}</InputDescription>}
+            {description && (
+                <InputDescription className={descriptionClassName}>
+                    {description}
+                </InputDescription>
+            )}
 
             {children}
 
             {error && typeof error !== "boolean" && (
-                <InputError>{error}</InputError>
+                <InputError className={errorClassName}>{error}</InputError>
             )}
         </div>
     );

@@ -1,6 +1,16 @@
-import { createComponentConfig, factory, useProps } from "../../../utils";
+import {
+    createClassNamesConfig,
+    createComponentConfig,
+    factory,
+    useClassNames,
+    useProps
+} from "../../../utils";
 import { useId } from "@refraktor/utils";
-import { InputFieldFactoryPayload, InputFieldProps } from "../input.types";
+import {
+    InputFieldClassNames,
+    InputFieldFactoryPayload,
+    InputFieldProps
+} from "../input.types";
 import { getSize, getVariant } from "./input-field.styles";
 import { useTheme } from "../../../theme";
 
@@ -26,6 +36,7 @@ const InputField = factory<InputFieldFactoryPayload>((_props, ref) => {
         disabled,
         ...props
     } = useProps("InputField", defaultProps, _props);
+    const classes = useClassNames<InputFieldClassNames>("InputField", classNames);
 
     const _id = useId(id);
 
@@ -44,8 +55,8 @@ const InputField = factory<InputFieldFactoryPayload>((_props, ref) => {
                 "focus-within:border-[var(--refraktor-primary)]",
                 error && "border-[var(--refraktor-colors-red-6)]",
                 disabled && "opacity-50 cursor-not-allowed",
-                className,
-                classNames?.root
+                classes.root,
+                className
             )}
             style={style}
         >
@@ -53,7 +64,7 @@ const InputField = factory<InputFieldFactoryPayload>((_props, ref) => {
                 <div
                     className={cx(
                         "flex h-full self-stretch items-center justify-center text-[var(--refraktor-text-secondary)] shrink-0 select-none",
-                        classNames?.leftSection
+                        classes.leftSection
                     )}
                 >
                     {leftSection}
@@ -78,7 +89,7 @@ const InputField = factory<InputFieldFactoryPayload>((_props, ref) => {
                 <div
                     className={cx(
                         "flex h-full self-stretch items-center justify-center text-[var(--refraktor-text-secondary)] shrink-0 select-none",
-                        classNames?.rightSection
+                        classes.rightSection
                     )}
                 >
                     {rightSection}
@@ -90,5 +101,6 @@ const InputField = factory<InputFieldFactoryPayload>((_props, ref) => {
 
 InputField.displayName = "@refraktor/core/InputField";
 InputField.configure = createComponentConfig<InputFieldProps>();
+InputField.classNames = createClassNamesConfig<InputFieldClassNames>();
 
 export default InputField;
