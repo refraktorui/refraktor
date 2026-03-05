@@ -89,7 +89,7 @@ const Avatar = factory<AvatarFactoryPayload>((_props, ref) => {
             id={_id}
             className={cx(
                 "relative inline-flex items-center justify-center overflow-hidden shrink-0",
-                "bg-[var(--refraktor-bg-hover)]",
+                "bg-[var(--refraktor-bg)]",
                 getSize(size),
                 getRadius(radius),
                 classes.root,
