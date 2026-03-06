@@ -8,6 +8,8 @@ export type TextareaResize = "none" | "vertical" | "horizontal" | "both";
 
 export type TextareaFieldClassNames = {
     root?: string;
+    leftSection?: string;
+    rightSection?: string;
 };
 
 export interface TextareaFieldProps extends Omit<
@@ -25,6 +27,12 @@ export interface TextareaFieldProps extends Omit<
 
     /** Error state */
     error?: boolean;
+
+    /** Left section content */
+    leftSection?: ReactNode;
+
+    /** Right section content */
+    rightSection?: ReactNode;
 
     /** Used for editing root class name */
     className?: string;

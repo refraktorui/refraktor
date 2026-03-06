@@ -180,6 +180,38 @@ function RouteComponent() {
                     </Documentation.Section>
 
                     <Documentation.Section
+                        id="sections"
+                        title="Left and right sections"
+                        description="Use leftSection and rightSection for icons, shortcuts, or lightweight actions beside multi-line content."
+                    >
+                        <Documentation.Showcase
+                            code={`import { Textarea } from "@refraktor/core";
+
+export function Demo() {
+  return (
+    <Textarea
+      label="Notes"
+      placeholder="Write your message..."
+      minRows={3}
+      leftSection={<span aria-hidden>?</span>}
+      rightSection={<span aria-hidden>k</span>}
+    />
+  );
+}`}
+                        >
+                            <div className="w-full max-w-xl">
+                                <Textarea
+                                    label="Notes"
+                                    placeholder="Write your message..."
+                                    minRows={3}
+                                    leftSection={<span aria-hidden>?</span>}
+                                    rightSection={<span aria-hidden>k</span>}
+                                />
+                            </div>
+                        </Documentation.Showcase>
+                    </Documentation.Section>
+
+                    <Documentation.Section
                         id="autosize"
                         title="Autosize"
                         description="Enable autosize to grow the textarea based on content while respecting minimum and maximum row limits."
@@ -282,7 +314,7 @@ export function Demo() {
                     >
                         <Documentation.ClassesInspector
                             Component={TextareaSlotsShowcase}
-                            slots={["root"]}
+                            slots={["root", "leftSection", "rightSection"]}
                         />
                     </Documentation.Section>
                 </Documentation.Tab>
@@ -340,6 +372,16 @@ export function Demo() {
                                 description="Controls field border radius."
                             />
                             <Documentation.Props.Content
+                                name="leftSection"
+                                type="ReactNode"
+                                description="Content rendered before the textarea element."
+                            />
+                            <Documentation.Props.Content
+                                name="rightSection"
+                                type="ReactNode"
+                                description="Content rendered after the textarea element."
+                            />
+                            <Documentation.Props.Content
                                 name="autosize"
                                 type="boolean"
                                 default="false"
@@ -365,7 +407,7 @@ export function Demo() {
                             <Documentation.Props.Content
                                 name="classNames"
                                 type="TextareaFieldClassNames"
-                                description="Slot-level class overrides for the field root."
+                                description="Slot-level class overrides for root, leftSection, and rightSection."
                             />
                         </Documentation.Props>
                     </Documentation.Section>

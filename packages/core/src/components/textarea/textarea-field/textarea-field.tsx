@@ -1,6 +1,12 @@
-import { createComponentConfig, factory, useProps } from "../../../utils";
+import {
+    createComponentConfig,
+    factory,
+    useClassNames,
+    useProps
+} from "../../../utils";
 import { useId } from "@refraktor/utils";
 import {
+    TextareaFieldClassNames,
     TextareaFieldFactoryPayload,
     TextareaFieldProps
 } from "../textarea.types";
@@ -24,7 +30,10 @@ const TextareaField = factory<TextareaFieldFactoryPayload>((_props, ref) => {
         size,
         radius,
         error,
+        leftSection,
+        rightSection,
         className,
+        classNames,
         style,
         disabled,
         autosize,
@@ -34,6 +43,10 @@ const TextareaField = factory<TextareaFieldFactoryPayload>((_props, ref) => {
         rows,
         ...props
     } = useProps("TextareaField", defaultProps, _props);
+    const classes = useClassNames<TextareaFieldClassNames>(
+        "TextareaField",
+        classNames
+    );
 
     const _id = useId(id);
 
@@ -48,19 +61,36 @@ const TextareaField = factory<TextareaFieldFactoryPayload>((_props, ref) => {
     );
 
     const wrapperClassName = cx(
-        "w-full transition-all refraktor-scrollbar",
+        "relative w-full grid transition-all refraktor-scrollbar",
+        leftSection && rightSection && "grid-cols-[auto_1fr_auto]",
+        leftSection && !rightSection && "grid-cols-[auto_1fr]",
+        !leftSection && rightSection && "grid-cols-[1fr_auto]",
+        !leftSection && !rightSection && "grid-cols-[1fr]",
+        (leftSection || rightSection) && "gap-2 items-center",
         getSize(size),
         getVariant(variant),
         getRadius(radius),
         "focus-within:border-[var(--refraktor-primary)]",
         error && "border-[var(--refraktor-colors-red-6)]",
         disabled && "opacity-50 cursor-not-allowed",
+        classes.root,
         className
     );
 
     if (autosize) {
         return (
             <div className={wrapperClassName} style={style}>
+                {leftSection && (
+                    <div
+                        className={cx(
+                            "flex h-full self-stretch items-center justify-center text-[var(--refraktor-text-secondary)] shrink-0 select-none",
+                            classes.leftSection
+                        )}
+                    >
+                        {leftSection}
+                    </div>
+                )}
+
                 <TextareaAutosize
                     id={_id}
                     ref={ref}
@@ -71,12 +101,34 @@ const TextareaField = factory<TextareaFieldFactoryPayload>((_props, ref) => {
                     className={textareaClassName}
                     {...props}
                 />
+
+                {rightSection && (
+                    <div
+                        className={cx(
+                            "flex h-full self-stretch items-center justify-center text-[var(--refraktor-text-secondary)] shrink-0 select-none",
+                            classes.rightSection
+                        )}
+                    >
+                        {rightSection}
+                    </div>
+                )}
             </div>
         );
     }
 
     return (
         <div className={wrapperClassName} style={style}>
+            {leftSection && (
+                <div
+                    className={cx(
+                        "flex h-full self-stretch items-center justify-center text-[var(--refraktor-text-secondary)] shrink-0 select-none",
+                        classes.leftSection
+                    )}
+                >
+                    {leftSection}
+                </div>
+            )}
+
             <textarea
                 id={_id}
                 ref={ref}
@@ -86,6 +138,17 @@ const TextareaField = factory<TextareaFieldFactoryPayload>((_props, ref) => {
                 className={textareaClassName}
                 {...props}
             />
+
+            {rightSection && (
+                <div
+                    className={cx(
+                        "flex h-full self-stretch items-center justify-center text-[var(--refraktor-text-secondary)] shrink-0 select-none",
+                        classes.rightSection
+                    )}
+                >
+                    {rightSection}
+                </div>
+            )}
         </div>
     );
 });
