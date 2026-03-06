@@ -29,6 +29,8 @@ const defaultProps = {
     showLabelOnHover: false
 } satisfies Partial<SliderProps>;
 
+const MARK_RADIUS_PX = 4;
+
 const Slider = factory<SliderFactoryPayload>((_props, ref) => {
     const { cx, getRadius } = useTheme();
     const {
@@ -89,19 +91,17 @@ const Slider = factory<SliderFactoryPayload>((_props, ref) => {
     );
 
     const updateTrackRect = useCallback(() => {
-        trackRectRef.current = trackRef.current?.getBoundingClientRect() ?? null;
+        trackRectRef.current =
+            trackRef.current?.getBoundingClientRect() ?? null;
     }, []);
 
-    const getPositionFromClientX = useCallback(
-        (clientX: number) => {
-            const rect = trackRectRef.current;
-            if (!rect || rect.width === 0) return 0;
+    const getPositionFromClientX = useCallback((clientX: number) => {
+        const rect = trackRectRef.current;
+        if (!rect || rect.width === 0) return 0;
 
-            const position = (clientX - rect.left) / rect.width;
-            return clamp(position, 0, 1);
-        },
-        []
-    );
+        const position = (clientX - rect.left) / rect.width;
+        return clamp(position, 0, 1);
+    }, []);
 
     const flushPendingChange = useCallback(() => {
         if (pendingPositionRef.current === null) return;
@@ -257,7 +257,9 @@ const Slider = factory<SliderFactoryPayload>((_props, ref) => {
                                 <div
                                     key={index}
                                     className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center"
-                                    style={{ left: `${markPosition}%` }}
+                                    style={{
+                                        left: `clamp(${MARK_RADIUS_PX}px, ${markPosition}%, calc(100% - ${MARK_RADIUS_PX}px))`
+                                    }}
                                 >
                                     <div
                                         className={cx(
