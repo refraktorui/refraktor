@@ -1,7 +1,7 @@
 {
   "name": "@refraktor/dates",
   "description": "React UI component library for date and time management",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -50,8 +50,8 @@
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0",
     "dayjs": "^1.11.19",
-    "@refraktor/core": "0.0.8",
-    "@refraktor/utils": "0.0.8"
+    "@refraktor/core": "0.0.9",
+    "@refraktor/utils": "0.0.9"
   },
   "devDependencies": {
     "typescript": "^5.9.3"

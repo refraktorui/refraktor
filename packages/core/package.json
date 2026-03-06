@@ -1,7 +1,7 @@
 {
   "name": "@refraktor/core",
   "description": "React UI component library built with Tailwind CSS v4",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -47,7 +47,7 @@
   "peerDependencies": {
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0",
-    "@refraktor/utils": "0.0.8"
+    "@refraktor/utils": "0.0.9"
   },
   "devDependencies": {
     "typescript": "^5.9.3"
