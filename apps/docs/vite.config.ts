@@ -15,8 +15,14 @@ export default defineConfig({
         port: 4000
     },
     resolve: {
+        dedupe: ["react", "react-dom"],
         alias: {
             "@": path.resolve(__dirname, "./src"),
+            react: path.resolve(__dirname, "../../node_modules/react"),
+            "react-dom": path.resolve(
+                __dirname,
+                "../../node_modules/react-dom"
+            ),
             "@refraktor/core": path.resolve(
                 __dirname,
                 "../../packages/core/src/index.ts"
